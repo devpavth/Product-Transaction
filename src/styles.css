@@ -1,1 +1,188 @@
 /* You can add global styles to this file, and also import other style files */
+/* @import "../node_modules/animate.css/animate.min.css"; */
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.select-option {
+  @apply block w-32 cursor-pointer  truncate border border-purple-300 bg-white p-2.5   text-sm text-gray-900 hover:border-purple-600 hover:bg-gray-100  hover:ring-2 hover:ring-purple-200 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500;
+}
+.select-option1 {
+  @apply block cursor-pointer truncate border border-purple-300 bg-white p-2.5   text-sm text-gray-900 hover:border-purple-600 hover:bg-gray-100  hover:ring-2 hover:ring-purple-200 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500;
+}
+.select-rose {
+  @apply block cursor-pointer truncate border border-[#a42cff] bg-white p-2.5   text-sm text-gray-900 hover:border-[#a42cff] hover:bg-gray-100  hover:ring-2 hover:ring-[#a42cff] focus:border-[#a42cff] focus:ring-[#edd5ff];
+}
+.input-text {
+  @apply select-option rounded-lg  hover:border-purple-600 hover:bg-gray-100 hover:ring-2 hover:ring-purple-200;
+}
+
+.input-text1 {
+  @apply block truncate  rounded-lg border border-purple-300 bg-gray-50 p-2.5   text-sm text-gray-900 hover:border-purple-600 hover:bg-gray-100  hover:ring-2 hover:ring-purple-200 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500;
+}
+
+.btn-primary {
+  @apply block rounded-lg bg-purple-700 p-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 active:translate-y-2 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800;
+}
+.btn-gray {
+  @apply block rounded-lg bg-gray-200 p-2.5 text-sm font-medium text-gray-900 transition-all duration-500 hover:bg-gray-300 focus:outline-none focus:ring-4 focus:ring-gray-300 active:translate-y-2 dark:bg-gray-600 dark:hover:bg-gray-700 dark:focus:ring-gray-800;
+}
+.btn-primary1 {
+  @apply block  text-nowrap bg-purple-700 p-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 active:scale-90 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800;
+}
+.btn-rose {
+  @apply block rounded-lg bg-[#6818a5] p-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-violet-800 focus:outline-none focus:ring-4 focus:ring-violet-300 active:translate-y-2 dark:bg-violet-600 dark:hover:bg-violet-700 dark:focus:ring-violet-800;
+}
+.input-form {
+  @apply block w-full rounded-lg border border-purple-300  p-2.5 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500;
+}
+.input-rose {
+  @apply block w-full rounded-lg border border-[#a94fee]  p-2.5 text-sm text-gray-900 focus:focus:border-[#a42cff] focus:ring-[#a42cff] dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-[#a42cff];
+}
+.icon-input {
+  @apply block w-full rounded-lg border border-purple-300  p-2.5 ps-10 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500  dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500;
+}
+.active {
+  @apply text-purple-600;
+}
+.an {
+  @apply transition-all duration-500;
+}
+.error {
+  @apply block    border  border-red-500 bg-red-50 bg-transparent text-red-900 placeholder-red-700  shadow-sm outline-none focus:border-red-500 focus:ring-red-500 dark:border-red-500  dark:bg-gray-700 dark:text-red-500 dark:placeholder-red-500;
+}
+.success {
+  @apply block rounded-lg   border  border-green-500 bg-green-50 bg-transparent text-green-900 placeholder-green-700 shadow-sm outline-none  focus:border-green-500 focus:ring-green-500 dark:border-green-500 dark:bg-gray-700  dark:text-green-400 dark:placeholder-green-500;
+}
+.left-menu {
+  @apply flex w-full items-center border-purple-500 from-violet-50 p-2 text-base text-gray-900   transition  duration-500 hover:border-l hover:bg-gradient-to-r hover:text-purple-600  dark:text-white dark:hover:bg-gray-700;
+}
+.left-menusvg {
+  @apply text-gray-500 transition duration-500 group-hover:text-purple-600 dark:text-gray-400 dark:group-hover:text-white;
+}
+.left-submenu {
+  @apply flex w-full items-center border-purple-500  from-violet-50 p-2 pl-11  text-gray-900   transition duration-500 hover:border-l hover:bg-gradient-to-r  hover:text-purple-600 dark:text-white dark:hover:bg-gray-700;
+}
+.bg {
+  background-image: url("./assets/Img/nathan-dumlao-Xavq7lKj5j8-unsplash\ copy.jpg");
+}
+
+/* 
+.lable{
+  @apply block text-sm font-medium leading-6 text-gray-900 dark:text-white;
+}
+.input-text{
+  @apply block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm dark:bg-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6;
+} */
+
+.note-text {
+  @apply mt-1 text-sm leading-6 text-gray-600;
+}
+.sub-title {
+  @apply text-base font-semibold leading-7 text-purple-900 dark:text-gray-200;
+}
+.side-menu-active {
+  @apply border-l border-purple-500 bg-gradient-to-r from-violet-50 font-medium text-purple-800;
+}
+
+.scroll::-webkit-scrollbar-track {
+  background-color: #f5f5f5;
+}
+
+.scroll::-webkit-scrollbar {
+  width: 4px;
+  background-color: #f5f5f5;
+}
+
+.scroll::-webkit-scrollbar-thumb {
+  background-color: #9501ff;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+.animate-slide-in-right {
+  animation-name: slideInRight;
+  animation-duration: 0.8s; /* Adjust duration as needed */
+  animation-fill-mode: both;
+}
+@keyframes slideOutRight {
+  from {
+    opacity: 1;
+    transform: translateX(0);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(100%);
+  }
+}
+.animate-slide-out-right {
+  animation-name: slideOutRight;
+  animation-duration: 0.8s;
+  animation-fill-mode: both;
+}
+
+.price1 {
+  @apply me-2 px-2.5 py-0.5 text-xs font-medium text-blue-800;
+}
+.price2 {
+  @apply me-2 px-2.5 py-0.5 text-xs font-medium text-red-800;
+}
+
+.animation-translate {
+  animation-duration: 3s;
+  animation-name: slidein;
+}
+
+@keyframes slidein {
+  from {
+    transform: translateY(180);
+  }
+
+  to {
+    transform: rotateY(0);
+  }
+}
+@keyframes anIn {
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(100%);
+  }
+}
+.animate-in {
+  animation-name: anIn;
+  animation-duration: 0.8s;
+  animation-fill-mode: both;
+}
+.created {
+  @apply me-2 rounded-full bg-blue-100 px-2.5 py-0.5 text-xs font-medium text-blue-800 dark:bg-blue-900 dark:text-blue-300;
+}
+.process {
+  @apply me-2 rounded-full bg-yellow-100 px-2.5 py-0.5 text-xs font-medium text-yellow-800  dark:bg-gray-700 dark:text-yellow-300;
+}
+.rejected {
+  @apply me-2 rounded-full bg-red-100 px-2.5 py-0.5 text-xs font-medium text-red-800 dark:bg-red-900 dark:text-red-300;
+}
+.completed {
+  @apply me-2 rounded-full bg-green-100 px-2.5 py-0.5 text-xs font-medium text-green-800 dark:bg-green-900 dark:text-green-300;
+}
+
+.subMenu {
+  @apply font-semibold text-gray-400 hover:text-purple-700;
+}
+.activeSubMenu {
+  @apply font-semibold text-purple-700;
+}
