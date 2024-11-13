@@ -6,5 +6,36 @@ import { Component } from '@angular/core';
   styleUrl: './vendor-list.component.css'
 })
 export class VendorListComponent {
+  _vendor: any;
+  vendorData: any;
+  Spinner: boolean = true;
 
+  isVendorList: Boolean = false;
+  // constructor(private vendorService: VendorService) {}
+  ngOnInit() {
+    // this.fetchallvendor();
+  }
+
+  // fetchallvendor() {
+  //   this.vendorService.getAllVendor().subscribe(
+  //     (res) => {
+  //       this._vendor = res;
+  //       this.Spinner = false;
+  //       console.log(res);
+  //     },
+  //     (error) => {
+  //       console.log(error);
+  //     },
+  //   );
+  // }
+  toggleView(action: Boolean, check: number, vendorData: any) {
+    if (check == 1) {
+      this.isVendorList = action;
+      this.vendorData = vendorData;
+    }
+    if (check == 0) {
+      this.isVendorList = action;
+      // this.fetchallvendor();
+    }
+  }
 }

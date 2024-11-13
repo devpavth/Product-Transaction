@@ -1,0 +1,468 @@
+<!-- <section class="absolute left-0 right-0 z-20">
+    <app-adding
+      (close)="closeAdding($event)"
+      [addData]="addingData"
+      *ngIf="isCloseAdding"
+    ></app-adding>
+  </section> -->
+  <section class="">
+    <div class="p-4 sm:ml-64">
+      <div class="flex items-center justify-center">
+        <div class="relative h-full w-4/5 md:h-auto">
+          <!-- Modal content -->
+          <div class="relative rounded-lg p-4 dark:bg-gray-800 sm:p-5">
+            <!-- Modal header -->
+            <div class="mb-4 flex items-center justify-between rounded-t sm:mb-5">
+              <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+                Add Product
+              </h3>
+              <button
+                type="button"
+                routerLink="/home/productList"
+                class="an ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-red-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+                data-modal-toggle="defaultModal"
+              >
+                <svg
+                  aria-hidden="true"
+                  class="h-5 w-5"
+                  fill="currentColor"
+                  viewBox="0 0 20 20"
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path
+                    fill-rule="evenodd"
+                    d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                    clip-rule="evenodd"
+                  ></path>
+                </svg>
+                <span class="sr-only">Close modal</span>
+              </button>
+            </div>
+            <!-- Modal body -->
+            <form [formGroup]="ProductForm">
+              <div class="mb-4 grid gap-4 sm:grid-cols-8">
+                <div class="col-span-4">
+                  <div class="flex items-center gap-2">
+                    <label
+                      for="Branch"
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                      >Group</label
+                    >
+                    <div class="mb-2 flex cursor-pointer items-center gap-1">
+                      <svg
+                        class="h-3 w-3 text-gray-400 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+  
+                      <a
+                        (click)="addingAction(1)"
+                        class="text-sm text-gray-400 hover:underline dark:text-blue-500"
+                        >Add Group
+                      </a>
+                    </div>
+                  </div>
+  
+                  <select
+                    #catid
+                    (change)="fetchCatList(catid.value)"
+                    formControlName="prdGrpId"
+                    class="select-option1 block w-full rounded-lg"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdGrpId')?.invalid &&
+                        ProductForm.get('prdGrpId')?.touched
+                    }"
+                    required
+                  >
+                    <option
+                      value=""
+                      null
+                      disabled
+                      class="bg-purple-700 text-white"
+                    >
+                      Choose Group
+                    </option>
+                    <option *ngFor="let g of groupList" value="{{ g.prdGrpId }}">
+                      {{ g.prdgrpName }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      ProductForm?.get('prdGrpId')?.invalid &&
+                      ProductForm?.get('prdGrpId')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    Select Group!
+                  </small>
+                </div>
+                <div class="col-span-4">
+                  <div class="flex items-center gap-2">
+                    <label
+                      for="Branch"
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                      >Categories</label
+                    >
+                    <div class="mb-2 flex cursor-pointer items-center gap-1">
+                      <svg
+                        class="h-3 w-3 text-gray-400 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+  
+                      <a
+                        (click)="addingAction(2)"
+                        class="text-sm text-gray-400 hover:underline dark:text-blue-500"
+                        >Add Categories</a
+                      >
+                    </div>
+                  </div>
+                  <select
+                    #id
+                    (change)="fetchBrandList(id.value)"
+                    formControlName="prdCatgId"
+                    class="select-option1 block w-full rounded-lg"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdCatgId')?.invalid &&
+                        ProductForm.get('prdCatgId')?.touched
+                    }"
+                    required
+                  >
+                    <option
+                      value=""
+                      null
+                      selected
+                      disabled
+                      class="bg-purple-700 text-white"
+                    >
+                      Choose Categories
+                    </option>
+                    <option *ngFor="let c of catList" value="{{ c.prdCatgId }}">
+                      {{ c.prdcatgName }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      ProductForm?.get('prdCatgId')?.invalid &&
+                      ProductForm?.get('prdCatgId')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    Select Category!
+                  </small>
+                </div>
+                <div class="col-span-4">
+                  <div class="flex items-center gap-2">
+                    <label
+                      for="Branch"
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                      >Brand</label
+                    >
+                    <div class="mb-2 flex cursor-pointer items-center gap-1">
+                      <svg
+                        class="h-3 w-3 text-gray-400 dark:text-white"
+                        aria-hidden="true"
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        fill="currentColor"
+                        viewBox="0 0 24 24"
+                      >
+                        <path
+                          fill-rule="evenodd"
+                          d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm11-4.243a1 1 0 1 0-2 0V11H7.757a1 1 0 1 0 0 2H11v3.243a1 1 0 1 0 2 0V13h3.243a1 1 0 1 0 0-2H13V7.757Z"
+                          clip-rule="evenodd"
+                        />
+                      </svg>
+  
+                      <a
+                        (click)="addingAction(3)"
+                        class="text-sm text-gray-400 hover:underline dark:text-blue-500"
+                        >Add Brand</a
+                      >
+                    </div>
+                  </div>
+                  <select
+                    formControlName="prdBrndId"
+                    class="select-option1 block w-full rounded-lg"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdBrndId')?.invalid &&
+                        ProductForm.get('prdBrndId')?.touched
+                    }"
+                    required
+                  >
+                    <option
+                      value=""
+                      null
+                      selected
+                      disabled
+                      class="bg-purple-700 text-white"
+                    >
+                      Choose Brand
+                    </option>
+                    <option value="{{ b.prdBrndId }}" *ngFor="let b of brandList">
+                      {{ b.prdbrndName }}
+                    </option>
+                  </select>
+                  <small
+                    *ngIf="
+                      ProductForm?.get('prdBrndId')?.invalid &&
+                      ProductForm?.get('prdBrndId')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    Select Brand!
+                  </small>
+                </div>
+                <div class="col-span-4">
+                  <label
+                    for="brand"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Model</label
+                  >
+                  <input
+                    type="text"
+                    formControlName="prdmdlName"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                    placeholder="eg:456789"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdmdlName')?.invalid &&
+                        ProductForm.get('prdmdlName')?.touched
+                    }"
+                    required
+                  />
+                  <small
+                    *ngIf="
+                      ProductForm?.get('prdmdlName')?.invalid &&
+                      ProductForm?.get('prdmdlName')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    Select Model!
+                  </small>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="category"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Unit of Material</label
+                  >
+                  <select
+                    formControlName="prdUnit"
+                    class="select-option1 block w-full rounded-lg"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdUnit')?.invalid &&
+                        ProductForm.get('prdUnit')?.touched
+                    }"
+                    required
+                  >
+                    <option *ngFor="let u of units" value="{{ u.id }}">
+                      {{ u.name }}
+                    </option>
+                    <small
+                      *ngIf="
+                        ProductForm?.get('prdUnit')?.invalid &&
+                        ProductForm?.get('prdUnit')?.touched
+                      "
+                      class="text-danger text-red-600"
+                    >
+                      Select GST Percentage!
+                    </small>
+                  </select>
+                  <small class="text-danger text-red-600"> </small>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="price"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >HSN Code</label
+                  >
+                  <input
+                    type="number"
+                    formControlName="prdHsnCode"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                    placeholder="$2999"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdHsnCode')?.invalid &&
+                        ProductForm.get('prdHsnCode')?.touched
+                    }"
+                    required
+                  />
+                  <small
+                    *ngIf="
+                      ProductForm?.get('prdHsnCode')?.invalid &&
+                      ProductForm?.get('prdHsnCode')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    HSN Code Required!
+                  </small>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="price"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Price</label
+                  >
+                  <input
+                    type="number"
+                    formControlName="prdPurchasedPrice"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                    placeholder="$2999"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdPurchasedPrice')?.invalid &&
+                        ProductForm.get('prdPurchasedPrice')?.touched
+                    }"
+                    required
+                  />
+                  <small
+                    *ngIf="
+                      ProductForm?.get('prdPurchasedPrice')?.invalid &&
+                      ProductForm?.get('prdPurchasedPrice')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    Purchase Price Required!
+                  </small>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="category"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >GST Percentage</label
+                  >
+                  <select
+                    formControlName="prdGstPct"
+                    class="select-option1 block w-full rounded-lg border"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdGstPct')?.invalid &&
+                        ProductForm.get('prdGstPct')?.touched
+                    }"
+                    required
+                  >
+                    <option *ngFor="let g of gst" value="{{ g }}">{{ g }}</option>
+                    <small
+                      *ngIf="
+                        ProductForm?.get('prdGstPct')?.invalid &&
+                        ProductForm?.get('prdGstPct')?.touched
+                      "
+                      class="text-danger text-red-600"
+                    >
+                      Select GST Percentage!
+                    </small>
+                  </select>
+                  <small class="text-danger text-red-600"> </small>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Minimum Quantity</label
+                  >
+                  <input
+                    type="text"
+                    formControlName="prdMinQty"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                    placeholder="eg:456789"
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdMinQty')?.invalid &&
+                        ProductForm.get('prdMinQty')?.touched
+                    }"
+                    required
+                  />
+                  <small
+                    *ngIf="
+                      ProductForm?.get('prdMinQty')?.invalid &&
+                      ProductForm?.get('prdMinQty')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    Quantity Required!
+                  </small>
+                </div>
+                <div class="sm:col-span-full">
+                  <label
+                    for="description"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Description</label
+                  >
+                  <textarea
+                    formControlName="prdDescription"
+                    rows="4"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                    placeholder="Write product description here"
+                    appFirstCapLetter
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('prdDescription')?.invalid &&
+                        ProductForm.get('prdDescription')?.touched
+                    }"
+                    required
+                  ></textarea>
+                  <small
+                    *ngIf="
+                      ProductForm?.get('prdDescription')?.invalid &&
+                      ProductForm?.get('prdDescription')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    Description Required!
+                  </small>
+                </div>
+              </div>
+              <div class="flex items-center justify-end">
+                <button
+                  (click)="onSubmit(ProductForm.value)"
+                  type="submit"
+                  class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+                >
+                  <svg
+                    class="-ml-1 mr-1 h-6 w-6"
+                    fill="currentColor"
+                    viewBox="0 0 20 20"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <path
+                      fill-rule="evenodd"
+                      d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                      clip-rule="evenodd"
+                    ></path>
+                  </svg>
+                  Save
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  

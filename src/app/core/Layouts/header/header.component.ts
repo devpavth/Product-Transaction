@@ -1,34 +1,36 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-header',
   templateUrl: './header.component.html',
   styleUrl: './header.component.css'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit{
   user: any; // fetch user
   userData: any; //fetch user data object
 
+  emp = { empFirstName: '', empLastName: '', empEmail: '', branchName: '', };
+
   //User data
-  // FirstName :any
-  // LastName:string=''
-  // Id:string=''
-  // Phone:number=0
-  // Gender:	string=''
-  // Email:	string=''
-  // DateofBirth:any
-  // addressLine1:string=''
-  // addressLine2:string=''
-  // state:string=''
-  // city:string=''
-  // pin	:number=0
-  // country	:string=''
-  // empJoiningDate :any
-  // empRole	:string=''
-  // empBranch	:string=''
-  // empDepartment	:string=''
-  // empDesignation	:string=''
-  // empFlag:string=''
+  FirstName :any
+  LastName:string=''
+  Id:string=''
+  Phone:number=0
+  Gender:	string=''
+  Email:	string=''
+  DateofBirth:any
+  addressLine1:string=''
+  addressLine2:string=''
+  state:string=''
+  city:string=''
+  pin	:number=0
+  country	:string=''
+  empJoiningDate :any
+  empRole	:string=''
+  empBranch	:string=''
+  empDepartment	:string=''
+  empDesignation	:string=''
+  empFlag:string=''
 
   randomColor: string | undefined;
 
