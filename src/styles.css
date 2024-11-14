@@ -64,9 +64,9 @@
 .left-submenu {
   @apply flex w-full items-center border-purple-500  from-violet-50 p-2 pl-11  text-gray-900   transition duration-500 hover:border-l hover:bg-gradient-to-r  hover:text-purple-600 dark:text-white dark:hover:bg-gray-700;
 }
-.bg {
+/* .bg {
   background-image: url("./assets/Img/nathan-dumlao-Xavq7lKj5j8-unsplash\ copy.jpg");
-}
+} */
 
 /* 
 .lable{

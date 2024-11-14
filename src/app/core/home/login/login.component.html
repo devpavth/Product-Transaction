@@ -1,0 +1,170 @@
+<section class="bg fixed min-h-screen w-full bg-cover bg-center">
+    <div
+      class="fixed top-0 flex min-h-screen w-full items-center justify-center overflow-hidden bg-black bg-opacity-60"
+    >
+      <div
+        class="z-20 max-w-md rounded-lg border border-gray-50/10 bg-purple-400 bg-opacity-15 px-12 py-12 shadow-xl backdrop-blur-md"
+      >
+        <div class="">
+          <h1
+            class="mb-4 cursor-pointer text-center text-2xl font-bold text-amber-400"
+          >
+            Cloute Technology Private Limited
+          </h1>
+  
+          <p
+            class="mb-2 cursor-pointer text-center text-sm font-semibold tracking-wide text-gray-50/20"
+          >
+            Login To Your Account
+          </p>
+          <p
+            class="mb-8 cursor-pointer text-center text-sm font-semibold tracking-wide text-purple-500"
+          >
+            <!-- Indent Management System -->
+          </p>
+        </div>
+  
+        <!-- <form [formGroup]="loginForm"> -->
+          <div class="mb-2">
+            <label class="font-semibold text-white"> User ID </label>
+          </div>
+          <div class="mb-4">
+            <div class="relative">
+              <svg
+                class="absolute inset-y-0 left-3 my-auto h-6 w-6 text-gray-50"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M12 21a9 9 0 1 0 0-18 9 9 0 0 0 0 18Zm0 0a8.949 8.949 0 0 0 4.951-1.488A3.987 3.987 0 0 0 13 16h-2a3.987 3.987 0 0 0-3.951 3.512A8.948 8.948 0 0 0 12 21Zm3-11a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"
+                />
+              </svg>
+              <!-- <input
+                type="text"
+                formControlName="employeeId"
+                (change)="verifiedUser(id.value)"
+                autocomplete="username"
+                #id
+                [ngClass]="{
+                  success: isVerfied === 302,
+                  error1: isVerfied === 404
+                }"
+                class="group/input w-full rounded-lg border border-purple-100 bg-transparent py-2 pl-12 pr-3 text-gray-50 shadow-sm outline-none focus:border-purple-600"
+              /> -->
+  
+              <!-- <input type="text" formControlName="employeeId" (change)="verifiedUser(id.value)"  #id ngClass="'isVerfied==302':error" class="w-full pl-12 pr-3  py-2 text-gray-500 bg-transparent outline-none border group/input focus:border-blue-600 shadow-sm rounded-lg" /> -->
+            </div>
+            <small *ngIf="isVerfied === 404" class=""
+              ><span #incorrect class="text-red-600">User Id Incorrect</span>
+            </small>
+            <div class="mt-2 flex items-center gap-2" *ngIf="isVerfied === 302">
+              <svg
+                class="w-4 text-blue-600 dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="currentColor"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  fill-rule="evenodd"
+                  d="M2 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10S2 17.523 2 12Zm13.707-1.293a1 1 0 0 0-1.414-1.414L11 12.586l-1.793-1.793a1 1 0 0 0-1.414 1.414l2.5 2.5a1 1 0 0 0 1.414 0l4-4Z"
+                  clip-rule="evenodd"
+                />
+              </svg>
+  
+              <!-- <iframe src="https://lottie.host/embed/7768fbf2-5be6-42ce-8778-647735aa206f/0gLuxEMDzd.json"></iframe> -->
+              <small class=""
+                ><span #incorrect class="text-blue-600">Verified User </span>
+              </small>
+            </div>
+          </div>
+          <div x-data="{ isPasswordHidden: true }" class="">
+            <label class="font-semibold text-white"> Password </label>
+            <div class="relative mt-2">
+              <!-- isPasswordHidden = !isPasswordHidden" -->
+              <button
+                (click)="toggle()"
+                class="absolute inset-y-0 right-3 my-auto text-gray-50 active:text-gray-600"
+              >
+                <div *ngIf="isPasswordHidden" class="">
+                  <svg
+                    class="h-6 w-6"
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                    ></path>
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                    ></path>
+                  </svg>
+                </div>
+                <div *ngIf="!isPasswordHidden">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-6 w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
+  
+              <!-- <input
+                [type]="isPasswordHidden ? 'password' : 'text'"
+                [ngClass]="{
+                  error1: passwordVerified === 1,
+                  'disabled-field': !passwordEnabled
+                }"
+                #password
+                formControlName="empPassword"
+                autocomplete="current-password"
+                class="w-full rounded-lg border bg-transparent py-2 pl-3 pr-12 tracking-widest text-gray-50 shadow-sm outline-none focus:border-blue-600"
+              /> -->
+            </div>
+          </div>
+          <small *ngIf="passwordVerified === 1" class=""
+            ><span #incorrect class="text-red-600">Incorrect Password ! </span>
+          </small>
+  
+          <div class="mt-6 text-center">
+            <!-- <button
+              (click)="login(loginForm.value)"
+              [disabled]="loginForm.invalid"
+              [ngClass]="{ 'diabale-login ': loginForm.invalid }"
+              type="submit"
+              class="mb-2 me-2 w-full rounded-lg bg-purple-700 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:scale-105 hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+            >
+              Login
+            </button> -->
+          </div>
+        <!-- </form> -->
+      </div>
+    </div>
+  </section>
+  
