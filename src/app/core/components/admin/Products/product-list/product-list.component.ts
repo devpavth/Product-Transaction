@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProductService } from '../../../service/product.service';
 
 @Component({
   selector: 'app-product-list',
@@ -20,33 +21,33 @@ export class ProductListComponent {
   ngOnInit() {
     this.fetchProductList(1);
   }
-  // constructor(private productService: ProductService) {}
+  constructor(private productService: ProductService) {}
   fetchProductList(data: number) {
     const startIndex = (this.currentPage - 1) * this.itemsPerPage;
     const endIndex = startIndex + this.itemsPerPage;
-    // this.productService.getAllProduct().subscribe((res: any) => {
-    //   console.log(res);
-    //   this.list = res;
-    //   this.listLength = this.list.length;
-    //   let list: any[] = res;
-    //   this.otherPrdLen = list.filter((m) => m.prdStatus == 303).length;
-    //   this.Spinner = false;
-    //   switch (data) {
-    //     case 1: {
-    //       this.productList = list
-    //         .filter((m) => m.prdStatus == 200)
-    //         .slice(startIndex, endIndex);
-    //       break;
-    //     }
-    //     case 2: {
-    //       this.productList = list
-    //         .filter((m) => m.prdStatus == 303)
-    //         .slice(startIndex, endIndex);
-    //       console.log('Hello');
-    //       break;
-    //     }
-    //   }
-    // });
+    this.productService.getAllProduct().subscribe((res: any) => {
+      console.log("product list:", res);
+      this.list = res;
+      this.listLength = this.list.length;
+      let list: any[] = res;
+      this.otherPrdLen = list.filter((m) => m.prdStatus == 303).length;
+      this.Spinner = false;
+      switch (data) {
+        case 1: {
+          this.productList = list
+            .filter((m) => m.prdStatus == 200)
+            .slice(startIndex, endIndex);
+          break;
+        }
+        case 2: {
+          this.productList = list
+            .filter((m) => m.prdStatus == 303)
+            .slice(startIndex, endIndex);
+          console.log('Hello');
+          break;
+        }
+      }
+    });
   }
   onPageChange(pageNumber: number): void {
     this.currentPage = pageNumber;

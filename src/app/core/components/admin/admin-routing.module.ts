@@ -7,6 +7,8 @@ import { ViewProductComponent } from './Products/view-product/view-product.compo
 import { AddProductComponent } from './Products/add-product/add-product.component';
 import { StockComponent } from './Products/stock/stock.component';
 
+import { SharedModule } from '../../../shared/shared.module';
+
 const routes: Routes = [
   {
     component: VendorListComponent,
@@ -36,6 +38,6 @@ const routes: Routes = [
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule, SharedModule]
 })
 export class AdminRoutingModule { }

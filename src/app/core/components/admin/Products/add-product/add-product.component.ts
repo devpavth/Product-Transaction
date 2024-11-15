@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { ProductService } from '../../../service/product.service';
 
 @Component({
   selector: 'app-add-product',
@@ -37,19 +38,19 @@ export class AddProductComponent {
 
   constructor(
     private fb: FormBuilder,
-    // private productService: ProductService,
+    private productService: ProductService,
   ) {
     this.ProductForm = this.fb.group({
-      prdGrpId: ['',[Validators.required]],
-      prdCatgId: [],
-      prdBrndId: [],
-      prdmdlName: [],
-      prdDescription: [],
-      prdUnit: [],
-      prdHsnCode: [],
-      prdPurchasedPrice: [],
-      prdGstPct: [],
-      prdMinQty: [],
+      // prdGrpId: ['',[Validators.required]],
+      // prdCatgId: [],
+      // prdBrndId: [],
+      productName: [],
+      productDescription: [],
+      // prdUnit: [],
+      productHsn: [],
+      productPrice: [],
+      productGstRate: [],
+      productQuantity: [],
       prdStatus: [200],
     });
   }
@@ -93,21 +94,21 @@ export class AddProductComponent {
   }
 
   onSubmit(data: any) {
-    console.log(data);
+    console.log("add product data:",data);
 
-    // this.productService.postProduct(data).subscribe(
-    //   (res) => {
-    //     console.log(res);
-    //   },
-    //   (error) => {
-    //     console.log(error);
+    this.productService.postProduct(data).subscribe(
+      (res) => {
+        console.log("Product User added:",res);
+      },
+      (error) => {
+        console.log("Error adding product details:",error);
 
-    //     if (error.status == 200) {
-    //       this.ProductForm.reset();
-    //       this.ProductForm.get('prdStatus')?.patchValue(200);
-    //     }
-    //   },
-    // );
+        if (error.status == 200) {
+          this.ProductForm.reset();
+          this.ProductForm.get('prdStatus')?.patchValue(200);
+        }
+      },
+    );
   }
   closeAdding(action: boolean) {
     this.isCloseAdding = action;

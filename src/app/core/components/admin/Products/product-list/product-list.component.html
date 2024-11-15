@@ -68,9 +68,9 @@
                 />
               </svg>
 
-              Inward
+              Transaction
             </button>
-            <button
+            <!-- <button
               type="button"
               routerLink="/home/addProduct"
               class="an flex items-center justify-center rounded-lg bg-red-700 px-4 py-2 text-sm font-medium text-white hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
@@ -94,7 +94,7 @@
               </svg>
 
               Outward
-            </button>
+            </button> -->
             <button
               type="button"
               routerLink="/home/addProduct"
@@ -151,7 +151,7 @@
             >
               <tr>
                 <th scope="col" class="px-4 py-3">S.No</th>
-                <th scope="col" class="px-4 py-3">
+                <!-- <th scope="col" class="px-4 py-3">
                   <div class="flex items-center justify-between">
                     <div>CODE</div>
                     <button
@@ -173,12 +173,11 @@
                       </svg>
                     </button>
                   </div>
-                </th>
+                </th> -->
 
-                <th scope="col" class="px-4 py-3">Model</th>
-                <th scope="col" class="px-4 py-3">Group</th>
-                <th scope="col" class="px-4 py-3">Catagories</th>
-                <th scope="col" class="px-4 py-3">Brand</th>
+                <th scope="col" class="px-4 py-3">Product Name</th>
+                <th scope="col" class="px-4 py-3">Description</th>
+                <th scope="col" class="px-4 py-3">Quantity</th>
                 <!-- <th scope="col" class="px-4 py-3">GST %</th>
                               <th scope="col" class="px-4 py-3">Price</th> -->
                 <th scope="col" class="px-4 py-3">
@@ -188,20 +187,13 @@
             </thead>
             <tbody>
               <tr
-                *ngFor="let p of productList; let i = index"
+                *ngFor="let p of list; let i = index"
                 class="border-b transition-all duration-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700"
               >
                 <td class="px-4 py-3">{{ getSerialNumber(i) }}</td>
-                <th
-                  scope="row"
-                  class="select-all whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
-                >
-                  {{ p.prdCode }}
-                </th>
-                <td class="px-4 py-3">{{ p.prdmdlName }}</td>
-                <td class="px-4 py-3">{{ p.prdgrpName }}</td>
-                <td class="px-4 py-3">{{ p.prdcatgName }}</td>
-                <td class="px-4 py-3">{{ p.prdbrndName }}</td>
+                <td class="px-4 py-3">{{ p.productName }}</td>
+                <td class="px-4 py-3">{{ p.productDescription }}</td>
+                <td class="px-4 py-3">{{ p.productQuantity }}</td>
 
                 <!-- <td class="px-4 py-3"></td>
                               <td class="px-4 py-3"></td> -->

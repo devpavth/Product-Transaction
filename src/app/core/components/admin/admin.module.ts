@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule, DatePipe } from '@angular/common';
 
 import { AdminRoutingModule } from './admin-routing.module';
 import { VendorListComponent } from './vendor/vendor-list/vendor-list.component';
@@ -11,6 +11,8 @@ import { AddProductComponent } from './Products/add-product/add-product.componen
 
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StockComponent } from './Products/stock/stock.component';
+
+import { SharedModule } from '../../../shared/shared.module';
 
 
 @NgModule({
@@ -27,7 +29,8 @@ import { StockComponent } from './Products/stock/stock.component';
     CommonModule,
     AdminRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class AdminModule { }

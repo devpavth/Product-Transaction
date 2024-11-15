@@ -1,4 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { ProductService } from '../../../service/product.service';
+import { Router } from '@angular/router';
 import {
   FormGroup,
   FormControl,
@@ -41,21 +43,23 @@ export class ViewProductComponent {
   UpdateProductForm: FormGroup;
   constructor(
     private fb: FormBuilder,
-    // private productService: ProductService,
+    private productService: ProductService,
+    private route: Router
   ) {
     this.UpdateProductForm = this.fb.group({
-      prdGrpId: [],
-      prdCatgId: [],
-      prdBrndId: [],
-      prdmdlName: [],
-      prdDescription: [],
-      prdUnit: [],
-      prdHsnCode: [],
-      prdPurchasedPrice: [],
-      prdGstPct: [],
-      prdMinQty: [],
-      prdClosingStock: [],
-      prdTotalValue: [],
+      // prdGrpId: [],
+      // prdCatgId: [],
+      // prdBrndId: [],
+      productId: [],
+      productName: [],
+      productDescription: [],
+      // prdUnit: [],
+      productHsn: [],
+      productPrice: [],
+      productGstRate: [],
+      productQuantity: [],
+      // prdClosingStock: [],
+      // prdTotalValue: [],
       prdStatus: [200],
     });
   }
@@ -140,7 +144,21 @@ export class ViewProductComponent {
     }
   }
   onUpdateProduct(data: any) {
-    console.log(data);
+    console.log("Update product data:",data);
+    let id = this.UpdateProductForm.get('productId')?.value;
+    console.log(id);
+
+    this.productService.updateProduct(id, data).subscribe(
+      (res) => {
+        console.log("Updating Product from backend service:",res);
+      },
+      (error) => {
+        console.log("error while updating product:",error);
+        if (error.status == 200) {
+          this.route.navigate(['/home/productList']);
+        }
+      },
+    );
   }
 }
 

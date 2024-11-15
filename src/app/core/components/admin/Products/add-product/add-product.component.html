@@ -41,8 +41,8 @@
             <!-- Modal body -->
             <form [formGroup]="ProductForm">
               <div class="mb-4 grid gap-4 sm:grid-cols-8">
-                <div class="col-span-4">
-                  <div class="flex items-center gap-2">
+                <!-- <div class="col-span-4"> -->
+                  <!-- <div class="flex items-center gap-2">
                     <label
                       for="Branch"
                       class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -106,8 +106,8 @@
                   >
                     Select Group!
                   </small>
-                </div>
-                <div class="col-span-4">
+                </div> -->
+                <!-- <div class="col-span-4">
                   <div class="flex items-center gap-2">
                     <label
                       for="Branch"
@@ -236,36 +236,36 @@
                   >
                     Select Brand!
                   </small>
-                </div>
+                </div> -->
                 <div class="col-span-4">
                   <label
                     for="brand"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >Model</label
+                    >Product Name</label
                   >
                   <input
                     type="text"
-                    formControlName="prdmdlName"
+                    formControlName="productName"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
-                    placeholder="eg:456789"
+                    placeholder="eg:Laptop"
                     [ngClass]="{
                       error:
-                        ProductForm.get('prdmdlName')?.invalid &&
-                        ProductForm.get('prdmdlName')?.touched
+                        ProductForm.get('productName')?.invalid &&
+                        ProductForm.get('productName')?.touched
                     }"
                     required
                   />
                   <small
                     *ngIf="
-                      ProductForm?.get('prdmdlName')?.invalid &&
-                      ProductForm?.get('prdmdlName')?.touched
+                      ProductForm?.get('productName')?.invalid &&
+                      ProductForm?.get('productName')?.touched
                     "
                     class="text-danger text-red-600"
                   >
-                    Select Model!
+                    Product Required!
                   </small>
                 </div>
-                <div class="col-span-2">
+                <!-- <div class="col-span-2">
                   <label
                     for="category"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -295,7 +295,7 @@
                     </small>
                   </select>
                   <small class="text-danger text-red-600"> </small>
-                </div>
+                </div> -->
                 <div class="col-span-2">
                   <label
                     for="price"
@@ -304,20 +304,20 @@
                   >
                   <input
                     type="number"
-                    formControlName="prdHsnCode"
+                    formControlName="productHsn"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
                     placeholder="$2999"
                     [ngClass]="{
                       error:
-                        ProductForm.get('prdHsnCode')?.invalid &&
-                        ProductForm.get('prdHsnCode')?.touched
+                        ProductForm.get('productHsn')?.invalid &&
+                        ProductForm.get('productHsn')?.touched
                     }"
                     required
                   />
                   <small
                     *ngIf="
-                      ProductForm?.get('prdHsnCode')?.invalid &&
-                      ProductForm?.get('prdHsnCode')?.touched
+                      ProductForm?.get('productHsn')?.invalid &&
+                      ProductForm?.get('productHsn')?.touched
                     "
                     class="text-danger text-red-600"
                   >
@@ -332,20 +332,20 @@
                   >
                   <input
                     type="number"
-                    formControlName="prdPurchasedPrice"
+                    formControlName="productPrice"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
                     placeholder="$2999"
                     [ngClass]="{
                       error:
-                        ProductForm.get('prdPurchasedPrice')?.invalid &&
-                        ProductForm.get('prdPurchasedPrice')?.touched
+                        ProductForm.get('productPrice')?.invalid &&
+                        ProductForm.get('productPrice')?.touched
                     }"
                     required
                   />
                   <small
                     *ngIf="
-                      ProductForm?.get('prdPurchasedPrice')?.invalid &&
-                      ProductForm?.get('prdPurchasedPrice')?.touched
+                      ProductForm?.get('productPrice')?.invalid &&
+                      ProductForm?.get('productPrice')?.touched
                     "
                     class="text-danger text-red-600"
                   >
@@ -359,20 +359,20 @@
                     >GST Percentage</label
                   >
                   <select
-                    formControlName="prdGstPct"
+                    formControlName="productGstRate"
                     class="select-option1 block w-full rounded-lg border"
                     [ngClass]="{
                       error:
-                        ProductForm.get('prdGstPct')?.invalid &&
-                        ProductForm.get('prdGstPct')?.touched
+                        ProductForm.get('productGstRate')?.invalid &&
+                        ProductForm.get('productGstRate')?.touched
                     }"
                     required
                   >
                     <option *ngFor="let g of gst" value="{{ g }}">{{ g }}</option>
                     <small
                       *ngIf="
-                        ProductForm?.get('prdGstPct')?.invalid &&
-                        ProductForm?.get('prdGstPct')?.touched
+                        ProductForm?.get('productGstRate')?.invalid &&
+                        ProductForm?.get('productGstRate')?.touched
                       "
                       class="text-danger text-red-600"
                     >
@@ -388,20 +388,20 @@
                   >
                   <input
                     type="text"
-                    formControlName="prdMinQty"
+                    formControlName="productQuantity"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
                     placeholder="eg:456789"
                     [ngClass]="{
                       error:
-                        ProductForm.get('prdMinQty')?.invalid &&
-                        ProductForm.get('prdMinQty')?.touched
+                        ProductForm.get('productQuantity')?.invalid &&
+                        ProductForm.get('productQuantity')?.touched
                     }"
                     required
                   />
                   <small
                     *ngIf="
-                      ProductForm?.get('prdMinQty')?.invalid &&
-                      ProductForm?.get('prdMinQty')?.touched
+                      ProductForm?.get('productQuantity')?.invalid &&
+                      ProductForm?.get('productQuantity')?.touched
                     "
                     class="text-danger text-red-600"
                   >
@@ -415,22 +415,22 @@
                     >Description</label
                   >
                   <textarea
-                    formControlName="prdDescription"
+                    formControlName="productDescription"
                     rows="4"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
                     placeholder="Write product description here"
                     appFirstCapLetter
                     [ngClass]="{
                       error:
-                        ProductForm.get('prdDescription')?.invalid &&
-                        ProductForm.get('prdDescription')?.touched
+                        ProductForm.get('productDescription')?.invalid &&
+                        ProductForm.get('productDescription')?.touched
                     }"
                     required
                   ></textarea>
                   <small
                     *ngIf="
-                      ProductForm?.get('prdDescription')?.invalid &&
-                      ProductForm?.get('prdDescription')?.touched
+                      ProductForm?.get('productDescription')?.invalid &&
+                      ProductForm?.get('productDescription')?.touched
                     "
                     class="text-danger text-red-600"
                   >
