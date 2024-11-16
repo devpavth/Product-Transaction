@@ -32,7 +32,7 @@
   
         <!-- form f -->
   
-        <!-- <form [formGroup]="UpdateVendorForm" class="p-8"> -->
+        <form [formGroup]="UpdateVendorForm" class="p-8">
           <!-- ddddd -->
           <div class="p-4 md:px-10 md:pb-2 md:pt-6">
             <div class="mb-6 grid gap-6 md:grid-cols-6">
@@ -184,7 +184,7 @@
                   />
                 </div>
               </div>
-              <div class="col-span-3">
+              <!-- <div class="col-span-3">
                 <label
                   class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                   >Branch Name</label
@@ -203,7 +203,7 @@
                     </option>
                   </select>
                 </div>
-              </div>
+              </div> -->
             </div>
   
             <div class="mb-2">
@@ -318,7 +318,7 @@
                   "
                   class="text-danger text-red-600"
                 >
-                  State Should not be
+                  State Should not be empty!
                 </small>
               </div>
   
@@ -379,7 +379,7 @@
                   "
                   class="text-danger text-red-600"
                 >
-                  Invalid pin!
+                  Invalid pincode!
                 </small>
               </div>
               <div class="col-span-full mb-3 flex justify-between">
@@ -417,7 +417,7 @@
                   GST Number should not be empty!
                 </small>
               </div>
-              <div>
+              <!-- <div>
                 <label
                   for="Pincode"
                   class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -714,8 +714,9 @@
                     }"
                     required
                   />
-                </div>
-              </div>
+                </div> -->
+              <!-- </div> -->
+              <!-- here  till-->
             </div>
             <div class="col-span-full mb-3 flex justify-between">
               <h1 class="text-xl font-semibold text-purple-800">Bank Details</h1>
@@ -729,7 +730,7 @@
                 *ngFor="let bank of vendorAcccountDetails.controls; let i = index"
                 class="w-full"
               >
-                <!-- <div [formGroupName]="i" class="flex items-center gap-4"> -->
+                <div [formGroupName]="i" class="flex items-center gap-4">
                   <div class="flex-1">
                     <label
                       for="ifscCode"
@@ -789,6 +790,32 @@
                     >
                       Invalid pin!
                     </small>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      (click)="editBankDetails(vendorAcccountDetails.value)"
+                      class="inline-flex items-center mt-4 rounded-lg bg-green-700 px-4 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-green-700 dark:focus:ring-blue-800"
+                    >
+                      <svg
+                      *ngIf="isSaveIcon"
+                      class="mr-1 inline-flex h-5 w-5 items-center justify-center text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>                  
+                    </button>
                   </div>
                 </div>
               </div>
@@ -953,14 +980,14 @@
               Delete
             </button>
           </div>
-        <!-- </form> -->
+        </form>
       </div>
-    <!-- </div> -->
+    </div>
   </section>
-  <!-- <section *ngIf="isDelete">
+  <section *ngIf="isDelete">
     <app-delete
       [deleteData]="deleteVendor"
       (close)="toggledelete(0, $event)"
     ></app-delete>
-  </section> -->
+  </section>
   

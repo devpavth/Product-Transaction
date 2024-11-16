@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { VendorService } from '../../../service/vendor/vendor.service';
 
 @Component({
   selector: 'app-add-vendor',
@@ -13,12 +14,12 @@ export class AddVendorComponent {
   addVendorForm: FormGroup;
   constructor(
     private fb: FormBuilder,
-    // private vendorService: VendorService,
+    private vendorService: VendorService,
     // private branchService: BranchService,
     private route: Router,
   ) {
     this.addVendorForm = this.fb.group({
-      branchId: [],
+      // branchId: [],
       vendorName: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
       vdrAdd1: ['', Validators.required],
       vdrAdd2: ['', Validators.required],
@@ -53,23 +54,23 @@ export class AddVendorComponent {
           Validators.pattern(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d{1}[A-Z\d]{2}$/),
         ],
       ],
-      vdrPanNo: [
-        '',
-        [Validators.required, Validators.pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)],
-      ],
-      vdrTanNo: [
-        '',
+      // vdrPanNo: [
+      //   '',
+      //   [Validators.required, Validators.pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)],
+      // ],
+      // vdrTanNo: [
+        // '',
         // [Validators.required, Validators.pattern(/^[A-Z]{4}[0-9]{5}[A-Z]$/)],
-      ],
-      vdrMsmeNo: [],
-      estDate: [''],
-      serviceLocation: ['', Validators.required],
-      bizType: [''],
-      bizDetailName: [
-        '',
-        [Validators.required, Validators.pattern('[A-Za-z ]+')],
-      ],
-      bizDetails: ['', Validators.required],
+      // ],
+      // vdrMsmeNo: [],
+      // estDate: [''],
+      // serviceLocation: ['', Validators.required],
+      // bizType: [''],
+      // bizDetailName: [
+      //   '',
+      //   [Validators.required, Validators.pattern('[A-Za-z ]+')],
+      // ],
+      // bizDetails: ['', Validators.required],
       vendorAcccountDetails: this.fb.array([this.showBankData()]),
     });
   }
@@ -100,18 +101,19 @@ export class AddVendorComponent {
   //   });
   // }
 
-  // submitVendorDetails(data: any) {
-  //   console.log(data);
-  //   this.vendorService.addVendor(data).subscribe(
-  //     (res) => {
-  //       console.log(res);
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //       if (error.status == 200) {
-  //         this.route.navigate(['/home/vendorList']);
-  //       }
-  //     },
-  //   );
-  // }
+  submitVendorDetails(data: any) {
+    console.log(data);
+    this.vendorService.addVendor(data).subscribe(
+      (res) => {
+        console.log("saving vendor data to the server:",res);
+        this.addVendorForm.reset();
+      },
+      (error) => {
+        console.log("error while saving data:",error);
+        if (error.status == 200) {
+          this.route.navigate(['/home/vendorList']);
+        }
+      },
+    );
+  }
 }

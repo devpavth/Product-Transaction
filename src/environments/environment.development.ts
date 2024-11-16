@@ -6,5 +6,15 @@ export const environment = {
     getAllProduct: Url + 'Product',
     postProduct: Url + 'Product',
     deleteProduct: Url + 'ProductList/',
-    updateProduct: Url + 'ProductUpdate/'
+    updateProduct: Url + 'ProductUpdate/',
+
+
+    getAllVendorList: Url + 'Vendor',
+    addVendor: Url + 'Vendor',
+    deleteVendor: Url + 'Vendor/',
+    updateVendor: Url + 'VendorUpdate/',
+    updateBank: Url + 'Bank/',
+
+    login: Url + 'auth/login',
+    verifiedID: Url + 'auth/login'
 };

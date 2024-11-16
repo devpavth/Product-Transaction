@@ -30,4 +30,7 @@ export class LeftMenuComponent {
   toggleBranch() {
     this.branch = !this.branch;
   }
+  signOut() {
+      sessionStorage.clear();
+    }
 }

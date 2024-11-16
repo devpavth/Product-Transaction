@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import { AuthService } from '../../components/service/Auth/auth.service';
 
 @Component({
   selector: 'app-login',
@@ -11,7 +12,7 @@ export class LoginComponent {
   window: any;
   constructor(
     private Router: Router,
-    // private readonly auth: AuthService,
+    private readonly auth: AuthService,
   ) {}
   ngOnInit(): void {
     this.loginForm.get('empPassword')?.disable();
@@ -32,21 +33,22 @@ export class LoginComponent {
   passwordVerified: number = 0;
 
   loginForm = new FormGroup({
-    employeeId: new FormControl('', [Validators.required]),
-    empPassword: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required]),
+    password: new FormControl('', [Validators.required]),
   });
   toggle() {
     this.isPasswordHidden = !this.isPasswordHidden;
   }
 
   verifiedUser(id: any) {
-    // console.log(id);
+    console.log(id);
 
     // this.auth.verifiedID(id).subscribe(
     //   (res) => {
     //     console.log(res);
     //   },
     //   (error) => {
+    //     console.log("verifying....", error)
     //     if (error.status === 302) {
     //       this.isVerfied = 302;
     //       this.loginForm.get('empPassword')?.enable();
@@ -68,31 +70,31 @@ export class LoginComponent {
     console.log('login data', loginData);
 
     this.userData = loginData;
-    // this.auth.login(loginData).subscribe(
-    //   (res) => {
-    //     this.userData = res;
-    //     // console.log(res);
+    this.auth.login(loginData).subscribe(
+      (res) => {
+        this.userData = res;
+        console.log(res);
 
-    //     if ((res = !null)) {
-    //       this.userid = this.userData?.employeeId;
+        if ((res !== null)) {
+          this.userid = this.userData?.employeeId;
 
-    //       sessionStorage.setItem('userId', this.userid);
-    //       sessionStorage.setItem('token', this.userData.token);
-    //       this.Router.navigate(['home/dashboard']);
+          sessionStorage.setItem('userId', this.userid);
+          sessionStorage.setItem('token', this.userData.token);
+          this.Router.navigate(['home/dashboard']);
 
-    //       console.log(this.userData);
-    //     } else {
-    //       alert('error');
-    //     }
-    //   },
-    //   (error) => {
-    //     if (error.status == 403) {
-    //       this.passwordVerified = 1;
-    //     }
-    //     if (error.status === 0) {
-    //       console.log('offline');
-    //     }
-    //   },
-    // );
+          console.log(this.userData);
+        } else {
+          alert('error');
+        }
+      },
+      (error) => {
+        if (error.status == 403) {
+          this.passwordVerified = 1;
+        }
+        if (error.status === 0) {
+          console.log('offline');
+        }
+      },
+    );
   }
 }

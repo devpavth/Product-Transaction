@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { VendorService } from '../../../service/vendor/vendor.service';
 
 @Component({
   selector: 'app-vendor-list',
@@ -11,23 +12,23 @@ export class VendorListComponent {
   Spinner: boolean = true;
 
   isVendorList: Boolean = false;
-  // constructor(private vendorService: VendorService) {}
+  constructor(private vendorService: VendorService) {}
   ngOnInit() {
-    // this.fetchallvendor();
+    this.fetchallvendor();
   }
 
-  // fetchallvendor() {
-  //   this.vendorService.getAllVendor().subscribe(
-  //     (res) => {
-  //       this._vendor = res;
-  //       this.Spinner = false;
-  //       console.log(res);
-  //     },
-  //     (error) => {
-  //       console.log(error);
-  //     },
-  //   );
-  // }
+  fetchallvendor() {
+    this.vendorService.getAllVendor().subscribe(
+      (res) => {
+        this._vendor = res;
+        this.Spinner = false;
+        console.log("Gettting all vendor details:",res);
+      },
+      (error) => {
+        console.log(error);
+      },
+    );
+  }
   toggleView(action: Boolean, check: number, vendorData: any) {
     if (check == 1) {
       this.isVendorList = action;
@@ -35,7 +36,7 @@ export class VendorListComponent {
     }
     if (check == 0) {
       this.isVendorList = action;
-      // this.fetchallvendor();
+      this.fetchallvendor();
     }
   }
 }

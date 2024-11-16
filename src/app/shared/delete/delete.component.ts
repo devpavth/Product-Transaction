@@ -1,5 +1,6 @@
 import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { ProductService } from '../../core/components/service/product.service';
+import { VendorService } from '../../core/components/service/vendor/vendor.service';
 
 @Component({
   selector: 'app-delete',
@@ -13,7 +14,7 @@ export class DeleteComponent {
   constructor(
     // private funderService: FunderService,
     private productService: ProductService,
-    // private vendorService: VendorService,
+    private vendorService: VendorService,
     // private branchService: BranchService,
   ) {}
 
@@ -48,16 +49,17 @@ export class DeleteComponent {
     }
     if (this.deleteData.action == 3) {
       console.log(this.deleteData);
-      // this.vendorService.deleteVendor(this.deleteData.deleteId).subscribe(
-      //   (res) => {
-      //     console.log(res);
-      //   },
-      //   (error) => {
-      //     if (error.status == 200) {
-      //       this.close.emit(false);
-      //     }
-      //   },
-      // );
+      this.vendorService.deleteVendor(this.deleteData.deleteId).subscribe(
+        (res) => {
+          console.log("Deleting vendor details:",res);
+        },
+        (error) => {
+          console.log("error while deleting vendor:", error);
+          if (error.status == 200) {
+            this.close.emit(false);
+          }
+        },
+      );
     }
 
     ///action 4

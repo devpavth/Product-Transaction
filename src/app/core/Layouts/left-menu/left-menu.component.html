@@ -22,7 +22,7 @@
 </button>
 
 <aside
-  class="fixed z-0 h-full w-64 -translate-x-full bg-[#f8ecff] pb-24 shadow-md transition-transform sm:translate-x-0"
+  class="fixed z-0 h-full w-64 -translate-x-full bg-blue-300 pb-24 shadow-md transition-transform sm:translate-x-0"
   aria-label="Sidebar"
 >
   <div class="scroll h-full overflow-y-auto px-3 py-4 dark:bg-gray-800">
@@ -67,6 +67,7 @@
         >
       </li>
       <li
+            routerLinkActive="side-menu-active"
             routerLink="productList"
             class="left-submenu group cursor-pointer"
           >
@@ -80,7 +81,17 @@
           >Vendor</a
         >
       </li>
-      
+      <!-- here -->
+      <li> 
+        <a
+          class="left-submenu group"
+          (click)="signOut()"
+          href="/login"
+          >Sign out</a>
+        
+      </li>
+
+      <!-- end here -->
 
       <!-- <li>
         <button type="button" class="left-menu group" (click)="toggleAdmin()"> -->
