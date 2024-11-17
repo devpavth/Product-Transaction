@@ -1,0 +1,993 @@
+<section class="h-screen overflow-x-auto bg-black bg-opacity-50">
+    <div class="flex">
+      <div class="w-1/2"></div>
+      <div class="animate-slide-in-right w-3/4 border bg-white shadow-xl">
+        <div class="flex items-center justify-between border bg-purple-50">
+          <div class="m-4">
+            <button (click)="closeVendor.emit(false)">
+              <svg
+                class="h-8 w-8 rounded-lg bg-gray-100 p-1 text-gray-600 transition-all duration-500 hover:bg-red-600 hover:text-white dark:text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  class=""
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M6 18 17.94 6M18 18 6.06 6"
+                />
+              </svg>
+            </button>
+          </div>
+          <div class="mr-4">
+            <h1 class="text-xl font-semibold text-purple-800">View Vendor</h1>
+          </div>
+        </div>
+  
+        <!-- form f -->
+  
+        <form [formGroup]="UpdateVendorForm" class="p-8">
+          <!-- ddddd -->
+          <div class="p-4 md:px-10 md:pb-2 md:pt-6">
+            <div class="mb-6 grid gap-6 md:grid-cols-6">
+              <div class="col-span-3">
+                <label
+                  for="first_name"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Vendor Name</label
+                >
+                <input
+                  type="text"
+                  formControlName="vendorName"
+                  class="input-form"
+                  placeholder="John"
+                  appFirstCapLetter
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vendorName')?.invalid &&
+                      UpdateVendorForm.get('vendorName')?.touched
+                  }"
+                  required
+                />
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vendorName')?.invalid &&
+                    UpdateVendorForm?.get('vendorName')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Vendor Name Should not be Empty!
+                </small>
+              </div>
+              <div class="col-span-3">
+                <label
+                  for="email-address-icon"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Vendor Email</label
+                >
+                <div class="relative">
+                  <div
+                    class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5"
+                  >
+                    <svg
+                      class="h-4 w-4 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="currentColor"
+                      viewBox="0 0 20 16"
+                    >
+                      <path
+                        d="m10.036 8.278 9.258-7.79A1.979 1.979 0 0 0 18 0H2A1.987 1.987 0 0 0 .641.541l9.395 7.737Z"
+                      />
+                      <path
+                        d="M11.241 9.817c-.36.275-.801.425-1.255.427-.428 0-.845-.138-1.187-.395L0 2.6V14a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V2.5l-8.759 7.317Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="email"
+                    #email
+                    formControlName="vdrEmail"
+                    class="icon-input"
+                    autocomplete="email"
+                    placeholder="name@company.com"
+                    [ngClass]="{
+                      error:
+                        UpdateVendorForm.get('vdrEmail')?.invalid &&
+                        UpdateVendorForm.get('vdrEmail')?.touched
+                    }"
+                    required
+                  />
+                </div>
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrEmail')?.invalid &&
+                    UpdateVendorForm?.get('vdrEmail')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Invalid Email !
+                </small>
+              </div>
+              <div class="col-span-3">
+                <label
+                  for="last_name"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Contact Person Name</label
+                >
+                <input
+                  type="text"
+                  formControlName="vdrContactPersonName"
+                  class="input-form"
+                  placeholder="Doe"
+                  appFirstCapLetter
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrContactPersonName')?.invalid &&
+                      UpdateVendorForm.get('vdrContactPersonName')?.touched
+                  }"
+                  required
+                />
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrContactPersonName')?.invalid &&
+                    UpdateVendorForm?.get('vdrContactPersonName')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Contact Person Name Should not be Empty!
+                </small>
+              </div>
+  
+              <div class="col-span-3">
+                <label
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Contact Person Number</label
+                >
+                <div class="relative">
+                  <div
+                    class="pointer-events-none absolute inset-y-0 start-0 flex items-center ps-3.5"
+                  >
+                    <svg
+                      class="h-5 w-5 text-gray-500 dark:text-gray-400"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="currentColor"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        d="M7.978 4a2.553 2.553 0 0 0-1.926.877C4.233 6.7 3.699 8.751 4.153 10.814c.44 1.995 1.778 3.893 3.456 5.572 1.68 1.679 3.577 3.018 5.57 3.459 2.062.456 4.115-.073 5.94-1.885a2.556 2.556 0 0 0 .001-3.861l-1.21-1.21a2.689 2.689 0 0 0-3.802 0l-.617.618a.806.806 0 0 1-1.14 0l-1.854-1.855a.807.807 0 0 1 0-1.14l.618-.62a2.692 2.692 0 0 0 0-3.803l-1.21-1.211A2.555 2.555 0 0 0 7.978 4Z"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="number"
+                    #phone
+                    class="icon-input"
+                    autocomplete="phone"
+                    formControlName="vdrContactPersonPhone"
+                    placeholder="123-456-970"
+                    [ngClass]="{
+                      error:
+                        UpdateVendorForm.get('vdrContactPersonPhone')?.invalid &&
+                        UpdateVendorForm.get('vdrContactPersonPhone')?.touched
+                    }"
+                    required
+                  />
+                </div>
+              </div>
+              <!-- <div class="col-span-3">
+                <label
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Branch Name</label
+                >
+                <div class="relative">
+                  <select
+                    #branchId
+                    formControlName="branchId"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                  >
+                    <option
+                      *ngFor="let branch of _BranchName"
+                      value="{{ branch.branchId }}"
+                    >
+                      {{ branch.branchName }}
+                    </option>
+                  </select>
+                </div>
+              </div> -->
+            </div>
+  
+            <div class="mb-2">
+              <label
+                for="Address"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Address</label
+              >
+  
+              <input
+                type="text"
+                class="input-form"
+                formControlName="vdrAdd1"
+                autocomplete="street-address"
+                placeholder="Flat, House no., Building, Company, Apartment"
+                [ngClass]="{
+                  error:
+                    UpdateVendorForm.get('vdrAdd1')?.invalid &&
+                    UpdateVendorForm.get('vdrAdd1')?.touched
+                }"
+                required
+              />
+              <small
+                *ngIf="
+                  UpdateVendorForm?.get('vdrAdd1')?.invalid &&
+                  UpdateVendorForm?.get('vdrAdd1')?.touched
+                "
+                class="text-danger text-red-600"
+              >
+                Address Should be atleast 10 characters!
+              </small>
+            </div>
+            <div class="mb-6">
+              <input
+                type="text"
+                formControlName="vdrAdd2"
+                autocomplete="street-address-level2"
+                class="input-form"
+                placeholder="Area, Street, Sector, Village"
+                [ngClass]="{
+                  error:
+                    UpdateVendorForm.get('vdrAdd2')?.invalid &&
+                    UpdateVendorForm.get('vdrAdd2')?.touched
+                }"
+                required
+              />
+              <small
+                *ngIf="
+                  UpdateVendorForm?.get('vdrAdd2')?.invalid &&
+                  UpdateVendorForm?.get('vdrAdd2')?.touched
+                "
+                class="text-danger text-red-600"
+              >
+                Address line 2 Should be empty !
+              </small>
+            </div>
+  
+            <div class="mb-6 grid gap-6 md:grid-cols-2">
+              <div>
+                <label
+                  for="Country"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Country/Region</label
+                >
+                <input
+                  type="text"
+                  formControlName="vdrCountry"
+                  class="input-form"
+                  placeholder="country"
+                  appFirstCapLetter
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrCountry')?.invalid &&
+                      UpdateVendorForm.get('vdrCountry')?.touched
+                  }"
+                  required
+                />
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrCountry')?.invalid &&
+                    UpdateVendorForm?.get('vdrCountry')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Country Should not be Empty!
+                </small>
+              </div>
+              <div>
+                <label
+                  for="State"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >State</label
+                >
+                <input
+                  type="text"
+                  formControlName="vdrState"
+                  class="input-form"
+                  placeholder="State"
+                  appFirstCapLetter
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrState')?.invalid &&
+                      UpdateVendorForm.get('vdrState')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrState')?.invalid &&
+                    UpdateVendorForm?.get('vdrState')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  State Should not be empty!
+                </small>
+              </div>
+  
+              <div>
+                <label
+                  for="city"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Town/City</label
+                >
+                <input
+                  type="text"
+                  formControlName="vdrCity"
+                  class="input-form"
+                  placeholder="City"
+                  appFirstCapLetter
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrCity')?.invalid &&
+                      UpdateVendorForm.get('vdrCity')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrCity')?.invalid &&
+                    UpdateVendorForm?.get('vdrCity')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  City should not be empty!
+                </small>
+              </div>
+              <div>
+                <label
+                  for="Pincode"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Pincode</label
+                >
+                <input
+                  type="number"
+                  formControlName="vdrPincode"
+                  class="input-form"
+                  autocomplete="postal-code"
+                  placeholder="000 000"
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrPincode')?.invalid &&
+                      UpdateVendorForm.get('vdrPincode')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrPincode')?.invalid &&
+                    UpdateVendorForm?.get('vdrPincode')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Invalid pincode!
+                </small>
+              </div>
+              <div class="col-span-full mb-3 flex justify-between">
+                <h1 class="text-xl font-semibold text-purple-800">
+                  Business Details
+                </h1>
+              </div>
+              <div>
+                <label
+                  for="city"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >GST Number</label
+                >
+                <input
+                  type="text"
+                  formControlName="vdrGstNo"
+                  class="input-form"
+                  placeholder="22ABCDE1234G8HJ"
+                  appFirstCapLetter
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrGstNo')?.invalid &&
+                      UpdateVendorForm.get('vdrGstNo')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrGstNo')?.invalid &&
+                    UpdateVendorForm?.get('vdrGstNo')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  GST Number should not be empty!
+                </small>
+              </div>
+              <!-- <div>
+                <label
+                  for="Pincode"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >PAN Number</label
+                >
+                <input
+                  type="text"
+                  formControlName="vdrPanNo"
+                  class="input-form"
+                  autocomplete="postal-code"
+                  placeholder="ABCTY1234D"
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrPanNo')?.invalid &&
+                      UpdateVendorForm.get('vdrPanNo')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrPanNo')?.invalid &&
+                    UpdateVendorForm?.get('vdrPanNo')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Invalid PAN Number!
+                </small>
+              </div>
+              <div>
+                <label
+                  for="city"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >TAN Number</label
+                >
+                <input
+                  type="text"
+                  formControlName="vdrTanNo"
+                  class="input-form"
+                  placeholder=""
+                  appFirstCapLetter
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrTanNo')?.invalid &&
+                      UpdateVendorForm.get('vdrTanNo')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrTanNo')?.invalid &&
+                    UpdateVendorForm?.get('vdrTanNo')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Invalid Tan Number!
+                </small>
+              </div>
+              <div>
+                <label
+                  for="Pincode"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >MSME Number</label
+                >
+                <input
+                  type="text"
+                  formControlName="vdrMsmeNo"
+                  class="input-form"
+                  autocomplete="postal-code"
+                  placeholder=""
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('vdrMsmeNo')?.invalid &&
+                      UpdateVendorForm.get('vdrMsmeNo')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('vdrMsmeNo')?.invalid &&
+                    UpdateVendorForm?.get('vdrMsmeNo')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Invalid pin!
+                </small>
+              </div>
+              <div class="col-span-full mb-2">
+                <label
+                  for="Address"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Service Location</label
+                >
+                <div class="inline-flex items-center gap-5">
+                  <div class="flex items-center">
+                    <input
+                      formControlName="serviceLocation"
+                      type="radio"
+                      [value]="496"
+                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    />
+                    <label
+                      for="disabled-radio-2"
+                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+                      >Local</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      formControlName="serviceLocation"
+                      type="radio"
+                      [value]="497"
+                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    />
+                    <label
+                      for="disabled-radio-2"
+                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+                      >Regional</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      formControlName="serviceLocation"
+                      type="radio"
+                      [value]="498"
+                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    />
+                    <label
+                      for="disabled-radio-2"
+                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+                      >National</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      formControlName="serviceLocation"
+                      type="radio"
+                      [value]="499"
+                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    />
+                    <label
+                      for="disabled-radio-2"
+                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+                      >International</label
+                    >
+                  </div>
+                </div>
+              </div>
+              <div>
+                <label
+                  for="city"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Establish Date</label
+                >
+                <input
+                  type="date"
+                  formControlName="estDate"
+                  class="input-form"
+                  placeholder=""
+                  appFirstCapLetter
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('estDate')?.invalid &&
+                      UpdateVendorForm.get('estDate')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('estDate')?.invalid &&
+                    UpdateVendorForm?.get('estDate')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Business Type should not be empty!
+                </small>
+              </div>
+              <div>
+                <label
+                  for="Pincode"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Business Type</label
+                >
+                <input
+                  type="text"
+                  formControlName="bizType"
+                  class="input-form"
+                  autocomplete="postal-code"
+                  placeholder=""
+                  [ngClass]="{
+                    error:
+                      UpdateVendorForm.get('bizType')?.invalid &&
+                      UpdateVendorForm.get('bizType')?.touched
+                  }"
+                  required
+                />
+  
+                <small
+                  *ngIf="
+                    UpdateVendorForm?.get('bizType')?.invalid &&
+                    UpdateVendorForm?.get('bizType')?.touched
+                  "
+                  class="text-danger text-red-600"
+                >
+                  Invalid Business details Name!
+                </small>
+              </div>
+  
+              <div class="col-span-full mb-2">
+                <label
+                  for="Address"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >Business Details</label
+                >
+                <div class="mt-3 inline-flex items-center gap-6">
+                  <div class="flex items-center">
+                    <input
+                      id="disabled-checkbox"
+                      formControlName="bizDetails"
+                      type="radio"
+                      [value]="256"
+                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    />
+                    <label
+                      for="disabled-radio-2"
+                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+                      >Service</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="disabled-checkbox"
+                      formControlName="bizDetails"
+                      type="radio"
+                      [value]="257"
+                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    />
+                    <label
+                      for="disabled-radio-2"
+                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+                      >Material Supply</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      id="disabled-checkbox"
+                      formControlName="bizDetails"
+                      type="radio"
+                      [value]="258"
+                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    />
+                    <label
+                      for="disabled-radio-2"
+                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+                    >
+                      Service & Material Supply</label
+                    >
+                  </div>
+                  <div class="flex items-center">
+                    <input
+                      (click)="this.isChecked = !this.isChecked"
+                      formControlName="bizDetails"
+                      id="disabled-checkbox"
+                      type="radio"
+                      [value]="259"
+                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                    />
+                    <label
+                      for="disabled-radio-2"
+                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
+                      >Others</label
+                    >
+                  </div>
+                </div>
+                <div *ngIf="isChecked" class="mt-4">
+                  <label
+                    for="Pincode"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Business Details Name</label
+                  >
+                  <input
+                    type="text"
+                    formControlName="bizDetailName"
+                    class="input-form"
+                    autocomplete="postal-code"
+                    placeholder=""
+                    [ngClass]="{
+                      error:
+                        UpdateVendorForm.get('bizDetailName')?.invalid &&
+                        UpdateVendorForm.get('bizDetailName')?.touched
+                    }"
+                    required
+                  />
+                </div> -->
+              <!-- </div> -->
+              <!-- here  till-->
+            </div>
+            <div class="col-span-full mb-3 flex justify-between">
+              <h1 class="text-xl font-semibold text-purple-800">Bank Details</h1>
+            </div>
+  
+            <div
+              formArrayName="vendorAcccountDetails"
+              class="flex flex-wrap gap-4"
+            >
+              <div
+                *ngFor="let bank of vendorAcccountDetails.controls; let i = index"
+                class="w-full"
+              >
+                <div [formGroupName]="i" class="flex items-center gap-4">
+                  <div class="flex-1">
+                    <label
+                      for="ifscCode"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >IFSC Code</label
+                    >
+                    <input
+                      id="ifscCode"
+                      type="text"
+                      formControlName="ifsCode"
+                      class="input-form"
+                      placeholder=""
+                      appFirstCapLetter
+                      [ngClass]="{
+                        error:
+                          UpdateVendorForm.get('ifsCode')?.invalid &&
+                          UpdateVendorForm.get('ifsCode')?.touched
+                      }"
+                      required
+                    />
+                    <small
+                      *ngIf="
+                        UpdateVendorForm?.get('ifsCode')?.invalid &&
+                        UpdateVendorForm?.get('ifsCode')?.touched
+                      "
+                      class="text-danger text-red-600"
+                    >
+                      Invalid IFSC!
+                    </small>
+                  </div>
+                  <div class="flex-1">
+                    <label
+                      for="bankAccNo"
+                      class="block text-sm font-medium text-gray-900 dark:text-white"
+                      >Account Number</label
+                    >
+                    <input
+                      id="bankAccNo"
+                      type="number"
+                      formControlName="bankAccNo"
+                      class="input-form"
+                      autocomplete="postal-code"
+                      placeholder=""
+                      [ngClass]="{
+                        error:
+                          UpdateVendorForm.get('bankAccNo')?.invalid &&
+                          UpdateVendorForm.get('bankAccNo')?.touched
+                      }"
+                      required
+                    />
+                    <small
+                      *ngIf="
+                        UpdateVendorForm?.get('bankAccNo')?.invalid &&
+                        UpdateVendorForm?.get('bankAccNo')?.touched
+                      "
+                      class="text-danger text-red-600"
+                    >
+                      Invalid pin!
+                    </small>
+                  </div>
+                  <div>
+                    <button
+                      type="submit"
+                      (click)="editBankDetails(vendorAcccountDetails.value)"
+                      class="inline-flex items-center mt-4 rounded-lg bg-green-700 px-4 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-green-700 dark:focus:ring-blue-800"
+                    >
+                      <svg
+                      *ngIf="isSaveIcon"
+                      class="mr-1 inline-flex h-5 w-5 items-center justify-center text-white"
+                      aria-hidden="true"
+                      xmlns="http://www.w3.org/2000/svg"
+                      width="24"
+                      height="24"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                    >
+                      <path
+                        stroke="currentColor"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                      />
+                    </svg>                  
+                    </button>
+                  </div>
+                </div>
+              </div>
+              <!-- <div>
+                <h1 class="mb-4 text-sm font-medium text-gray-500">
+                  Bank List Added
+                </h1>
+                <table
+                  class="w-full overflow-hidden rounded-lg border text-left text-sm text-gray-500 dark:text-gray-400"
+                >
+                  <thead
+                    class="bg-purple-50 text-xs uppercase text-purple-900 dark:bg-gray-700 dark:text-gray-400"
+                  >
+                    <tr>
+                      <th scope="col" class="px-16 py-5">Account Number</th>
+                      <th scope="col" class="px-20 py-5">IFSC Code</th>
+                      <th scope="col" class="px-20 py-5">Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr
+                      class="border-b transition-all duration-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700"
+                      *ngFor="let bank of _bankList"
+                    >
+                      <td class="items-center justify-center px-16 py-5">
+                        {{ bank.bankAccNo }}
+                      </td>
+                      <td class="items-center justify-center px-16 py-5">
+                        {{ bank.ifsCode }}
+                      </td>
+                      <td class="flex items-center justify-center px-4 py-3">
+                        <button
+                          type="submit"
+                          (click)="updateBankAcc(vendorAcccountDetails.value)"
+                        >
+                          <svg
+                            class="mr-1 h-6 w-6 text-blue-700"
+                            fill="currentColor"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+                            />
+                          </svg>
+                        </button>
+                        <button (click)="deleteAccount(this.bank.vdrAccId)">
+                          <svg
+                            class="w-6 text-red-600 dark:text-white"
+                            aria-hidden="true"
+                            xmlns="http://www.w3.org/2000/svg"
+                            width="24"
+                            height="24"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                          >
+                            <path
+                              stroke="currentColor"
+                              stroke-linecap="round"
+                              stroke-linejoin="round"
+                              stroke-width="2"
+                              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                            />
+                          </svg>
+                        </button>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div> -->
+            </div>
+          </div>
+          <div class="mt-8 flex justify-end gap-4">
+            <div *ngIf="isEdit">
+              <button
+                type="submit"
+                (click)="edit()"
+                class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+              >
+                <svg
+                  class="mr-1 h-5 w-5 text-white"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
+                  />
+                </svg>
+  
+                Edit
+              </button>
+            </div>
+            <div *ngIf="isSave">
+              <button
+                (click)="updateVendorDetails(UpdateVendorForm.value)"
+                type="submit"
+                class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
+              >
+                <svg
+                  *ngIf="isSaveIcon"
+                  class="mr-1 inline-flex h-5 w-5 items-center justify-center text-white"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="2"
+                    d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                  />
+                </svg>
+  
+                Save
+              </button>
+            </div>
+  
+            <button
+              (click)="toggledelete(1, true)"
+              type="submit"
+              class="inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+            >
+              <svg
+                class="mr-1 h-5 w-5 text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                />
+              </svg>
+  
+              Delete
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </section>
+  <section *ngIf="isDelete">
+    <app-delete
+      [deleteData]="deleteVendor"
+      (close)="toggledelete(0, $event)"
+    ></app-delete>
+  </section>
+  

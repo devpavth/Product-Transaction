@@ -47,7 +47,7 @@
           >
             <button
               type="button"
-              routerLink="/home/addVendor"
+              routerLink="/home/addCustomer"
               class="flex items-center justify-center rounded-lg bg-purple-700 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
             >
               <svg
@@ -69,7 +69,7 @@
                 />
               </svg>
 
-              Add Vendor
+              Add Customer
             </button>
           </div>
         </div>
@@ -83,7 +83,7 @@
               <tr>
                 <th scope="col" class="px-4 py-3">
                   <div class="flex items-center justify-between">
-                    <div>Vendor Name</div>
+                    <div>Customer Name</div>
                     <button
                       class="an rounded-full hover:bg-gray-600 hover:text-white"
                     >
@@ -108,7 +108,7 @@
                 <th scope="col" class="px-4 py-3">Contact Person Name</th>
                 <th scope="col" class="px-4 py-3">Phone</th>
                 <th scope="col" class="px-4 py-3">Email</th>
-                <th scope="col" class="px-4 py-3">Country</th>
+                <th scope="col" class="px-4 py-3">GSTIN</th>
                 <!-- <th scope="col" class="px-4 py-3">GST %</th>
                               <th scope="col" class="px-4 py-3">Price</th> -->
                 <th scope="col" class="px-4 py-3">
@@ -125,12 +125,12 @@
                   scope="row"
                   class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
                 >
-                  {{ ven.vendorName }}
+                  {{ ven.customerName }}
                 </th>
-                <td class="px-4 py-3">{{ ven.vdrContactPersonName }}</td>
-                <td class="px-4 py-3">{{ ven.vdrContactPersonPhone }}</td>
-                <td class="px-4 py-3">{{ ven.vdrEmail }}</td>
-                <td class="px-4 py-3">{{ ven.vdrCountry }}</td>
+                <td class="px-4 py-3">{{ ven.contactPerson }}</td>
+                <td class="px-4 py-3">{{ ven.contactPhone }}</td>
+                <td class="px-4 py-3">{{ ven.contactEmail }}</td>
+                <td class="px-4 py-3">{{ ven.customerGst }}</td>
 
                 <td class="flex items-center justify-end px-4 py-3">
                   <button

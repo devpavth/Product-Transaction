@@ -13,6 +13,9 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { StockComponent } from './Products/stock/stock.component';
 
 import { SharedModule } from '../../../shared/shared.module';
+import { CustomerListComponent } from './Customer/customer-list/customer-list.component';
+import { AddCustomerComponent } from './Customer/add-customer/add-customer.component';
+import { ViewCustomerComponent } from './Customer/view-customer/view-customer.component';
 
 
 @NgModule({
@@ -23,7 +26,10 @@ import { SharedModule } from '../../../shared/shared.module';
     ProductListComponent,
     ViewProductComponent,
     AddProductComponent,
-    StockComponent
+    StockComponent,
+    CustomerListComponent,
+    AddCustomerComponent,
+    ViewCustomerComponent
   ],
   imports: [
     CommonModule,

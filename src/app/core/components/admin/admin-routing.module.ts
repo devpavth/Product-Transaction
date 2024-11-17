@@ -6,6 +6,8 @@ import { ProductListComponent } from './Products/product-list/product-list.compo
 import { ViewProductComponent } from './Products/view-product/view-product.component';
 import { AddProductComponent } from './Products/add-product/add-product.component';
 import { StockComponent } from './Products/stock/stock.component';
+import { CustomerListComponent } from './Customer/customer-list/customer-list.component';
+import { AddCustomerComponent } from './Customer/add-customer/add-customer.component';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -33,6 +35,14 @@ const routes: Routes = [
   { 
     component: StockComponent, 
     path: 'inoutstock' 
+  },
+  { 
+    component: CustomerListComponent, 
+    path: 'customerList' 
+  },
+  { 
+    component: AddCustomerComponent, 
+    path: 'addCustomer' 
   },
 ];
 
