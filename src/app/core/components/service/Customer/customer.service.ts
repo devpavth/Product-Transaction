@@ -16,4 +16,16 @@ export class CustomerService {
   addCustomer(data: any){
     return this.customerHttp.post(environment.addCustomer, data)
   }
+
+  deleteCustomer(id: any){
+    return this.customerHttp.post(environment.deleteCustomer + id, '');
+  }
+
+  updateCustomer(id: any,data: any){
+    return this.customerHttp.post(environment.updateCustomer + id, data);
+  }
+
+  updateAddress(id: any, data: any){
+    return this.customerHttp.post(environment.updateAddress + id, data)
+  }
 }

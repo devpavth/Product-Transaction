@@ -26,7 +26,7 @@
             </button>
           </div>
           <div class="mr-4">
-            <h1 class="text-xl font-semibold text-purple-800">View Vendor</h1>
+            <h1 class="text-xl font-semibold text-purple-800">View Customer</h1>
           </div>
         </div>
   
@@ -40,25 +40,25 @@
                 <label
                   for="first_name"
                   class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Vendor Name</label
+                  >Customer Name</label
                 >
                 <input
                   type="text"
-                  formControlName="vendorName"
+                  formControlName="customerName"
                   class="input-form"
                   placeholder="John"
                   appFirstCapLetter
                   [ngClass]="{
                     error:
-                      UpdateVendorForm.get('vendorName')?.invalid &&
-                      UpdateVendorForm.get('vendorName')?.touched
+                      UpdateVendorForm.get('customerName')?.invalid &&
+                      UpdateVendorForm.get('customerName')?.touched
                   }"
                   required
                 />
                 <small
                   *ngIf="
-                    UpdateVendorForm?.get('vendorName')?.invalid &&
-                    UpdateVendorForm?.get('vendorName')?.touched
+                    UpdateVendorForm?.get('customerName')?.invalid &&
+                    UpdateVendorForm?.get('customerName')?.touched
                   "
                   class="text-danger text-red-600"
                 >
@@ -69,7 +69,7 @@
                 <label
                   for="email-address-icon"
                   class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Vendor Email</label
+                  >Customer Email</label
                 >
                 <div class="relative">
                   <div
@@ -93,22 +93,22 @@
                   <input
                     type="email"
                     #email
-                    formControlName="vdrEmail"
+                    formControlName="contactEmail"
                     class="icon-input"
                     autocomplete="email"
                     placeholder="name@company.com"
                     [ngClass]="{
                       error:
-                        UpdateVendorForm.get('vdrEmail')?.invalid &&
-                        UpdateVendorForm.get('vdrEmail')?.touched
+                        UpdateVendorForm.get('contactEmail')?.invalid &&
+                        UpdateVendorForm.get('contactEmail')?.touched
                     }"
                     required
                   />
                 </div>
                 <small
                   *ngIf="
-                    UpdateVendorForm?.get('vdrEmail')?.invalid &&
-                    UpdateVendorForm?.get('vdrEmail')?.touched
+                    UpdateVendorForm?.get('contactEmail')?.invalid &&
+                    UpdateVendorForm?.get('contactEmail')?.touched
                   "
                   class="text-danger text-red-600"
                 >
@@ -123,21 +123,21 @@
                 >
                 <input
                   type="text"
-                  formControlName="vdrContactPersonName"
+                  formControlName="contactPerson"
                   class="input-form"
                   placeholder="Doe"
                   appFirstCapLetter
                   [ngClass]="{
                     error:
-                      UpdateVendorForm.get('vdrContactPersonName')?.invalid &&
-                      UpdateVendorForm.get('vdrContactPersonName')?.touched
+                      UpdateVendorForm.get('contactPerson')?.invalid &&
+                      UpdateVendorForm.get('contactPerson')?.touched
                   }"
                   required
                 />
                 <small
                   *ngIf="
-                    UpdateVendorForm?.get('vdrContactPersonName')?.invalid &&
-                    UpdateVendorForm?.get('vdrContactPersonName')?.touched
+                    UpdateVendorForm?.get('contactPerson')?.invalid &&
+                    UpdateVendorForm?.get('contactPerson')?.touched
                   "
                   class="text-danger text-red-600"
                 >
@@ -173,16 +173,23 @@
                     #phone
                     class="icon-input"
                     autocomplete="phone"
-                    formControlName="vdrContactPersonPhone"
+                    formControlName="contactPhone"
                     placeholder="123-456-970"
                     [ngClass]="{
                       error:
-                        UpdateVendorForm.get('vdrContactPersonPhone')?.invalid &&
-                        UpdateVendorForm.get('vdrContactPersonPhone')?.touched
+                        UpdateVendorForm.get('contactPhone')?.invalid &&
+                        UpdateVendorForm.get('contactPhone')?.touched
                     }"
                     required
                   />
                 </div>
+                <small *ngIf="
+                    UpdateVendorForm.get('contactPhone')?.invalid &&
+                    UpdateVendorForm.get('contactPhone')?.touched
+                  "
+                  class="text-danger text-red-600">
+                  Contact Person Number must be 10 digits.
+                  </small>     
               </div>
               <!-- <div class="col-span-3">
                 <label
@@ -209,692 +216,423 @@
             <div class="mb-2">
               <label
                 for="Address"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >Address</label
+                class="mb-2 block text-sm text-center font-medium text-gray-900 dark:text-white"
+                >Billing Address</label
               >
-  
-              <input
-                type="text"
-                class="input-form"
-                formControlName="vdrAdd1"
-                autocomplete="street-address"
-                placeholder="Flat, House no., Building, Company, Apartment"
-                [ngClass]="{
-                  error:
-                    UpdateVendorForm.get('vdrAdd1')?.invalid &&
-                    UpdateVendorForm.get('vdrAdd1')?.touched
-                }"
-                required
-              />
-              <small
-                *ngIf="
-                  UpdateVendorForm?.get('vdrAdd1')?.invalid &&
-                  UpdateVendorForm?.get('vdrAdd1')?.touched
-                "
-                class="text-danger text-red-600"
-              >
-                Address Should be atleast 10 characters!
-              </small>
             </div>
-            <div class="mb-6">
-              <input
-                type="text"
-                formControlName="vdrAdd2"
-                autocomplete="street-address-level2"
-                class="input-form"
-                placeholder="Area, Street, Sector, Village"
-                [ngClass]="{
-                  error:
-                    UpdateVendorForm.get('vdrAdd2')?.invalid &&
-                    UpdateVendorForm.get('vdrAdd2')?.touched
-                }"
-                required
-              />
-              <small
-                *ngIf="
-                  UpdateVendorForm?.get('vdrAdd2')?.invalid &&
-                  UpdateVendorForm?.get('vdrAdd2')?.touched
-                "
-                class="text-danger text-red-600"
+            <div
+            formArrayName="addresses"
+            class="flex flex-wrap gap-4"
+            >
+              <div
+                *ngFor="let bank of addresses.controls; let i = index"
+                class="w-full"
               >
-                Address line 2 Should be empty !
-              </small>
-            </div>
-  
-            <div class="mb-6 grid gap-6 md:grid-cols-2">
-              <div>
-                <label
-                  for="Country"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Country/Region</label
-                >
-                <input
-                  type="text"
-                  formControlName="vdrCountry"
-                  class="input-form"
-                  placeholder="country"
-                  appFirstCapLetter
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('vdrCountry')?.invalid &&
-                      UpdateVendorForm.get('vdrCountry')?.touched
-                  }"
-                  required
-                />
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('vdrCountry')?.invalid &&
-                    UpdateVendorForm?.get('vdrCountry')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  Country Should not be Empty!
-                </small>
-              </div>
-              <div>
-                <label
-                  for="State"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >State</label
-                >
-                <input
-                  type="text"
-                  formControlName="vdrState"
-                  class="input-form"
-                  placeholder="State"
-                  appFirstCapLetter
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('vdrState')?.invalid &&
-                      UpdateVendorForm.get('vdrState')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('vdrState')?.invalid &&
-                    UpdateVendorForm?.get('vdrState')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  State Should not be empty!
-                </small>
-              </div>
-  
-              <div>
-                <label
-                  for="city"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Town/City</label
-                >
-                <input
-                  type="text"
-                  formControlName="vdrCity"
-                  class="input-form"
-                  placeholder="City"
-                  appFirstCapLetter
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('vdrCity')?.invalid &&
-                      UpdateVendorForm.get('vdrCity')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('vdrCity')?.invalid &&
-                    UpdateVendorForm?.get('vdrCity')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  City should not be empty!
-                </small>
-              </div>
-              <div>
-                <label
-                  for="Pincode"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Pincode</label
-                >
-                <input
-                  type="number"
-                  formControlName="vdrPincode"
-                  class="input-form"
-                  autocomplete="postal-code"
-                  placeholder="000 000"
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('vdrPincode')?.invalid &&
-                      UpdateVendorForm.get('vdrPincode')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('vdrPincode')?.invalid &&
-                    UpdateVendorForm?.get('vdrPincode')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  Invalid pincode!
-                </small>
-              </div>
-              <div class="col-span-full mb-3 flex justify-between">
-                <h1 class="text-xl font-semibold text-purple-800">
-                  Business Details
-                </h1>
-              </div>
-              <div>
-                <label
-                  for="city"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >GST Number</label
-                >
-                <input
-                  type="text"
-                  formControlName="vdrGstNo"
-                  class="input-form"
-                  placeholder="22ABCDE1234G8HJ"
-                  appFirstCapLetter
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('vdrGstNo')?.invalid &&
-                      UpdateVendorForm.get('vdrGstNo')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('vdrGstNo')?.invalid &&
-                    UpdateVendorForm?.get('vdrGstNo')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  GST Number should not be empty!
-                </small>
-              </div>
-              <!-- <div>
-                <label
-                  for="Pincode"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >PAN Number</label
-                >
-                <input
-                  type="text"
-                  formControlName="vdrPanNo"
-                  class="input-form"
-                  autocomplete="postal-code"
-                  placeholder="ABCTY1234D"
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('vdrPanNo')?.invalid &&
-                      UpdateVendorForm.get('vdrPanNo')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('vdrPanNo')?.invalid &&
-                    UpdateVendorForm?.get('vdrPanNo')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  Invalid PAN Number!
-                </small>
-              </div>
-              <div>
-                <label
-                  for="city"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >TAN Number</label
-                >
-                <input
-                  type="text"
-                  formControlName="vdrTanNo"
-                  class="input-form"
-                  placeholder=""
-                  appFirstCapLetter
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('vdrTanNo')?.invalid &&
-                      UpdateVendorForm.get('vdrTanNo')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('vdrTanNo')?.invalid &&
-                    UpdateVendorForm?.get('vdrTanNo')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  Invalid Tan Number!
-                </small>
-              </div>
-              <div>
-                <label
-                  for="Pincode"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >MSME Number</label
-                >
-                <input
-                  type="text"
-                  formControlName="vdrMsmeNo"
-                  class="input-form"
-                  autocomplete="postal-code"
-                  placeholder=""
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('vdrMsmeNo')?.invalid &&
-                      UpdateVendorForm.get('vdrMsmeNo')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('vdrMsmeNo')?.invalid &&
-                    UpdateVendorForm?.get('vdrMsmeNo')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  Invalid pin!
-                </small>
-              </div>
-              <div class="col-span-full mb-2">
-                <label
-                  for="Address"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Service Location</label
-                >
-                <div class="inline-flex items-center gap-5">
-                  <div class="flex items-center">
+                <div [formGroupName]="i" class="">
+                  <div class="mb-2 w-full">
                     <input
-                      formControlName="serviceLocation"
-                      type="radio"
-                      [value]="496"
-                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                      type="text"
+                      class="input-form"
+                      formControlName="billingAddress1"
+                      autocomplete="street-address"
+                      placeholder="Flat, House no., Building, Company, Apartment"
+                      [ngClass]="{
+                        error:
+                          UpdateVendorForm.get('billingAddress1')?.invalid &&
+                          UpdateVendorForm.get('billingAddress1')?.touched
+                      }"
+                      required
                     />
-                    <label
-                      for="disabled-radio-2"
-                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
-                      >Local</label
+                    <small
+                      *ngIf="
+                        UpdateVendorForm?.get('billingAddress1')?.invalid &&
+                        UpdateVendorForm?.get('billingAddress1')?.touched
+                      "
+                      class="text-danger text-red-600"
                     >
+                      Address Should be atleast 10 characters!
+                    </small>
                   </div>
-                  <div class="flex items-center">
+                  <div class="mb-6">
                     <input
-                      formControlName="serviceLocation"
-                      type="radio"
-                      [value]="497"
-                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
+                      type="text"
+                      formControlName="billingAddress2"
+                      autocomplete="street-address-level2"
+                      class="input-form"
+                      placeholder="Area, Street, Sector, Village"
+                      [ngClass]="{
+                        error:
+                          UpdateVendorForm.get('billingAddress2')?.invalid &&
+                          UpdateVendorForm.get('billingAddress2')?.touched
+                      }"
+                      required
                     />
-                    <label
-                      for="disabled-radio-2"
-                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
-                      >Regional</label
+                    <small
+                      *ngIf="
+                        UpdateVendorForm?.get('billingAddress2')?.invalid &&
+                        UpdateVendorForm?.get('billingAddress2')?.touched
+                      "
+                      class="text-danger text-red-600"
                     >
+                      Address line 2 Should be empty !
+                    </small>
                   </div>
-                  <div class="flex items-center">
-                    <input
-                      formControlName="serviceLocation"
-                      type="radio"
-                      [value]="498"
-                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    />
-                    <label
-                      for="disabled-radio-2"
-                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
-                      >National</label
-                    >
+                  <div class="mb-6 grid gap-6 md:grid-cols-2">
+                    <div>
+                      <label
+                        for="Country"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >Country/Region</label
+                      >
+                      <input
+                        type="text"
+                        formControlName="billingCountry"
+                        class="input-form"
+                        placeholder="country"
+                        appFirstCapLetter
+                        [ngClass]="{
+                          error:
+                            UpdateVendorForm.get('billingCountry')?.invalid &&
+                            UpdateVendorForm.get('billingCountry')?.touched
+                        }"
+                        required
+                      />
+                      <small
+                        *ngIf="
+                          UpdateVendorForm?.get('billingCountry')?.invalid &&
+                          UpdateVendorForm?.get('billingCountry')?.touched
+                        "
+                        class="text-danger text-red-600"
+                      >
+                        Country Should not be Empty!
+                      </small>
+                    </div>
+                    <div>
+                      <label
+                        for="State"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >State</label
+                      >
+                      <input
+                        type="text"
+                        formControlName="billingState"
+                        class="input-form"
+                        placeholder="State"
+                        appFirstCapLetter
+                        [ngClass]="{
+                          error:
+                            UpdateVendorForm.get('billingState')?.invalid &&
+                            UpdateVendorForm.get('billingState')?.touched
+                        }"
+                        required
+                      />
+        
+                      <small
+                        *ngIf="
+                          UpdateVendorForm?.get('billingState')?.invalid &&
+                          UpdateVendorForm?.get('billingState')?.touched
+                        "
+                        class="text-danger text-red-600"
+                      >
+                        State Should not be empty!
+                      </small>
+                    </div>
+        
+                    <div>
+                      <label
+                        for="city"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >Town/City</label
+                      >
+                      <input
+                        type="text"
+                        formControlName="billingCity"
+                        class="input-form"
+                        placeholder="City"
+                        appFirstCapLetter
+                        [ngClass]="{
+                          error:
+                            UpdateVendorForm.get('billingCity')?.invalid &&
+                            UpdateVendorForm.get('billingCity')?.touched
+                        }"
+                        required
+                      />
+        
+                      <small
+                        *ngIf="
+                          UpdateVendorForm?.get('billingCity')?.invalid &&
+                          UpdateVendorForm?.get('billingCity')?.touched
+                        "
+                        class="text-danger text-red-600"
+                      >
+                        City should not be empty!
+                      </small>
+                    </div>
+                    <div>
+                      <label
+                        for="Pincode"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >Pincode</label
+                      >
+                      <input
+                        type="number"
+                        formControlName="billingPincode"
+                        class="input-form"
+                        autocomplete="postal-code"
+                        placeholder="000 000"
+                        [ngClass]="{
+                          error:
+                            UpdateVendorForm.get('billingPincode')?.invalid &&
+                            UpdateVendorForm.get('billingPincode')?.touched
+                        }"
+                        required
+                      />
+        
+                      <small
+                        *ngIf="
+                          UpdateVendorForm?.get('billingPincode')?.invalid &&
+                          UpdateVendorForm?.get('billingPincode')?.touched
+                        "
+                        class="text-danger text-red-600"
+                      >
+                        Invalid pincode!
+                      </small>
+                    </div>
                   </div>
-                  <div class="flex items-center">
-                    <input
-                      formControlName="serviceLocation"
-                      type="radio"
-                      [value]="499"
-                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    />
+                  <div class="mt-4 mb-6">
+                    <input type="checkbox" id="sameAsBilling{{i}}" (change)="useBillingAddress($event, i)" />
+                    <label for="sameAsBilling{{i}}" class="ml-2 text-sm text-gray-700 dark:text-gray-300">
+                      Use same as billing address
+                    </label>
+                  </div>
+                  <div class="mb-2">
                     <label
-                      for="disabled-radio-2"
-                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
-                      >International</label
+                      for="Address"
+                      class="mb-2 block text-sm text-center font-medium text-gray-900 dark:text-white"
+                      >Shipping Address</label
                     >
+        
+                    <input
+                      type="text"
+                      class="input-form"
+                      formControlName="shippingAddress1"
+                      autocomplete="street-address"
+                      placeholder="Flat, House no., Building, Company, Apartment"
+                      [ngClass]="{
+                        error:
+                        UpdateVendorForm.get('shippingAddress1')?.invalid &&
+                        UpdateVendorForm.get('shippingAddress1')?.touched
+                      }"
+                      required
+                    />
+                    <small
+                      *ngIf="
+                        UpdateVendorForm?.get('shippingAddress1')?.invalid &&
+                        UpdateVendorForm?.get('shippingAddress1')?.touched
+                      "
+                      class="text-danger text-red-600"
+                    >
+                      Address Should be atleast 10 characters!
+                    </small>
+                  </div>
+                  <div class="mb-6">
+                    <input
+                      type="text"
+                      formControlName="shippingAddress2"
+                      autocomplete="street-address-level2"
+                      class="input-form"
+                      placeholder="Area, Street, Sector, Village"
+                      [ngClass]="{
+                        error:
+                        UpdateVendorForm.get('shippingAddress2')?.invalid &&
+                        UpdateVendorForm.get('shippingAddress2')?.touched
+                      }"
+                      required
+                    />
+                    <small
+                      *ngIf="
+                        UpdateVendorForm?.get('shippingAddress2')?.invalid &&
+                        UpdateVendorForm?.get('shippingAddress2')?.touched
+                      "
+                      class="text-danger text-red-600"
+                    >
+                      Address line 2 Should not be empty!
+                    </small>
+                  </div>
+                  <div class="mb-6 grid gap-6 md:grid-cols-2">
+                    <div>
+                      <label
+                        for="Country"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >Country/Region</label
+                      >
+                      <input
+                        type="text"
+                        formControlName="shippingCountry"
+                        class="input-form"
+                        placeholder="country"
+                        appFirstCapLetter
+                        [ngClass]="{
+                          error:
+                          UpdateVendorForm.get('shippingCountry')?.invalid &&
+                          UpdateVendorForm.get('shippingCountry')?.touched
+                        }"
+                        required
+                      />
+                      <small
+                        *ngIf="
+                          UpdateVendorForm?.get('shippingCountry')?.invalid &&
+                          UpdateVendorForm?.get('shippingCountry')?.touched
+                        "
+                        class="text-danger text-red-600"
+                      >
+                        Country Should not be Empty!
+                      </small>
+                    </div>
+                    <div>
+                      <label
+                        for="State"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >State</label
+                      >
+                      <input
+                        type="text"
+                        formControlName="shippingState"
+                        class="input-form"
+                        placeholder="State"
+                        appFirstCapLetter
+                        [ngClass]="{
+                          error:
+                          UpdateVendorForm.get('shippingState')?.invalid &&
+                          UpdateVendorForm.get('shippingState')?.touched
+                        }"
+                        required
+                      />
+        
+                      <small
+                        *ngIf="
+                          UpdateVendorForm?.get('shippingState')?.invalid &&
+                          UpdateVendorForm?.get('shippingState')?.touched
+                        "
+                        class="text-danger text-red-600"
+                      >
+                        State Should not be empty!
+                      </small>
+                    </div>
+        
+                    <div>
+                      <label
+                        for="city"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >Town/City</label
+                      >
+                      <input
+                        type="text"
+                        formControlName="shippingCity"
+                        class="input-form"
+                        placeholder="City"
+                        appFirstCapLetter
+                        [ngClass]="{
+                          error:
+                          UpdateVendorForm.get('shippingCity')?.invalid &&
+                          UpdateVendorForm.get('shippingCity')?.touched
+                        }"
+                        required
+                      />
+        
+                      <small
+                        *ngIf="
+                          UpdateVendorForm?.get('shippingCity')?.invalid &&
+                          UpdateVendorForm?.get('shippingCity')?.touched
+                        "
+                        class="text-danger text-red-600"
+                      >
+                        City should not be empty!
+                      </small>
+                    </div>
+                    <div>
+                      <label
+                        for="Pincode"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >Pincode</label
+                      >
+                      <input
+                        type="number"
+                        formControlName="shippingPincode"
+                        class="input-form"
+                        autocomplete="postal-code"
+                        placeholder="000 000"
+                        [ngClass]="{
+                          error:
+                          UpdateVendorForm.get('shippingPincode')?.invalid &&
+                          UpdateVendorForm.get('shippingPincode')?.touched
+                        }"
+                        required
+                      />
+        
+                      <small
+                        *ngIf="
+                          UpdateVendorForm?.get('shippingPincode')?.invalid &&
+                          UpdateVendorForm?.get('shippingPincode')?.touched
+                        "
+                        class="text-danger text-red-600"
+                      >
+                        Invalid pincode!
+                      </small>
+                    </div>
                   </div>
                 </div>
               </div>
-              <div>
-                <label
-                  for="city"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Establish Date</label
-                >
-                <input
-                  type="date"
-                  formControlName="estDate"
-                  class="input-form"
-                  placeholder=""
-                  appFirstCapLetter
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('estDate')?.invalid &&
-                      UpdateVendorForm.get('estDate')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('estDate')?.invalid &&
-                    UpdateVendorForm?.get('estDate')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  Business Type should not be empty!
-                </small>
-              </div>
-              <div>
-                <label
-                  for="Pincode"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Business Type</label
-                >
-                <input
-                  type="text"
-                  formControlName="bizType"
-                  class="input-form"
-                  autocomplete="postal-code"
-                  placeholder=""
-                  [ngClass]="{
-                    error:
-                      UpdateVendorForm.get('bizType')?.invalid &&
-                      UpdateVendorForm.get('bizType')?.touched
-                  }"
-                  required
-                />
-  
-                <small
-                  *ngIf="
-                    UpdateVendorForm?.get('bizType')?.invalid &&
-                    UpdateVendorForm?.get('bizType')?.touched
-                  "
-                  class="text-danger text-red-600"
-                >
-                  Invalid Business details Name!
-                </small>
               </div>
   
-              <div class="col-span-full mb-2">
-                <label
-                  for="Address"
-                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                  >Business Details</label
-                >
-                <div class="mt-3 inline-flex items-center gap-6">
-                  <div class="flex items-center">
-                    <input
-                      id="disabled-checkbox"
-                      formControlName="bizDetails"
-                      type="radio"
-                      [value]="256"
-                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    />
-                    <label
-                      for="disabled-radio-2"
-                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
-                      >Service</label
-                    >
-                  </div>
-                  <div class="flex items-center">
-                    <input
-                      id="disabled-checkbox"
-                      formControlName="bizDetails"
-                      type="radio"
-                      [value]="257"
-                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    />
-                    <label
-                      for="disabled-radio-2"
-                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
-                      >Material Supply</label
-                    >
-                  </div>
-                  <div class="flex items-center">
-                    <input
-                      id="disabled-checkbox"
-                      formControlName="bizDetails"
-                      type="radio"
-                      [value]="258"
-                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    />
-                    <label
-                      for="disabled-radio-2"
-                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
-                    >
-                      Service & Material Supply</label
-                    >
-                  </div>
-                  <div class="flex items-center">
-                    <input
-                      (click)="this.isChecked = !this.isChecked"
-                      formControlName="bizDetails"
-                      id="disabled-checkbox"
-                      type="radio"
-                      [value]="259"
-                      class="h-4 w-4 border-gray-300 bg-gray-100 text-blue-600 focus:ring-2 focus:ring-blue-500 dark:border-gray-600 dark:bg-gray-700 dark:ring-offset-gray-800 dark:focus:ring-blue-600"
-                    />
-                    <label
-                      for="disabled-radio-2"
-                      class="ms-2 text-sm font-medium text-gray-400 dark:text-gray-500"
-                      >Others</label
-                    >
-                  </div>
+              
+            
+              <div class="mb-6 grid gap-6 md:grid-cols-2">
+                <div class="col-span-full flex justify-between">
+                  <h1 class="text-xl font-semibold text-purple-800">
+                    Business Details
+                  </h1>
                 </div>
-                <div *ngIf="isChecked" class="mt-4">
+                <div>
                   <label
-                    for="Pincode"
+                    for="city"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >Business Details Name</label
+                    >GST Number</label
                   >
                   <input
                     type="text"
-                    formControlName="bizDetailName"
+                    formControlName="customerGst"
                     class="input-form"
-                    autocomplete="postal-code"
-                    placeholder=""
+                    placeholder="22ABCDE1234G8HJ"
+                    appFirstCapLetter
                     [ngClass]="{
                       error:
-                        UpdateVendorForm.get('bizDetailName')?.invalid &&
-                        UpdateVendorForm.get('bizDetailName')?.touched
+                        UpdateVendorForm.get('customerGst')?.invalid &&
+                        UpdateVendorForm.get('customerGst')?.touched
                     }"
                     required
                   />
-                </div> -->
-              <!-- </div> -->
-              <!-- here  till-->
-            </div>
-            <div class="col-span-full mb-3 flex justify-between">
-              <h1 class="text-xl font-semibold text-purple-800">Bank Details</h1>
-            </div>
-  
-            <div
-              formArrayName="vendorAcccountDetails"
-              class="flex flex-wrap gap-4"
-            >
-              <div
-                *ngFor="let bank of vendorAcccountDetails.controls; let i = index"
-                class="w-full"
-              >
-                <div [formGroupName]="i" class="flex items-center gap-4">
-                  <div class="flex-1">
-                    <label
-                      for="ifscCode"
-                      class="block text-sm font-medium text-gray-900 dark:text-white"
-                      >IFSC Code</label
-                    >
-                    <input
-                      id="ifscCode"
-                      type="text"
-                      formControlName="ifsCode"
-                      class="input-form"
-                      placeholder=""
-                      appFirstCapLetter
-                      [ngClass]="{
-                        error:
-                          UpdateVendorForm.get('ifsCode')?.invalid &&
-                          UpdateVendorForm.get('ifsCode')?.touched
-                      }"
-                      required
-                    />
-                    <small
-                      *ngIf="
-                        UpdateVendorForm?.get('ifsCode')?.invalid &&
-                        UpdateVendorForm?.get('ifsCode')?.touched
-                      "
-                      class="text-danger text-red-600"
-                    >
-                      Invalid IFSC!
-                    </small>
-                  </div>
-                  <div class="flex-1">
-                    <label
-                      for="bankAccNo"
-                      class="block text-sm font-medium text-gray-900 dark:text-white"
-                      >Account Number</label
-                    >
-                    <input
-                      id="bankAccNo"
-                      type="number"
-                      formControlName="bankAccNo"
-                      class="input-form"
-                      autocomplete="postal-code"
-                      placeholder=""
-                      [ngClass]="{
-                        error:
-                          UpdateVendorForm.get('bankAccNo')?.invalid &&
-                          UpdateVendorForm.get('bankAccNo')?.touched
-                      }"
-                      required
-                    />
-                    <small
-                      *ngIf="
-                        UpdateVendorForm?.get('bankAccNo')?.invalid &&
-                        UpdateVendorForm?.get('bankAccNo')?.touched
-                      "
-                      class="text-danger text-red-600"
-                    >
-                      Invalid pin!
-                    </small>
-                  </div>
-                  <div>
-                    <button
-                      type="submit"
-                      (click)="editBankDetails(vendorAcccountDetails.value)"
-                      class="inline-flex items-center mt-4 rounded-lg bg-green-700 px-4 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-green-700 dark:focus:ring-blue-800"
-                    >
-                      <svg
-                      *ngIf="isSaveIcon"
-                      class="mr-1 inline-flex h-5 w-5 items-center justify-center text-white"
-                      aria-hidden="true"
-                      xmlns="http://www.w3.org/2000/svg"
-                      width="24"
-                      height="24"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        stroke="currentColor"
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        stroke-width="2"
-                        d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                      />
-                    </svg>                  
-                    </button>
-                  </div>
+    
+                  <small
+                    *ngIf="
+                      UpdateVendorForm?.get('customerGst')?.invalid &&
+                      UpdateVendorForm?.get('customerGst')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    GST Number should not be empty!
+                  </small>
                 </div>
               </div>
-              <!-- <div>
-                <h1 class="mb-4 text-sm font-medium text-gray-500">
-                  Bank List Added
-                </h1>
-                <table
-                  class="w-full overflow-hidden rounded-lg border text-left text-sm text-gray-500 dark:text-gray-400"
-                >
-                  <thead
-                    class="bg-purple-50 text-xs uppercase text-purple-900 dark:bg-gray-700 dark:text-gray-400"
-                  >
-                    <tr>
-                      <th scope="col" class="px-16 py-5">Account Number</th>
-                      <th scope="col" class="px-20 py-5">IFSC Code</th>
-                      <th scope="col" class="px-20 py-5">Action</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      class="border-b transition-all duration-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700"
-                      *ngFor="let bank of _bankList"
-                    >
-                      <td class="items-center justify-center px-16 py-5">
-                        {{ bank.bankAccNo }}
-                      </td>
-                      <td class="items-center justify-center px-16 py-5">
-                        {{ bank.ifsCode }}
-                      </td>
-                      <td class="flex items-center justify-center px-4 py-3">
-                        <button
-                          type="submit"
-                          (click)="updateBankAcc(vendorAcccountDetails.value)"
-                        >
-                          <svg
-                            class="mr-1 h-6 w-6 text-blue-700"
-                            fill="currentColor"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
-                            />
-                          </svg>
-                        </button>
-                        <button (click)="deleteAccount(this.bank.vdrAccId)">
-                          <svg
-                            class="w-6 text-red-600 dark:text-white"
-                            aria-hidden="true"
-                            xmlns="http://www.w3.org/2000/svg"
-                            width="24"
-                            height="24"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                          >
-                            <path
-                              stroke="currentColor"
-                              stroke-linecap="round"
-                              stroke-linejoin="round"
-                              stroke-width="2"
-                              d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
-                            />
-                          </svg>
-                        </button>
-                      </td>
-                    </tr>
-                  </tbody>
-                </table>
-              </div> -->
-            </div>
+            
+              
+              
+              <!-- here  till-->
+            <!-- <div class="col-span-full mb-3 flex justify-between">
+              <h1 class="text-xl font-semibold text-purple-800">Bank Details</h1>
+            </div> -->
+  
+            
           </div>
           <div class="mt-8 flex justify-end gap-4">
             <div *ngIf="isEdit">
@@ -927,7 +665,7 @@
             </div>
             <div *ngIf="isSave">
               <button
-                (click)="updateVendorDetails(UpdateVendorForm.value)"
+                (click)="updateCustomerDetails(UpdateVendorForm.value)"
                 type="submit"
                 class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
               >

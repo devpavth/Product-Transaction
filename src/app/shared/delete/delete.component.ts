@@ -1,6 +1,7 @@
-import { Component, Input, Output, EventEmitter } from '@angular/core';
+import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ProductService } from '../../core/components/service/product.service';
 import { VendorService } from '../../core/components/service/vendor/vendor.service';
+import { CustomerService } from '../../core/components/service/Customer/customer.service';
 
 @Component({
   selector: 'app-delete',
@@ -10,6 +11,8 @@ import { VendorService } from '../../core/components/service/vendor/vendor.servi
 export class DeleteComponent {
   @Input() deleteData: any;
   @Output() close = new EventEmitter<boolean>();
+
+  private customerService = inject(CustomerService);
 
   constructor(
     // private funderService: FunderService,
@@ -93,6 +96,20 @@ export class DeleteComponent {
       //     }
       //   },
       // );
+    }
+    if (this.deleteData.action == 6) {
+      console.log("deleting customer record:",this.deleteData);
+      this.customerService.deleteCustomer(this.deleteData.deleteId).subscribe(
+        (res) => {
+          console.log("Deleting customer details:",res);
+        },
+        (error) => {
+          console.log("error while deleting customer:", error);
+          if (error.status == 200) {
+            this.close.emit(false);
+          }
+        },
+      );
     }
   }
 }

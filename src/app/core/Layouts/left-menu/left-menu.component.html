@@ -55,32 +55,102 @@
           routerLinkActive="side-menu-active"
           routerLink="/home/employeeList"
           class="left-submenu group"
-          >Account</a
+          >User Info</a
         >
       </li>
       <li>
-        <a
-          routerLinkActive="side-menu-active"
-          routerLink="/home/customerList"
-          class="left-submenu group"
-          >Customer</a
+        <button
+          type="button"
+          class="left-menu group"
+          aria-controls="dropdown-example"
+          data-collapse-toggle="dropdown-example"
+          (click)="toggleRequest()"
         >
-      </li>
-      <li
-            routerLinkActive="side-menu-active"
-            routerLink="productList"
-            class="left-submenu group cursor-pointer"
+          <svg
+            class="left-menusvg h-6 w-6"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            fill="none"
+            viewBox="0 0 24 24"
           >
-            Product
-      </li>
-      <li>
-        <a
-          routerLinkActive="side-menu-active"
-          routerLink="/home/vendorList"
-          class="left-submenu group"
-          >Vendor</a
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M18 9V4a1 1 0 0 0-1-1H8.914a1 1 0 0 0-.707.293L4.293 7.207A1 1 0 0 0 4 7.914V20a1 1 0 0 0 1 1h4M9 3v4a1 1 0 0 1-1 1H4m11 6v4m-2-2h4m3 0a5 5 0 1 1-10 0 5 5 0 0 1 10 0Z"
+            />
+          </svg>
+
+          <span class="ms-3 flex-1 whitespace-nowrap text-left rtl:text-right"
+            >Master</span
+          >
+          <svg
+            class="h-3 w-3"
+            aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 10 6"
+          >
+            <path
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="m1 1 4 4 4-4"
+            />
+          </svg>
+        </button>
+        <ul
+          *ngIf="tRequest"
+          id="dropdown-example"
+          class="animate__animated animate__fadeIn animate__faster group space-y-2 py-2"
         >
+          <li>
+            <a
+              routerLinkActive="side-menu-active"
+              routerLink="/home/customerList"
+              class="left-submenu group"
+              >Customer</a
+            >
+          </li>
+          <li>
+            <a
+              routerLinkActive="side-menu-active"
+              routerLink="/home/productList"
+              class="left-submenu group"
+              >Product</a
+            >
+          </li>
+          <li>
+            <a
+              routerLinkActive="side-menu-active"
+              routerLink="/home/vendorList"
+              class="left-submenu group"
+              >Vendor</a
+            >
+          </li>
+          <li>
+            <a
+              routerLinkActive="side-menu-active"
+              routerLink="/home/adminApprovel"
+              class="left-submenu group"
+              >Inward</a
+            >
+          </li>
+          <li>
+            <a
+              routerLinkActive="side-menu-active"
+              routerLink="/home/adminApprovel"
+              class="left-submenu group"
+              >Outward</a
+            >
+          </li>
+        </ul>
       </li>
+      
       <!-- here -->
       <li> 
         <a
@@ -92,6 +162,7 @@
       </li>
 
       <!-- end here -->
+      
 
       <!-- <li>
         <button type="button" class="left-menu group" (click)="toggleAdmin()"> -->

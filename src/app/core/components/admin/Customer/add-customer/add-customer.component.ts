@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CustomerService } from '../../../service/Customer/customer.service';
@@ -12,24 +12,16 @@ export class AddCustomerComponent {
   isChecked: boolean = false;
   _BranchName: any;
   addVendorForm: FormGroup;
+  private customerService = inject(CustomerService);
   constructor(
     private fb: FormBuilder,
-    private customerService: CustomerService,
+    // private customerService: CustomerService,
     // private branchService: BranchService,
     private route: Router,
   ) {
     this.addVendorForm = this.fb.group({
       // branchId: [],
       customerName: ['', [Validators.required, Validators.pattern('[A-Za-z ]+')]],
-      vdrAdd1: ['', Validators.required],
-      vdrAdd2: ['', Validators.required],
-      vdrCity: ['', Validators.required],
-      vdrState: ['', Validators.required],
-      billingCountry: ['', Validators.required],
-      vdrPincode: [
-        '',
-        [Validators.required, Validators.pattern(/^[1-9][0-9]{5}$/)],
-      ],
       contactPerson: [
         '',
         [Validators.required, Validators.pattern('[A-Za-z ]+')],
@@ -54,38 +46,19 @@ export class AddCustomerComponent {
           Validators.pattern(/^\d{2}[A-Z]{5}\d{4}[A-Z]{1}\d{1}[A-Z\d]{2}$/),
         ],
       ],
-      // vdrPanNo: [
-      //   '',
-      //   [Validators.required, Validators.pattern(/^[A-Z]{5}[0-9]{4}[A-Z]{1}$/)],
-      // ],
-      // vdrTanNo: [
-        // '',
-        // [Validators.required, Validators.pattern(/^[A-Z]{4}[0-9]{5}[A-Z]$/)],
-      // ],
-      // vdrMsmeNo: [],
-      // estDate: [''],
-      // serviceLocation: ['', Validators.required],
-      // bizType: [''],
-      // bizDetailName: [
-      //   '',
-      //   [Validators.required, Validators.pattern('[A-Za-z ]+')],
-      // ],
-      // bizDetails: ['', Validators.required],
-      customerAddressDetails: this.fb.array([this.showCustomerAddressData()]),
+      addresses: this.fb.array([this.showCustomerAddressData()]),
     });
   }
   ngOnInit(): void {
     // this.getBranchName();
   }
 
-  get customerAddressDetails() {
-    return this.addVendorForm.get('customerAddressDetails') as FormArray;
+  get addresses() {
+    return this.addVendorForm.get('addresses') as FormArray;
   }
 
   showCustomerAddressData() {
     return this.fb.group({
-      // ifsCode: ['', Validators.required],
-      // bankAccNo: ['', Validators.required],
       billingAddress1: ['', Validators.required],
       billingAddress2: ['', Validators.required],
       billingPincode: [
@@ -104,13 +77,43 @@ export class AddCustomerComponent {
       shippingCity: ['', Validators.required],
       shippingState: ['', Validators.required],
       shippingCountry: ['', Validators.required],
-      "statusCode": 200,
+      statusCode: [],
       "active": 800
     });
   }
 
   addbank() {
-    this.customerAddressDetails.push(this.showCustomerAddressData());
+    this.addresses.push(this.showCustomerAddressData());
+  }
+
+
+  useBillingAddress(event: Event, index: number){
+    const isChecked = (event.target as HTMLInputElement).checked;
+
+    const addressGroup = this.addresses.at(index) as FormGroup;
+
+    if(isChecked){
+      console.log("checking the check box:", isChecked);
+      addressGroup.patchValue({
+        shippingAddress1: addressGroup.get('billingAddress1')?.value,
+        shippingAddress2: addressGroup.get('billingAddress2')?.value,
+        shippingPincode: addressGroup.get('billingPincode')?.value,
+        shippingCity: addressGroup.get('billingCity')?.value,
+        shippingState: addressGroup.get('billingState')?.value,
+        shippingCountry: addressGroup.get('billingCountry')?.value,
+        statusCode: 200,
+      })
+    }else{
+      addressGroup.patchValue({
+        shippingAddress1: '',
+        shippingAddress2: '',
+        shippingPincode: '',
+        shippingCity: '',
+        shippingState: '',
+        shippingCountry: '',
+        statusCode: 400,
+      })
+    }
   }
 
   // getBranchName() {

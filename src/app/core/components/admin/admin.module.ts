@@ -16,6 +16,7 @@ import { SharedModule } from '../../../shared/shared.module';
 import { CustomerListComponent } from './Customer/customer-list/customer-list.component';
 import { AddCustomerComponent } from './Customer/add-customer/add-customer.component';
 import { ViewCustomerComponent } from './Customer/view-customer/view-customer.component';
+import { ViewAddressComponent } from './Customer/view-address/view-address.component';
 
 
 @NgModule({
@@ -29,7 +30,8 @@ import { ViewCustomerComponent } from './Customer/view-customer/view-customer.co
     StockComponent,
     CustomerListComponent,
     AddCustomerComponent,
-    ViewCustomerComponent
+    ViewCustomerComponent,
+    ViewAddressComponent
   ],
   imports: [
     CommonModule,
