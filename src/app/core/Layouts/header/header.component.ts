@@ -1,4 +1,5 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, inject } from '@angular/core';
+import { AuthService } from '../../components/service/Auth/auth.service';
 
 @Component({
   selector: 'app-header',
@@ -10,6 +11,9 @@ export class HeaderComponent implements OnInit{
   userData: any; //fetch user data object
 
   emp = { empFirstName: '', empLastName: '', empEmail: '', branchName: '', };
+
+  private authService = inject(AuthService);
+  loginTime: Date | null = null;
 
   //User data
   FirstName :any
@@ -41,6 +45,7 @@ export class HeaderComponent implements OnInit{
     // this.randomColor = this.getRandomColor();
   }
   ngOnInit(): void {
+    this.loginTime = this.authService.getLoginTime();
     // this.user = sessionStorage.getItem('userId');
     // if (this.user) {
     //   this.userDetailService.getEmployeeDetails(this.user).subscribe((res) => {

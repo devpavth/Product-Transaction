@@ -1,3 +1,5 @@
+import { userInfo } from "os";
+
 let Url = 'http://192.168.1.8:8000/';
 
 // let baseProductApi = 'Product';
@@ -17,6 +19,7 @@ export const environment = {
 
     login: Url + 'auth/login',
     verifiedID: Url + 'auth/login',
+    userInfo: Url + 'userUpdate/',
 
     getAllCustomerList: Url + 'Customer',
     addCustomer: Url + 'Customer',

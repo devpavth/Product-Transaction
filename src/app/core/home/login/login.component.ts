@@ -24,6 +24,7 @@ export class LoginComponent {
   userData: any;
   userid: any;
   branchid: any;
+  isUserInfo: boolean = false;
 
   isPasswordHidden = true; //password visiable
   passwordEnabled: boolean = false; //password enable
@@ -33,6 +34,7 @@ export class LoginComponent {
   passwordVerified: number = 0;
 
   loginForm = new FormGroup({
+    companyId: new FormControl(''),
     username: new FormControl('', [Validators.required]),
     password: new FormControl('', [Validators.required]),
   });
@@ -41,7 +43,7 @@ export class LoginComponent {
   }
 
   verifiedUser(id: any) {
-    console.log(id);
+    console.log("what Id:",id);
 
     // this.auth.verifiedID(id).subscribe(
     //   (res) => {
@@ -67,13 +69,30 @@ export class LoginComponent {
     // );
   }
   login(loginData: any) {
+
+    const loginTime = new Date();
+    this.auth.setLoginTime(loginTime);
+    console.log("Login Time:", loginTime);
+    
     console.log('login data', loginData);
 
     this.userData = loginData;
     this.auth.login(loginData).subscribe(
       (res) => {
         this.userData = res;
-        console.log(res);
+        console.log("user data in login component:", this.userData);
+        console.log("login details from backend:",res);
+        sessionStorage.setItem('userData', JSON.stringify(this.userData));
+        this.isUserInfo = true;
+        if (this.isUserInfo) {
+          console.log("user data after condition in login component:", this.userData);
+          this.loginForm.patchValue({
+            username: this.userData.username,
+            password: this.userData.password,
+            companyId: this.userData.companyId,
+          });
+        }
+
 
         if ((res !== null)) {
           this.userid = this.userData?.employeeId;
@@ -88,6 +107,7 @@ export class LoginComponent {
         }
       },
       (error) => {
+        console.log("error while login:",error);
         if (error.status == 403) {
           this.passwordVerified = 1;
         }

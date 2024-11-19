@@ -6,6 +6,10 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { StartingPageComponent } from './starting-page/starting-page.component';
 import { HeaderComponent } from '../Layouts/header/header.component';
 import { LeftMenuComponent } from '../Layouts/left-menu/left-menu.component';
+import { UserInfoComponent } from '../components/admin/User/user-info/user-info.component';
+
+import { FormsModule } from '@angular/forms';
+import { ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -13,11 +17,15 @@ import { LeftMenuComponent } from '../Layouts/left-menu/left-menu.component';
     DashboardComponent,
     StartingPageComponent,
     HeaderComponent,
-    LeftMenuComponent
+    LeftMenuComponent,
+    UserInfoComponent
   ],
   imports: [
     CommonModule,
-    HomeRoutingModule
-  ]
+    HomeRoutingModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
+  exports: [UserInfoComponent]
 })
 export class HomeModule { }

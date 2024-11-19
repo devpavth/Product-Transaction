@@ -31,7 +31,7 @@ import { ViewAddressComponent } from './Customer/view-address/view-address.compo
     CustomerListComponent,
     AddCustomerComponent,
     ViewCustomerComponent,
-    ViewAddressComponent
+    ViewAddressComponent,
   ],
   imports: [
     CommonModule,

@@ -17,6 +17,8 @@ export class ViewCustomerComponent {
   isSaveIcon = true;
   deleteVendor: any;
   isDelete: boolean = false;
+  isAddressList: Boolean = false;
+  customerAddressData: any
   _BranchName: any;
 
   private customerService = inject(CustomerService);
@@ -175,6 +177,30 @@ export class ViewCustomerComponent {
     } else if (check == 0) {
       this.isDelete = isView;
       this.closeVendor.emit(false);
+    }
+  }
+
+  fetchallcustomer() {
+    this.customerService.getAllCustomer().subscribe(
+      (res) => {
+        // this._vendor = res;
+        // this.Spinner = false;
+        console.log("Gettting all customer details:",res);
+      },
+      (error) => {
+        console.log("error while getting customer details:",error);
+      },
+    );
+  }
+
+  toggleView(action: Boolean, check: number, customerAddressData: any) {
+    if (check == 1) {
+      this.isAddressList = action;
+      this.customerAddressData = customerAddressData;
+    }
+    if (check == 0) {
+      this.isAddressList = action;
+      this.fetchallcustomer();
     }
   }
 }

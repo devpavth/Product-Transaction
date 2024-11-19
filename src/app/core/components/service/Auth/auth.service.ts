@@ -7,6 +7,8 @@ import { HttpClient, HttpParams } from '@angular/common/http';
 })
 export class AuthService {
 
+  private loginTime: Date | null = null;
+
   constructor(private authHttp: HttpClient) { }
 
   login(data: any){
@@ -25,5 +27,19 @@ export class AuthService {
 
   isLoggedIn(){
     return this.getToken() !== null;
+  }
+
+  setLoginTime(time: any){
+    this.loginTime = time;
+    localStorage.setItem('loginTime', time.toISOString());
+  }
+
+  getLoginTime(){
+    const storedTime = localStorage.getItem('loginTime');
+    return storedTime ? new Date(storedTime) : this.loginTime;
+  }
+
+  updateUserInfo(id: any, data: any){
+    return this.authHttp.post(environment.userInfo + id, data);
   }
 }

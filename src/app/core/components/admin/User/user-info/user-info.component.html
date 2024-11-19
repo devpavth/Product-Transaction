@@ -1,0 +1,135 @@
+<div class="p-4 sm:ml-64">
+<section class="dark:bg-gray-900">
+    <div
+      class="mx-auto"
+    >
+    <div
+        class="relative overflow-hidden bg-white shadow-md shadow-purple-300 dark:bg-gray-800 sm:rounded-lg"
+      >
+  
+        <form [formGroup]="loginForm">
+          <div class="p-4">
+            <div
+            class="flex flex-row items-center justify-between space-y-3 p-4 md:flex-row md:space-x-4 md:space-y-0"
+            >
+                <div class="mb-2 flex-1">
+                    <label class="font-semibold text-blue"> Username </label>
+                    <input
+                        type="text"
+                        formControlName="username"
+                        (change)="verifiedUser(id.value)"
+                        autocomplete="username"
+                        #id
+                        class="group/input w-full rounded-lg  border border-purple-100 bg-transparent py-2 pr-3 text-black-500 shadow-sm outline-none focus:border-purple-600"
+                    />
+                </div>
+                <div x-data="{ isPasswordHidden: true }" class="mb-2 flex-1 relative">
+                    <label class="font-semibold text-blue"> Password </label>
+                    <div class="relative">
+                    <!-- isPasswordHidden = !isPasswordHidden" -->
+                    <button
+                        (click)="toggle()"
+                        class="absolute inset-y-0 right-3 my-auto text-gray-900 active:text-gray-50"
+                    >
+                    <div *ngIf="isPasswordHidden" class="">
+                        <svg
+                            class="h-6 w-6"
+                            xmlns="http://www.w3.org/2000/svg"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke-width="1.5"
+                            stroke="currentColor"
+                        >
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z"
+                        ></path>
+                        <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                        ></path>
+                    </svg>
+                </div>
+                <div *ngIf="!isPasswordHidden">
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    stroke-width="1.5"
+                    stroke="currentColor"
+                    class="h-6 w-6"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"
+                    ></path>
+                  </svg>
+                </div>
+              </button>
+  
+              <input
+                [type]="isPasswordHidden ? 'password' : 'text'"
+                [ngClass]="{
+                  error1: passwordVerified === 1,
+                  'disabled-field': !passwordEnabled
+                }"
+                #password
+                formControlName="password"
+                autocomplete="current-password"
+                class="w-full rounded-lg border border-purple-100 bg-transparent py-2 pl-3 pr-12 tracking-widest text-black-500 shadow-sm outline-none focus:border-white-600"
+              />
+            </div>
+          </div>
+          <small *ngIf="passwordVerified === 1" class=""
+            ><span #incorrect class="text-yellow-200">Incorrect Password ! </span>
+          </small>
+  
+          <div *ngIf="isEdit" class="text-end">
+            <button
+              (click)="editUser()"
+              type="submit"
+              class="inline-flex items-center mt-7 rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:scale-105 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+            >
+            <!-- inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800 -->
+              Edit
+            </button>
+          </div>
+          
+          <div *ngIf="isSave">
+            <button
+              (click)="onUpdateUserInfo(loginForm.value)"
+              type="submit"
+              class="me-2 rounded-lg bg-green-600 mt-5 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
+            >
+              <svg
+                *ngIf="isSaveIcon"
+                class="mr-1 inline-flex h-5 w-5 items-center justify-center text-white"
+                aria-hidden="true"
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                fill="none"
+                viewBox="0 0 24 24"
+              >
+                <path
+                  stroke="currentColor"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                  stroke-width="2"
+                  d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                />
+              </svg>
+
+              Save
+            </button>
+          </div>
+          </div>
+        </div>
+        </form>
+      </div>
+    </div>
+  </section>
+</div>  

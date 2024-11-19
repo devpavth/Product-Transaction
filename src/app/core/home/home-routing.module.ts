@@ -3,6 +3,7 @@ import { RouterModule, Routes } from '@angular/router';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { StartingPageComponent } from './starting-page/starting-page.component';
 import { LoginComponent } from './login/login.component';
+import { UserInfoComponent } from '../components/admin/User/user-info/user-info.component';
 
 const routes: Routes = [
   { path: '', redirectTo: '/login', pathMatch: 'full' },
@@ -23,6 +24,10 @@ const routes: Routes = [
       {
         path: 'dashboard',
         component: DashboardComponent,
+      },
+      { 
+        component: UserInfoComponent, 
+        path: 'userInfo' 
       },
     ],
   },

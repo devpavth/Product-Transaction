@@ -13,9 +13,9 @@
           </h1>
   
           <p
-            class="mb-2 cursor-pointer text-center text-sm font-semibold tracking-wide text-gray-50/20"
+            class="mb-2 cursor-pointer text-center text-sm font-semibold tracking-wide text-black-50"
           >
-            Login To Your Account
+            User Login
           </p>
           <p
             class="mb-8 cursor-pointer text-center text-sm font-semibold tracking-wide text-purple-500"
@@ -31,7 +31,7 @@
           <div class="mb-4">
             <div class="relative">
               <svg
-                class="absolute inset-y-0 left-3 my-auto h-6 w-6 text-gray-50"
+                class="absolute inset-y-0 left-3 my-auto h-6 w-6 active:text-gray-50"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -94,7 +94,7 @@
               <!-- isPasswordHidden = !isPasswordHidden" -->
               <button
                 (click)="toggle()"
-                class="absolute inset-y-0 right-3 my-auto text-gray-50 active:text-gray-600"
+                class="absolute inset-y-0 right-3 my-auto text-gray-900 active:text-gray-50"
               >
                 <div *ngIf="isPasswordHidden" class="">
                   <svg
@@ -149,7 +149,7 @@
             </div>
           </div>
           <small *ngIf="passwordVerified === 1" class=""
-            ><span #incorrect class="text-red-600">Incorrect Password ! </span>
+            ><span #incorrect class="text-yellow-200">Incorrect Password ! </span>
           </small>
   
           <div class="mt-6 text-center">
@@ -166,5 +166,11 @@
         </form>
       </div>
     </div>
+  </section>
+
+  <section *ngIf="isUserInfo" class="">
+    <app-user-info
+      [userData]="userData"
+    ></app-user-info>
   </section>
   
