@@ -18,7 +18,7 @@ export const environment = {
     updateBank: Url + 'Bank/',
 
     login: Url + 'auth/login',
-    verifiedID: Url + 'auth/login',
+    verifiedUser: Url + 'Check/',
     userInfo: Url + 'userUpdate/',
 
     getAllCustomerList: Url + 'Customer',
@@ -26,4 +26,6 @@ export const environment = {
     deleteCustomer: Url + 'Customer/',
     updateCustomer: Url + 'CustomerUpdate/',
     updateAddress: Url + 'Address/',
+
+    addTransaction: Url + 'TransactionDetail'
 };

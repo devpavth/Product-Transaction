@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { VendorService } from '../../../service/vendor/vendor.service';
+import { CustomerService } from '../../../service/Customer/customer.service';
 
 @Component({
   selector: 'app-stock',
@@ -10,6 +12,8 @@ export class StockComponent {
   _branch: any;
   inwardFormHeader: FormGroup;
   inwardForm: FormGroup;
+
+  customerList: any;
 
   isBox: boolean = false;
   gstPercentages: number[] = [0, 5, 12, 18, 28];
@@ -46,12 +50,14 @@ export class StockComponent {
   isSuccess: boolean = false;
   transactionID: object = {};
 
+  private customerService = inject(CustomerService);
+
   constructor(
     // private branchService: BranchService,
     // private productService: ProductService,
     private fb: FormBuilder,
     // private shared: SharedServiceService,
-    // private vendorService: VendorService,
+    private vendorService: VendorService,
   ) {
     this.inwardFormHeader = this.fb.group({
       tranRefNo: [''],
@@ -78,6 +84,7 @@ export class StockComponent {
   ngOnInit() {
     this.fetchAllBranch();
     this.fetchVendorList();
+    this.fetchCustomerList();
   }
   fetchAllBranch() {
     // this.branchService.getBranch().subscribe((res) => {
@@ -107,10 +114,19 @@ export class StockComponent {
     // });
   }
   fetchVendorList() {
-    // this.vendorService.getVendorName().subscribe((res) => {
-    //   console.log(res);
-    //   this.vendorList = res;
-    // });
+    this.vendorService.getAllVendor().subscribe((res) => {
+      console.log("vendor data from backend",res);
+      this.vendorList = res;
+    });
+  }
+
+  fetchCustomerList() {
+    this.customerService.getAllCustomer().subscribe((res) => {
+      console.log("customer data from backend",res);
+      this.customerList = res;
+    },(error) => {
+      console.log("error while getting customer details:",error);
+    });
   }
 
   ifBox(data: any) {

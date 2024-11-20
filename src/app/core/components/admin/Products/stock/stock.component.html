@@ -7,7 +7,7 @@
             <!-- Modal header -->
             <div class="mb-4 flex items-center justify-between rounded-t sm:mb-5">
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
-                Inward Header
+                <!-- Inward Header -->
               </h3>
               <button
                 type="button"
@@ -34,7 +34,7 @@
   
             <form *ngIf="!header" [formGroup]="inwardFormHeader">
               <div class="mb-4 grid gap-4 sm:grid-cols-8">
-                <div class="col-span-4">
+                <!-- <div class="col-span-4">
                   <div class="flex items-center gap-2">
                     <label
                       for="Branch"
@@ -49,7 +49,7 @@
                     class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                     required
                   />
-                </div>
+                </div> -->
                 <div class="col-span-4">
                   <div>
                     <label
@@ -69,16 +69,93 @@
                         disabled
                         class="bg-purple-700 text-white"
                       >
-                        Choose Group
+                        Choose Txn Type
                       </option>
                       <option value="268 ">Inward</option>
                       <option value="269 ">Outward</option>
                     </select>
                   </div>
                 </div>
-                <div
+                <!-- <div
                   *ngIf="inwardFormHeader.get('inwardFromCode')?.value == 269"
                   class="col-span-4"
+                >
+                  <div class="flex items-center gap-2">
+                    <label
+                      for="Branch"
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      From</label
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    value="Cloute Technologies Private Limited"
+                    class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    readonly
+                  />
+                </div> -->
+                <div
+                  *ngIf="inwardFormHeader.get('inwardFromCode')?.value == 269"
+                  class="col-span-6"
+                >
+                  <div class="flex items-center gap-2">
+                    <label
+                      for="Branch"
+                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >
+                      From</label
+                    >
+                  </div>
+                  <input
+                    type="text"
+                    value="Cloute Technologies Private Limited"
+                    class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    readonly
+                  />
+                
+                  <div
+                    *ngIf="inwardFormHeader.get('inwardFromCode')?.value"
+                    class="col-span-6"
+                  >
+                    <div class="flex items-center gap-2">
+                      <label
+                        for="Branch"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >To</label
+                      >
+                    </div>
+    
+                    <div class="flex gap-2">
+                      <select
+                        #id
+                        formControlName="vendorId"
+                        class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                        required
+                      >
+                        <option
+                          value=""
+                          null
+                          selected
+                          disabled
+                          class="bg-purple-700 text-white"
+                        >
+                          <!-- Choose Branch -->
+                        </option>
+                        <option
+                          *ngFor="let cus of customerList"
+                          value="{{ cus.customerId }}"
+                        >
+                          {{ cus.customerName }}
+                        </option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
+                
+                <div
+                  *ngIf="inwardFormHeader.get('inwardFromCode')?.value == 268"
+                  class="col-span-6"
                 >
                   <div class="flex items-center gap-2">
                     <label
@@ -102,91 +179,40 @@
                         disabled
                         class="bg-purple-700 text-white"
                       >
-                        Choose Vendor
+                        <!-- Choose Branch -->
                       </option>
                       <option
-                        *ngFor="let v of vendorList"
-                        value="{{ v.vendorId }}"
+                        *ngFor="let vendor of vendorList"
+                        value="{{ vendor.vendorId }}"
                       >
-                        {{ v.vendorName }}
+                        {{ vendor.vendorName }}
                       </option>
                     </select>
                   </div>
-                </div>
-                <div
-                  *ngIf="inwardFormHeader.get('inwardFromCode')?.value == 268"
-                  class="col-span-4"
-                >
-                  <div class="flex items-center gap-2">
-                    <label
-                      for="Branch"
-                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >
-                      From Vendor</label
-                    >
-                  </div>
-                  <div class="flex gap-2">
-                    <select
-                      #id
-                      formControlName="vendorId"
-                      class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                      required
-                    >
-                      <option
-                        value=""
-                        null
-                        selected
-                        disabled
-                        class="bg-purple-700 text-white"
-                      >
-                        Choose Branch
-                      </option>
-                      <option
-                        *ngFor="let branch of _branch"
-                        value="{{ branch.branchId }}"
-                      >
-                        {{ branch.branchName }}
-                      </option>
-                    </select>
-                  </div>
-                </div>
-                <div
-                  *ngIf="inwardFormHeader.get('inwardFromCode')?.value"
-                  class="col-span-4"
-                >
-                  <div class="flex items-center gap-2">
-                    <label
-                      for="Branch"
-                      class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                      >To Branch</label
-                    >
-                  </div>
-  
-                  <select
-                    #catid
-                    formControlName="branchId"
-                    class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                    required
+                
+                  <div
+                    *ngIf="inwardFormHeader.get('inwardFromCode')?.value"
+                    class="col-span-6"
                   >
-                    <option
-                      value=""
-                      null
-                      disabled
-                      class="bg-purple-700 text-white"
-                    >
-                      Choose Branch
-                    </option>
-                    <option
-                      *ngFor="let branch of _branch"
-                      value="{{ branch.branchId }}"
-                    >
-                      {{ branch.branchName }}
-                    </option>
-                  </select>
+                    <div class="flex items-center gap-2">
+                      <label
+                        for="Branch"
+                        class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                        >To</label
+                      >
+                    </div>
+    
+                    <input
+                      type="text"
+                      value="Cloute Technologies Private Limited"
+                      class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                      readonly
+                    />
+                  </div>
                 </div>
               </div>
             </form>
-            <div class="flex justify-end">
+            <!-- <div class="flex justify-end">
               <button
                 (click)="inwardHeader(inwardFormHeader.value)"
                 type="submit"
@@ -194,7 +220,7 @@
               >
                 Add Header
               </button>
-            </div>
+            </div> -->
             <div *ngIf="header" class="col-span-full flex flex-col">
               <div class="-m-1.5 overflow-x-auto">
                 <div class="inline-block min-w-full p-1.5 align-middle">
@@ -282,7 +308,7 @@
                   <!-- Start coding here -->
                   <div class="relative bg-white dark:bg-gray-800 sm:rounded-lg">
                     <div class="flex items-center gap-4 p-4">
-                      <div class="relative w-full">
+                      <div class="relative w-full -ml-4">
                         <div
                           class="pointer-events-none absolute inset-y-0 left-0 flex w-full items-center pl-3"
                         >
@@ -403,32 +429,31 @@
                   <label
                     for="brand"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >Product Unit</label
+                    >GST percentage</label
                   >
                   <div class="flex">
-                    <input
+                    <!-- <input
                       type="number"
                       (change)="calculateBoxItem()"
-                      formControlName="prdQty"
+                      formControlName="gstPercentage"
                       class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-l-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                       placeholder="Quantity"
                       required
-                    /><select
-                      #unite
-                      (change)="ifBox(unite.value)"
-                      formControlName="prdUnit"
-                      class="block rounded-e-lg border border-s-2 border-gray-300 border-s-gray-100 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                    /> -->
+                    <select
+                      formControlName="gst"
+                      class="block rounded-lg w-full border border-gray-300 border-gray-100 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
                     >
-                      <option value="" selected>Choose Unit</option>
+                      <option *ngFor="let g of gstPercentages" value="{{ g }}">{{ g }}</option>
   
-                      <ng-container *ngFor="let u of units">
+                      <!-- <ng-container *ngFor="let u of units">
                         <option
                           *ngIf="u.id === productData?.prdUnit"
                           [value]="u.id"
                         >
                           {{ u.name }}
                         </option>
-                      </ng-container>
+                      </ng-container> -->
                     </select>
                   </div>
                 </div>
@@ -443,7 +468,7 @@
                     (change)="calculateBoxItem()"
                     formControlName="itemprebox"
                     class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                    placeholder="$2999"
+                    placeholder="₹2999"
                     required
                   />
                 </div>
@@ -457,7 +482,7 @@
                     type="number"
                     formControlName="totalPieces"
                     class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                    placeholder="$2999"
+                    placeholder="₹2999"
                     required
                     readonly
                   />
@@ -467,35 +492,34 @@
                   <label
                     for="category"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >GST Percentage</label
+                    >Quantity</label
                   >
                   <input
                     type="number"
-                    formControlName="gstPercentage"
-                    class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                    placeholder="Gst %"
+                    formControlName="prdQty"
+                    class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    placeholder="qty"
                     required
-                    readonly
                   />
   
                   <small class="text-danger text-red-600"> </small>
                 </div>
-                <!-- <div class="col-span-2">
+                <div class="col-span-2">
                   <label
                     for="price"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >Unit Price</label
+                    >Price</label
                   >
                   <input
                     type="number"
                     formControlName="purchasedPrice"
                     class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                    placeholder="$2999"
+                    placeholder="₹2999"
                     required
                   />
-                </div> -->
+                </div>
               </div>
-              <div class="flex items-center justify-end">
+              <div class="flex items-center justify-end gap-2">
                 <button
                   (click)="addProductList(inwardForm.value)"
                   type="submit"
@@ -513,7 +537,31 @@
                       clip-rule="evenodd"
                     ></path>
                   </svg>
-                  Add Product
+                  Add Item
+                </button>
+                <button
+                  type="submit"
+                  class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
+                >
+                  <svg
+                    class="mr-1 inline-flex h-5 w-5 items-center justify-center text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                  >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
+                    />
+                  </svg>
+    
+                  Save
                 </button>
               </div>
             </form>
@@ -557,7 +605,7 @@
                     </th>
                     <td class="px-4 py-3">{{ p.purchasedPrice }}</td>
                     <td class="px-4 py-3">{{ p.prdQty }}</td>
-                    <td class="px-4 py-3">{{ p.gstPercentage }}</td>
+                    <td class="px-4 py-3">{{ p.gst }}</td>
                     <td class="px-4 py-3">
                       {{ p.total.itemPrice | currency: "INR" }}
                     </td>

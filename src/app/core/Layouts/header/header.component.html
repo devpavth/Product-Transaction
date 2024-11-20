@@ -124,7 +124,10 @@
           </svg> -->
 
           <!-- <h1 class="px-2 text-white">Branch : {{ userData?.branchName }}</h1> -->
-           <h1 class="px-2 text-white">Login Time: {{loginTime | date: 'medium'}}</h1>
+          <div class="flex flex-col items-start space-y-1">
+            <small class="text-white">Login Time: {{ loginTime | date: 'medium' }}</small>
+            <small class="text-white">Hi, {{ userData?.username }}</small>
+          </div>
         <!-- </div> -->
         <!-- <button
           type="button"

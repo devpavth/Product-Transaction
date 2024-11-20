@@ -15,10 +15,10 @@ export class AuthService {
     return this.authHttp.post(environment.login, data);
   }
 
-  verifiedID(Id: any){
-    let userId = new HttpParams();
-    userId = userId.append('empId', Id);
-    return this.authHttp.post(environment.verifiedID, '', {params: userId});
+  verifiedUser(Id: any){
+    // let userId = new HttpParams();
+    // userId = userId.append('username', Id);
+    return this.authHttp.post(environment.verifiedUser + Id, '');
   }
 
   getToken(): string | null{

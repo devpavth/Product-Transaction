@@ -2,6 +2,7 @@ import { Component, Input, Output, EventEmitter, inject } from '@angular/core';
 import { ProductService } from '../../core/components/service/product.service';
 import { VendorService } from '../../core/components/service/vendor/vendor.service';
 import { CustomerService } from '../../core/components/service/Customer/customer.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-delete',
@@ -13,6 +14,7 @@ export class DeleteComponent {
   @Output() close = new EventEmitter<boolean>();
 
   private customerService = inject(CustomerService);
+  private route = inject(Router);
 
   constructor(
     // private funderService: FunderService,
@@ -42,6 +44,8 @@ export class DeleteComponent {
       this.productService.deleteProduct(this.deleteData.deleteId).subscribe(
         (res) => {
           console.log(res);
+          // this.route.navigate(['/home/productList']);
+          this.close.emit(false);
         },
         (error) => {
           if (error.status == 200) {
@@ -55,6 +59,8 @@ export class DeleteComponent {
       this.vendorService.deleteVendor(this.deleteData.deleteId).subscribe(
         (res) => {
           console.log("Deleting vendor details:",res);
+          // this.route.navigate(['/home/vendorList']);
+          this.close.emit(false);
         },
         (error) => {
           console.log("error while deleting vendor:", error);
@@ -102,6 +108,8 @@ export class DeleteComponent {
       this.customerService.deleteCustomer(this.deleteData.deleteId).subscribe(
         (res) => {
           console.log("Deleting customer details:",res);
+          // this.route.navigate(['/home/customerList']);
+          this.close.emit(false);
         },
         (error) => {
           console.log("error while deleting customer:", error);

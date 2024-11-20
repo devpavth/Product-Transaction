@@ -151,6 +151,7 @@ export class ViewProductComponent {
     this.productService.updateProduct(id, data).subscribe(
       (res) => {
         console.log("Updating Product from backend service:",res);
+        // this.route.navigate(['/home/productList']);
       },
       (error) => {
         console.log("error while updating product:",error);

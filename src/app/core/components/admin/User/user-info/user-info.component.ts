@@ -28,19 +28,19 @@ export class UserInfoComponent {
     // if (sessionStorage.getItem('userId')) {
     //   this.Router.navigate(['home/dashboard']);
     // }
-    // const storedUser = sessionStorage.getItem('userData');
-    // console.log("loading...",sessionStorage.getItem('userData'));
-    // console.log("storeee user:", storedUser)
-    // if(storedUser){
-    //   const parsedUserData = JSON.parse(storedUser);
-    //   const companyId = parsedUserData.companyId;
-    //   console.log("user login data in userinfo component:", parsedUserData);
-    //   this.loginForm.patchValue({
-    //     companyId: parsedUserData.companyId,
-    //     username: parsedUserData.username,
-    //     password: parsedUserData.password,
-    //   });
-    // }
+    const storedUser = sessionStorage.getItem('userData');
+    console.log("loading...:",sessionStorage.getItem('userData'));
+    console.log("storeee user:", storedUser)
+    if(storedUser){
+      const parsedUserData = JSON.parse(storedUser);
+      const companyId = parsedUserData.companyId;
+      console.log("user login data in userinfo component:", parsedUserData);
+      this.loginForm.patchValue({
+        companyId: parsedUserData.companyId,
+        username: parsedUserData.username,
+        password: parsedUserData.password,
+      });
+    }
     // console.log("stored user:", storedUser);
     
     Object.keys(this.loginForm.controls).forEach((form) => {

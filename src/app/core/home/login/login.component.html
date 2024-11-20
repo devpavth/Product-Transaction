@@ -26,7 +26,7 @@
   
         <form [formGroup]="loginForm">
           <div class="mb-2">
-            <label class="font-semibold text-white"> User ID </label>
+            <label class="font-semibold text-white">Username</label>
           </div>
           <div class="mb-4">
             <div class="relative">
@@ -63,7 +63,7 @@
               <!-- <input type="text" formControlName="employeeId" (change)="verifiedUser(id.value)"  #id ngClass="'isVerfied==302':error" class="w-full pl-12 pr-3  py-2 text-gray-500 bg-transparent outline-none border group/input focus:border-blue-600 shadow-sm rounded-lg" /> -->
             </div>
             <small *ngIf="isVerfied === 404" class=""
-              ><span #incorrect class="text-red-600">User Id Incorrect</span>
+              ><span #incorrect class="text-yellow-200">Invaild username</span>
             </small>
             <div class="mt-2 flex items-center gap-2" *ngIf="isVerfied === 302">
               <svg
@@ -155,8 +155,8 @@
           <div class="mt-6 text-center">
             <button
               (click)="login(loginForm.value)"
-              [disabled]="loginForm.invalid"
-              [ngClass]="{ 'diabale-login ': loginForm.invalid }"
+              [disabled]="loginForm.invalid || passwordEnabled === false"
+              [ngClass]="{ 'disable-login': loginForm.invalid }"
               type="submit"
               class="mb-2 me-2 w-full rounded-lg bg-blue-700 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:scale-105 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
             >
