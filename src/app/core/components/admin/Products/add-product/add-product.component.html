@@ -241,7 +241,7 @@
                   <label
                     for="brand"
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >Product Name</label
+                    >Product</label
                   >
                   <input
                     type="text"
@@ -263,6 +263,34 @@
                     class="text-danger text-red-600"
                   >
                     Product Required!
+                  </small>
+                </div>
+                <div class="col-span-2">
+                  <label
+                    for="brand"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Model Number</label
+                  >
+                  <input
+                    type="text"
+                    formControlName="productModel"
+                    class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                    placeholder=""
+                    [ngClass]="{
+                      error:
+                        ProductForm.get('productModel')?.invalid &&
+                        ProductForm.get('productModel')?.touched
+                    }"
+                    required
+                  />
+                  <small
+                    *ngIf="
+                      ProductForm?.get('productModel')?.invalid &&
+                      ProductForm?.get('productModel')?.touched
+                    "
+                    class="text-danger text-red-600"
+                  >
+                    Model Required!
                   </small>
                 </div>
                 <!-- <div class="col-span-2">
@@ -384,13 +412,13 @@
                 <div class="col-span-2">
                   <label
                     class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                    >Minimum Quantity</label
+                    >Quantity</label
                   >
                   <input
                     type="text"
                     formControlName="productQuantity"
                     class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
-                    placeholder="eg:456789"
+                    placeholder=""
                     [ngClass]="{
                       error:
                         ProductForm.get('productQuantity')?.invalid &&

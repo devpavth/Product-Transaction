@@ -124,22 +124,22 @@
           </div>
         </div>
         <div class="flex">
-          <button (click)="fetchProductList(1)" class="mx-4 mb-4 flex gap-2">
+          <!-- <button (click)="fetchProductList(1)" class="mx-4 mb-4 flex gap-2">
             <h1 class="text-sm font-semibold">Active Product</h1>
-            <!-- <span
+            <span
               class="me-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-sm text-sm font-semibold text-gray-50"
             >
               1
-            </span> -->
-          </button>
-          <button (click)="fetchProductList(2)" class="mx-4 mb-4 flex gap-2">
+            </span>
+          </button> -->
+          <!-- <button (click)="fetchProductList(2)" class="mx-4 mb-4 flex gap-2">
             <h1 class="text-sm font-semibold">Other Product</h1>
             <span
               class="me-2 inline-flex h-5 w-5 items-center justify-center rounded-full bg-red-600 text-sm font-semibold text-gray-50"
             >
               {{ otherPrdLen }}
             </span>
-          </button>
+          </button> -->
         </div>
 
         <div class="overflow-x-auto" #test>
@@ -175,6 +175,7 @@
                   </div>
                 </th> -->
 
+                <th scope="col" class="px-4 py-3">Product Code</th>
                 <th scope="col" class="px-4 py-3">Product Name</th>
                 <th scope="col" class="px-4 py-3">Description</th>
                 <th scope="col" class="px-4 py-3">Quantity</th>
@@ -191,6 +192,7 @@
                 class="border-b transition-all duration-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700"
               >
                 <td class="px-4 py-3">{{ getSerialNumber(i) }}</td>
+                <td class="px-4 py-3">{{ p.productCode }}</td>
                 <td class="px-4 py-3">{{ p.productName }}</td>
                 <td class="px-4 py-3">{{ p.productDescription }}</td>
                 <td class="px-4 py-3">{{ p.productQuantity }}</td>

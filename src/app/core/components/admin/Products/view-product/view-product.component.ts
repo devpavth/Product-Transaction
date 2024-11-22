@@ -17,13 +17,15 @@ export class ViewProductComponent {
   @Output() closeProduct = new EventEmitter<boolean>();
   @Input() productData: any;
 
-  productId: string = '';
+  // productId: string = '';
   addingData: any;
   isCloseAdding: boolean = false;
   isSave: boolean = false;
   isEdit: boolean = true;
   isSaveIcon: boolean = true;
   isDelete: boolean = false;
+
+  totalPrice: number = 0;
 
   isStockView: boolean = false;
   deleteProduct: any;
@@ -47,19 +49,16 @@ export class ViewProductComponent {
     private route: Router
   ) {
     this.UpdateProductForm = this.fb.group({
-      // prdGrpId: [],
-      // prdCatgId: [],
-      // prdBrndId: [],
       productId: [],
       productName: [],
+      productModel: [],
+      productCode: [],
       productDescription: [],
-      // prdUnit: [],
       productHsn: [],
       productPrice: [],
       productGstRate: [],
       productQuantity: [],
-      // prdClosingStock: [],
-      // prdTotalValue: [],
+      totalValue: [],
       prdStatus: [200],
     });
   }
@@ -100,6 +99,12 @@ export class ViewProductComponent {
     this.isEdit = false;
   }
 
+  calculatePrice(price: any){
+    console.log("testing...:", this.productData);
+    console.log("testing price...:", price);
+    this.totalPrice = this.productData.productQuantity * price;
+  }
+
   // fetchGroupList() {
   //   this.productService.groupList().subscribe((res) => {
   //     this.groupList = res;
@@ -134,19 +139,19 @@ export class ViewProductComponent {
     }
   }
 
-  toggleStockView(check: number, isView: boolean) {
-    if (check == 1) {
-      this.isStockView = isView;
-      this.productId = this.productData.productId;
-      console.log(this.productId);
-    } else if (check == 0) {
-      this.isStockView = isView;
-    }
-  }
+  // toggleStockView(check: number, isView: boolean) {
+  //   if (check == 1) {
+  //     this.isStockView = isView;
+  //     this.productId = this.productData.productId;
+  //     console.log(this.productId);
+  //   } else if (check == 0) {
+  //     this.isStockView = isView;
+  //   }
+  // }
   onUpdateProduct(data: any) {
     console.log("Update product data:",data);
     let id = this.UpdateProductForm.get('productId')?.value;
-    console.log(id);
+    console.log("checking id...:",id);
 
     this.productService.updateProduct(id, data).subscribe(
       (res) => {

@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { VendorService } from '../../../service/vendor/vendor.service';
 import { CustomerService } from '../../../service/Customer/customer.service';
+import { TransactionService } from '../../../service/Transaction/transaction.service';
 
 @Component({
   selector: 'app-stock',
@@ -47,10 +48,13 @@ export class StockComponent {
 
   totalItem: number = 0;
 
+  idToPass: string | null = null;
+
   isSuccess: boolean = false;
   transactionID: object = {};
 
   private customerService = inject(CustomerService);
+  private transactionService = inject(TransactionService);
 
   constructor(
     // private branchService: BranchService,
@@ -60,18 +64,19 @@ export class StockComponent {
     private vendorService: VendorService,
   ) {
     this.inwardFormHeader = this.fb.group({
-      tranRefNo: [''],
       inwardFromCode: [''],
-      branchId: [''],
       vendorId: [''],
+      customerId: [''],
     });
     this.inwardForm = this.fb.group({
-      productId: [],
-      prdUnit: [],
-      itemprebox: [],
-      prdQty: [],
-      purchasedPrice: [],
-      gstPercentage: [],
+      // productId: [],
+      // vendorId: [],
+      // customerId: [],
+      searchInput: [],
+      product: [],
+      quantity: [],
+      price: [],
+      gst: [],
     });
     if (this.isBox) {
       this.inwardForm.addControl(
@@ -85,6 +90,19 @@ export class StockComponent {
     this.fetchAllBranch();
     this.fetchVendorList();
     this.fetchCustomerList();
+    this.inwardFormHeader.valueChanges.subscribe((formValues) => {
+      console.log("Form values updated reactively:", formValues);
+  
+      if (formValues.vendorId) {
+        this.idToPass = formValues.vendorId;
+      } else if (formValues.customerId) {
+        this.idToPass = formValues.customerId;
+      }
+  
+      if (this.idToPass) {
+        console.log("ID to pass to addTransaction method (reactive):", this.idToPass);
+      }
+    });
   }
   fetchAllBranch() {
     // this.branchService.getBranch().subscribe((res) => {
@@ -94,29 +112,69 @@ export class StockComponent {
     // });
   }
 
-  fetchProductData(data: string) {
-    // this.productService.getProductByCode(data).subscribe((res) => {
-    //   console.log(res);
-    //   this.productData = res;
-    //   this.inwardForm.patchValue({
-    //     productId: this.productData.productId,
-    //     prdUnit: this.productData.prdUnit,
+  fetchProductData() {
 
-    //     prdQty: this.productData.prouctId,
-    //     purchasedPrice: this.productData.prdPurchasedPrice,
-    //     gstPercentage: this.productData.prdGstPct,
-    //   });
+    const searchInputValue = this.inwardForm.get('searchInput')?.value || '';
+
+    console.log("search Input:", searchInputValue);
+    const searchCriteria: { [key: string]: string } = {};
+
+    if (this.isProductName(searchInputValue)) {
+      searchCriteria['productName'] = searchInputValue;
+    } else if (this.isProductModel(searchInputValue)) {
+      searchCriteria['productModel'] = searchInputValue;
+    }  else {
+      searchCriteria['productDescription'] = searchInputValue;
+    }
+  
+    console.log("Search criteria being sent:", searchCriteria);
+    
+    
+    this.transactionService.searchTransaction(searchCriteria).subscribe((res) => {
+      console.log("fetching product data from search",res);
+      // this.productData = res;
+      // this.inwardForm.patchValue({
+      //   productId: this.productData.productId,
+      //   prdUnit: this.productData.prdUnit,
+
+      //   prdQty: this.productData.prouctId,
+      //   purchasedPrice: this.productData.prdPurchasedPrice,
+      //   gstPercentage: this.productData.prdGstPct,
+      // });
       
       // if (this.inwardForm.get('prdUnit')?.value == 200) {
       //   this.isBox = true;
       //   this.updateForm();
       // }
-    // });
+    },
+    (error) => {
+      console.error("Error in search field:", error);
+    });
   }
+
+  isProductName(input: string): boolean {
+    return /^[a-zA-Z\s]+$/.test(input); 
+  }
+
+  isProductModel(input: string): boolean {
+    return /^[A-Z0-9]+$/.test(input); 
+  }
+
+  // isProductDescription(input: string){
+  //   return /^[a-zA-Z\s]+$/.test(input); 
+  // }
+  
   fetchVendorList() {
     this.vendorService.getAllVendor().subscribe((res) => {
       console.log("vendor data from backend",res);
       this.vendorList = res;
+      console.log("fetching vendor list:", this.vendorList.vendorId);
+      // let id = this.inwardForm.get('vendorId')?.value;
+      // console.log("checking id...:",id);
+      const gettingVendorId = this.vendorList.map((vendor: any)=>{
+        return vendor.vendorId;
+      })
+      console.log("checking id...:", gettingVendorId);
     });
   }
 
@@ -124,6 +182,14 @@ export class StockComponent {
     this.customerService.getAllCustomer().subscribe((res) => {
       console.log("customer data from backend",res);
       this.customerList = res;
+      console.log("fetching customer list:",this.customerList.customerId);
+
+      const customerIds = this.customerList.map((cus: any)=>{
+        return cus.customerId;
+      })
+  
+      console.log("All customer Ids:", customerIds);
+
     },(error) => {
       console.log("error while getting customer details:",error);
     });
@@ -268,6 +334,23 @@ export class StockComponent {
     //   },
     // );
   }
+
+  saveInwardOrOutward(data: any){
+    console.log("transaction data: ",data);
+
+    if(!this.idToPass){
+      console.log("error while getting id");
+      return;
+    }
+
+
+    this.transactionService.addTransaction(data).subscribe((res)=>{
+      console.log("saving transaction to the database:", res)
+    },(error) => {
+      console.log("error while saving data to the database:", error);
+    })
+  }
+
   resetComponent() {
     this.inwardFormHeader.reset();
     this.inwardForm.reset();

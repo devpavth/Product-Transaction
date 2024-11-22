@@ -1,6 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { ProductService } from '../../../service/product.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-add-product',
@@ -34,6 +35,8 @@ export class AddProductComponent {
     { id: 200, name: 'Box', term: 'Box' },
   ];
 
+  private route = inject(Router);
+
   ProductForm: FormGroup;
 
   constructor(
@@ -45,6 +48,7 @@ export class AddProductComponent {
       // prdCatgId: [],
       // prdBrndId: [],
       productName: [],
+      productModel: [],
       productDescription: [],
       // prdUnit: [],
       productHsn: [],
@@ -99,6 +103,7 @@ export class AddProductComponent {
     this.productService.postProduct(data).subscribe(
       (res) => {
         console.log("Product User added:",res);
+        this.route.navigate(['/home/productList']);
       },
       (error) => {
         console.log("Error adding product details:",error);

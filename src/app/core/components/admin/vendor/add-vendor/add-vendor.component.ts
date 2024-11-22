@@ -106,6 +106,7 @@ export class AddVendorComponent {
     this.vendorService.addVendor(data).subscribe(
       (res) => {
         console.log("saving vendor data to the server:",res);
+        this.route.navigate(['/home/vendorList']);
         this.addVendorForm.reset();
       },
       (error) => {

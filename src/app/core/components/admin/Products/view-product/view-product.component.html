@@ -221,7 +221,7 @@
               <label
                 for="brand"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >Product Name</label
+                >Product</label
               >
               <input
                 type="text"
@@ -240,36 +240,44 @@
                 Product required!
               </small>
             </div>
-            <!-- <div class="col-span-2">
+            <div class="col-span-4">
               <label
                 for="brand"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >Unit of Material</label
+                >Product Code</label
               >
-              <select
-                formControlName="prdUnit"
-                class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                [ngClass]="{
-                  error:
-                    UpdateProductForm.get('prdUnit')?.invalid &&
-                    UpdateProductForm.get('prdUnit')?.touched
-                }"
-                required
+              <input
+                type="text"
+                formControlName="productCode"
+                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                placeholder="eg:Laptop"
+                readonly
+              />
+            </div>
+            <div class="col-span-2">
+              <label
+                for="brand"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Model Number</label
               >
-                <option *ngFor="let u of units" value="{{ u.id }}">
-                  {{ u.name }}
-                </option>
-              </select>
+              <input
+                type="text"
+                formControlName="productModel"
+                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                placeholder=""
+                readonly
+              />
               <small
                 *ngIf="
-                  UpdateProductForm?.get('prdUnit')?.invalid &&
-                  UpdateProductForm?.get('prdUnit')?.touched
+                  UpdateProductForm?.get('productModel')?.invalid &&
+                  UpdateProductForm?.get('productModel')?.touched
                 "
                 class="text-danger text-red-600"
               >
-                UnitPrice Required!
+                Model required!
               </small>
-            </div> -->
+            </div>
+            
             <div class="col-span-2">
               <label
                 for="price"
@@ -280,7 +288,7 @@
                 type="number"
                 formControlName="productHsn"
                 class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                placeholder="$2999"
+                placeholder="₹2999"
                 readonly
               />
               <small
@@ -301,9 +309,10 @@
               >
               <input
                 type="number"
+                (change)="calculatePrice(UpdateProductForm.get('productPrice')?.value)"
                 formControlName="productPrice"
                 class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                placeholder="$2999"
+                placeholder="₹2999"
                 [ngClass]="{
                   error:
                     UpdateProductForm.get('productPrice')?.invalid &&
@@ -344,6 +353,43 @@
               </select>
               <small class="text-danger text-red-600"> </small>
             </div>
+            <div class="col-span-3">
+              <label
+                for="brand"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Quantity</label
+              >
+              <input
+                type="text"
+                formControlName="productQuantity"
+                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                placeholder="eg:456789"
+                readonly
+              />
+              <small
+                *ngIf="
+                  UpdateProductForm?.get('productQuantity')?.invalid &&
+                  UpdateProductForm?.get('productQuantity')?.touched
+                "
+                class="text-danger text-red-600"
+              >
+                Quantity Required!
+              </small>
+            </div>
+            <div class="col-span-3">
+              <label
+                for="brand"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Total Price</label
+              >
+              <input
+                type="text"
+                formControlName="totalValue"
+                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                value="{{totalPrice}}"
+                readonly
+              >
+            </div>
             <div class="sm:col-span-full">
               <label
                 for="description"
@@ -368,29 +414,7 @@
                 Description Required!
               </small>
             </div>
-            <div class="col-span-3">
-              <label
-                for="brand"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >Minimum Quantity</label
-              >
-              <input
-                type="text"
-                formControlName="productQuantity"
-                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                placeholder="eg:456789"
-                readonly
-              />
-              <small
-                *ngIf="
-                  UpdateProductForm?.get('productQuantity')?.invalid &&
-                  UpdateProductForm?.get('productQuantity')?.touched
-                "
-                class="text-danger text-red-600"
-              >
-                Quantity Required!
-              </small>
-            </div>
+            
             <!-- <div class="col-span-full mt-6">
               <button
                 (click)="toggleStockView(1, true)"

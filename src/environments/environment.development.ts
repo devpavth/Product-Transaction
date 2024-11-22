@@ -27,5 +27,6 @@ export const environment = {
     updateCustomer: Url + 'CustomerUpdate/',
     updateAddress: Url + 'Address/',
 
-    addTransaction: Url + 'TransactionDetail'
+    addTransaction: Url + 'TransactionDetail',
+    searchTransaction: Url + 'Search',
 };
