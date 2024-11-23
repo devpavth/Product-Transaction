@@ -15,6 +15,10 @@ export class ViewCustomerComponent {
   isSave = false;
   isEdit = true;
   isSaveIcon = true;
+  isSaveAddress = false;
+  isEditAddress = true;
+  isSaveIconAddress = true;
+  isEditMode: boolean = false;
   deleteVendor: any;
   isDelete: boolean = false;
   isAddressList: Boolean = false;
@@ -105,8 +109,20 @@ export class ViewCustomerComponent {
     this.addresses.push(this.showBankData());
   }
   edit() {
+
+    const editableControls = [
+      'customerName',
+      'contactEmail',
+      'contactPhone',
+      'contactPerson',
+    ]
+
     Object.keys(this.UpdateVendorForm.controls).forEach((form) => {
-      this.UpdateVendorForm.get(form)?.enable();
+      if(editableControls.includes(form)){
+        this.UpdateVendorForm.get(form)?.enable();
+      }else{
+        this.UpdateVendorForm.get(form)?.disable();
+      }
     });
     this.isSave = true;
     this.isEdit = false;
@@ -128,6 +144,23 @@ export class ViewCustomerComponent {
         }
       },
     );
+  }
+
+  editAddress(){
+    const editableAddressControls = [
+      'addresses',
+    ]
+
+    Object.keys(this.UpdateVendorForm.controls).forEach((form) => {
+      if(editableAddressControls.includes(form)){
+        this.UpdateVendorForm.get(form)?.enable();
+      }else{
+        this.UpdateVendorForm.get(form)?.disable();
+      }
+    });
+    this.isEditMode = true;
+    this.isSaveAddress = true;
+    this.isEditAddress = false;
   }
 
   useBillingAddress(event: Event, index: number){
@@ -157,6 +190,25 @@ export class ViewCustomerComponent {
         statusCode: 400,
       })
     }
+  }
+
+  updateCustomerAddressDetails(data: any) {
+    console.log("updating customer address details data:",data);
+    let id = this.UpdateVendorForm.get('customerId')?.value;
+    console.log(id);
+    this.isEditMode = false;
+
+    this.customerService.updateAddress(id, data).subscribe(
+      (res) => {
+        console.log("updating customer address details:",res);
+      },
+      (error) => {
+        console.log("error while updating customer address details:",error);
+        if (error.status == 200) {
+          this.route.navigate(['/home/customerList']);
+        }
+      },
+    );
   }
   getBranchName() {
     // this.branchService.getBranch().subscribe((res) => {
@@ -193,14 +245,14 @@ export class ViewCustomerComponent {
     );
   }
 
-  toggleView(action: Boolean, check: number, customerAddressData: any) {
-    if (check == 1) {
-      this.isAddressList = action;
-      this.customerAddressData = customerAddressData;
-    }
-    if (check == 0) {
-      this.isAddressList = action;
-      this.fetchallcustomer();
-    }
-  }
+  // toggleView(action: Boolean, check: number, customerAddressData: any) {
+  //   if (check == 1) {
+  //     this.isAddressList = action;
+  //     this.customerAddressData = customerAddressData;
+  //   }
+  //   if (check == 0) {
+  //     this.isAddressList = action;
+  //     this.fetchallcustomer();
+  //   }
+  // }
 }

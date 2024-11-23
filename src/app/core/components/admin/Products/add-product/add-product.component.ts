@@ -97,6 +97,10 @@ export class AddProductComponent {
     // });
   }
 
+  openHsnLink(){
+    window.open('https://cleartax.in/s/gst-hsn-lookup', '_blank')
+  }
+
   onSubmit(data: any) {
     console.log("add product data:",data);
 

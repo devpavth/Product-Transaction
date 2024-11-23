@@ -13,6 +13,10 @@ export class TransactionService {
     return this.transHttp.post(environment.addTransaction, data);
   }
 
+  addOutwardTransaction(data: any){
+    return this.transHttp.post(environment.addOutwardTransaction, data);
+  }
+
   searchTransaction(params: { [key: string]: string }){
     let httpParams = new HttpParams();
     Object.keys(params).forEach((key) => {

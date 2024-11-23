@@ -26,6 +26,7 @@ export class ViewProductComponent {
   isDelete: boolean = false;
 
   totalPrice: number = 0;
+  totalPriceWithGst: number = 0;
 
   isStockView: boolean = false;
   deleteProduct: any;
@@ -59,6 +60,7 @@ export class ViewProductComponent {
       productGstRate: [],
       productQuantity: [],
       totalValue: [],
+      totalPriceWithGst: [],
       prdStatus: [200],
     });
   }
@@ -103,6 +105,8 @@ export class ViewProductComponent {
     console.log("testing...:", this.productData);
     console.log("testing price...:", price);
     this.totalPrice = this.productData.productQuantity * price;
+    this.totalPriceWithGst = this.totalPrice * this.productData.productGstRate;
+    console.log("totalPriceWithGst:", this.totalPriceWithGst);
   }
 
   // fetchGroupList() {
