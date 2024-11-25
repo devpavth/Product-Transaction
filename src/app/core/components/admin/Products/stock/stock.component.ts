@@ -258,18 +258,75 @@ export class StockComponent {
     this.inwardForm.patchValue({ totalPieces: this.totalItem });
   }
 
-  addProductList() {
-    console.log("Adding item to the product list:");
+  addProductList(data: any) {
+    console.log("Adding item to the product list:", data);
 
-    this.productView = true;
+    // this.productView = true;
 
-    
+    const getProductDetail = data.product_details?.[0];
 
-    // console.log(this.productList);
+    // if (!getProductDetail || !getProductDetail.product) {
+    //   console.error("No valid product details found in data.");
+    //   return;
+    // }
+
+    const existingProductIndex = this.productList.findIndex(
+      (product) => product.productId === getProductDetail.product,
+    );
+
+    const matchingProduct = this.productData.find(
+      (product: any) => product.productId === getProductDetail.product,
+    )
+
+    console.log("existing Product Index:", existingProductIndex);
+
+    const isduplicateEntry = this.productList.some(
+      (product) => product.product === data.product_details[0].product,
+    )
+
+    if(isduplicateEntry){
+      console.log("Duplicate entry detected. Product already exists:", data.product_details[0].product);
+    }
+
+    if (existingProductIndex !== -1) {
+      // Product exists, update the quantity and total
+      let existingProduct = this.productList[existingProductIndex];
+      existingProduct.quantity += getProductDetail.quantity; // Update quantity
+      // existingProduct.total = this.shared.gstCalculation(
+      //   existingProduct.prdQty,
+      //   existingProduct.purchasedPrice,
+      //   existingProduct.gstPercentage,
+      // ); // Recalculate total
+
+      // Update the product in the productList array
+      this.productList[existingProductIndex] = existingProduct;
+    } else {
+      // let total = this.shared.gstCalculation(
+      //   data.prdQty,
+      //   data.purchasedPrice,
+      //   data.gstPercentage,
+      // );
+      this.productList.push({
+        ...data,
+        product: getProductDetail.product,
+        gst: getProductDetail.gst,
+        quantity: getProductDetail.quantity,
+        price: getProductDetail.price,
+        productCode: matchingProduct.productCode,
+        productName: matchingProduct.productName,
+        productModel: matchingProduct.productModel,
+        productQuantity: matchingProduct.productQuantity,
+        productGstRate: matchingProduct.productGstRate,
+        productPrice: matchingProduct.productPrice
+      });
+      // console.log(total);
+    }
+
+    console.log("Updated Product List:", this.productList);
 
     // this.inwardForm.reset();
-    // this.productData = '';
-    // this.isBox = false;
+    this.productData = '';
+    this.isBox = false;
   }
 
   // inwardHeader(data: any) {
@@ -358,8 +415,10 @@ export class StockComponent {
       this.transactionService.addTransaction(data).subscribe((res)=>{
         console.log("saving transaction to the database:", res);
         this.inwardForm.reset();
+        this.productList = [];
       },(error) => {
         console.log("error while saving data to the database:", error);
+        this.productList = [];
       })
     }
     
@@ -368,10 +427,18 @@ export class StockComponent {
       this.transactionService.addOutwardTransaction(data).subscribe((res)=>{
         console.log("saving outward transaction to the database:", res);
         this.inwardForm.reset();
+        this.productList = [];
       }, (error) => {
         console.log("error while fetching outward data:", error);
+        this.productList = [];
       })
     }  
+  }
+
+  deleteItem(product: any){
+    this.productList = this.productList.filter(p => p.product !== product.product);
+    // this.inwardForm.reset();
+    console.log("Deleting product item:", this.productList);
   }
 
   resetComponent() {
