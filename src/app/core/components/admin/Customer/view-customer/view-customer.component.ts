@@ -136,6 +136,7 @@ export class ViewCustomerComponent {
     this.customerService.updateCustomer(id, data).subscribe(
       (res) => {
         console.log("updating customer details:",res);
+        this.closeVendor.emit(false);
       },
       (error) => {
         console.log("error while updating customer details:",error);
@@ -201,6 +202,7 @@ export class ViewCustomerComponent {
     this.customerService.updateAddress(id, data).subscribe(
       (res) => {
         console.log("updating customer address details:",res);
+        this.closeVendor.emit(false);
       },
       (error) => {
         console.log("error while updating customer address details:",error);

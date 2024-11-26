@@ -160,6 +160,7 @@ export class ViewProductComponent {
     this.productService.updateProduct(id, data).subscribe(
       (res) => {
         console.log("Updating Product from backend service:",res);
+        this.closeProduct.emit(false);
         // this.route.navigate(['/home/productList']);
       },
       (error) => {

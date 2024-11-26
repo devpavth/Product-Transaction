@@ -29,4 +29,6 @@ export const environment = {
     addTransaction: Url + 'TransactionDetail',
     searchTransaction: Url + 'Search',
     addOutwardTransaction: Url + 'TransactionOutDetail',
+
+    pagination: Url + 'Product',
 };

@@ -155,7 +155,7 @@ export class StockComponent {
     this.transactionService.searchTransaction(searchCriteria).subscribe((res: any) => {
       console.log("fetching product data from search",res.products);
       this.productData = Array.isArray(res.products) ? res.products : [];
-      console.log("to fetch product data for productId:",this.productData);
+      console.log("to fetch product data for productId:", this.productData);
       console.log("for productId:",this.productData.products);
 
       while (this.productDetails.length > 0){

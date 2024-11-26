@@ -122,6 +122,7 @@ export class ViewVendorComponent {
     this.vendorService.updateBank(id, data).subscribe(
       (res) => {
         console.log("updating bank details:",res);
+        this.closeVendor.emit(false);
       },
       (error) => {
         console.log("error while updating bank details:",error);
@@ -139,6 +140,7 @@ export class ViewVendorComponent {
     this.vendorService.updateVendor(id, data).subscribe(
       (res) => {
         console.log("updating vendor details:",res);
+        this.closeVendor.emit(false);
       },
       (error) => {
         console.log("error while updating details:",error);

@@ -23,27 +23,33 @@ export class ProductListComponent {
   }
   constructor(private productService: ProductService) {}
   fetchProductList(data: number) {
-    const startIndex = (this.currentPage - 1) * this.itemsPerPage;
-    const endIndex = startIndex + this.itemsPerPage;
-    this.productService.getAllProduct().subscribe((res: any) => {
+
+    const queryParams = { 
+      page: this.currentPage.toString(), 
+      size: this.itemsPerPage.toString() 
+    };
+    
+    // const startIndex = (this.currentPage - 1) * this.itemsPerPage;
+    // const endIndex = startIndex + this.itemsPerPage;
+    this.productService.getAllProduct(queryParams).subscribe((res: any) => {
       console.log("product list:", res);
-      this.list = res;
-      this.listLength = this.list.length;
-      let list: any[] = res;
-      this.otherPrdLen = list.filter((m) => m.prdStatus == 303).length;
+      this.list = res.results || [];
+      this.listLength = res.count;
+      console.log("product list length to find:", this.listLength);
+      // this.otherPrdLen = list.filter((m) => m.prdStatus == 303).length;
       this.Spinner = false;
       switch (data) {
         case 1: {
-          this.productList = list
-            .filter((m) => m.prdStatus == 200)
-            .slice(startIndex, endIndex);
+          this.productList = this.list
+            .filter((product: any) => product.prdStatus == 200)
+            // .slice(startIndex, endIndex);
           break;
         }
         case 2: {
-          this.productList = list
-            .filter((m) => m.prdStatus == 303)
-            .slice(startIndex, endIndex);
-          console.log('Hello');
+          this.productList = this.list
+            .filter((m: any) => m.prdStatus == 303)
+            // .slice(startIndex, endIndex);
+          // console.log('Hello');
           break;
         }
       }
@@ -60,7 +66,7 @@ export class ProductListComponent {
     return (this.currentPage - 1) * this.itemsPerPage + 1;
   }
   get endPage(): number {
-    return Math.min(this.currentPage * this.itemsPerPage, this.listLength);
+    return Math.min(this.currentPage * this.itemsPerPage, this.listLength || 0);
   }
   toggleView(action: Boolean, check: number, productData: any) {
     if (check == 1) {
