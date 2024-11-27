@@ -301,9 +301,32 @@
                           placeholder="Search"
                           required=""
                         />
+                        <div *ngIf="noResults" class="absolute mt-1 text-sm text-red-600">
+                          <small>No Products found.</small>
+                        </div>
+                        <ul 
+                          *ngIf="storeProductData && 
+                          storeProductData.length > 0 &&
+                          inwardForm.get('inwardFromCode')?.value == 268 || 
+                          inwardForm.get('inwardFromCode')?.value == 269" 
+                          class="absolute z-10 w-full mt-1 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                          <li 
+                            *ngFor="let prod of storeProductData"
+                            (click)="onSelectProduct(prod)"
+                            class="px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600"
+                            >
+                              <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 268">
+                                {{prod.productName}} - {{prod.productDescription}} - {{prod.productModel}}
+                              </ng-container>
+                              <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 269">
+                                {{prod.productName}} - Qty:{{prod.productQuantity}}
+                              </ng-container>
+                          </li>
+                        </ul>
                       </div>
   
-                      <div>
+                      <!-- <div>
                         <button
                           (click)="fetchProductData()"
                           type="button"
@@ -311,7 +334,7 @@
                         >
                           Search
                         </button>
-                      </div>
+                      </div> -->
                     </div>
                   </div>
                 </div>
@@ -445,7 +468,7 @@
                           type="number"
                           formControlName="price"
                           class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                          placeholder="₹2999"
+                          placeholder=""
                           required
                         />
                       </div>

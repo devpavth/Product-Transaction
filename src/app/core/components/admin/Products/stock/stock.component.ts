@@ -3,6 +3,8 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { VendorService } from '../../../service/vendor/vendor.service';
 import { CustomerService } from '../../../service/Customer/customer.service';
 import { TransactionService } from '../../../service/Transaction/transaction.service';
+import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { error } from 'console';
 
 @Component({
   selector: 'app-stock',
@@ -39,6 +41,9 @@ export class StockComponent {
   productData: any;
 
   productList: any[] = [];
+
+  storeProductData: any[] = [];
+  noResults: boolean = false;
 
   productView: boolean = false;
 
@@ -95,19 +100,46 @@ export class StockComponent {
 
     const now = new Date();
     this.today = now.toISOString().split('T')[0];
-    // this.inwardFormHeader.valueChanges.subscribe((formValues) => {
-    //   console.log("Form values updated reactively:", formValues);
-  
-    //   if (formValues.vendorId) {
-    //     this.idToPass = formValues.vendorId;
-    //   } else if (formValues.customerId) {
-    //     this.idToPass = formValues.customerId;
-    //   }
-  
-    //   if (this.idToPass) {
-    //     console.log("ID to pass to addTransaction method (reactive):", this.idToPass);
-    //   }
-    // });
+    
+    this.inwardForm.get('searchInput')?.valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap((productName) =>{
+          console.log("productName logging:", productName);
+          this.noResults = false;
+          this.storeProductData = [];
+          if(!productName?.trim()){
+            console.log("Empty input, clearing results.");
+            return of([]);
+          }
+          return this.transactionService.searchTransaction({productName}).pipe(
+            catchError((error) =>{
+              console.log("API Error:", error);
+              if (error.status === 404) {
+                this.noResults = true;
+              }
+              return of([]);
+            })
+          );
+        })
+      )
+      .subscribe(
+        (response : any) => {
+          this.storeProductData = response.products || [];
+          console.log("fetching product details:", this.storeProductData);
+          // console.log("fetching product details:",this.storeProductData);
+          // this.noResults = this.storeProductData.length === 0;
+        },
+        // (error)=>{
+        //   if(error.status == 404){
+        //     console.log("Error while fetching products:", error);
+        //     this.noResults = true;
+        //   } else{
+        //     console.log("Unexpected error:", error);
+        //   }
+        //   this.storeProductData = [];
+        // } 
+      )
   }
   fetchAllBranch() {
     // this.branchService.getBranch().subscribe((res) => {
@@ -134,6 +166,14 @@ export class StockComponent {
     this.productDetails.push(this.showBankData());
   }
 
+  onSelectProduct(product: any){
+    // const combinedValue = `${product.productName} - ${product.productDescription} - ${product.productModel}`
+    // this.inwardForm.get('searchInput')?.setValue('');
+    console.log("product:",product);
+    this.productData = [product];
+    this.storeProductData = [];
+  }
+
   fetchProductData() {
 
     const searchInputValue = this.inwardForm.get('searchInput')?.value || '';
@@ -143,11 +183,12 @@ export class StockComponent {
 
     if (this.isProductName(searchInputValue)) {
       searchCriteria['productName'] = searchInputValue;
-    } else if (this.isProductModel(searchInputValue)) {
-      searchCriteria['productModel'] = searchInputValue;
-    }  else {
-      searchCriteria['productDescription'] = searchInputValue;
-    }
+    } 
+    // else if (this.isProductModel(searchInputValue)) {
+    //   searchCriteria['productModel'] = searchInputValue;
+    // }  else {
+    //   searchCriteria['productDescription'] = searchInputValue;
+    // }
   
     console.log("Search criteria being sent:", searchCriteria);
     
@@ -264,6 +305,7 @@ export class StockComponent {
     // this.productView = true;
 
     const getProductDetail = data.product_details?.[0];
+    console.log("getProductDetail:",getProductDetail);
 
     // if (!getProductDetail || !getProductDetail.product) {
     //   console.error("No valid product details found in data.");
