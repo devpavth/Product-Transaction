@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormArray, Validators } from '@angular/forms';
 import { VendorService } from '../../../service/vendor/vendor.service';
 import { CustomerService } from '../../../service/Customer/customer.service';
 import { TransactionService } from '../../../service/Transaction/transaction.service';
-import { catchError, debounceTime, distinctUntilChanged, of, switchMap } from 'rxjs';
+import { catchError, debounceTime, distinctUntilChanged, of, Subscription, switchMap } from 'rxjs';
 import { error } from 'console';
 
 @Component({
@@ -16,7 +16,7 @@ export class StockComponent {
   inwardFormHeader: FormGroup;
   inwardForm: FormGroup;
 
-  customerList: any;
+  customerList: any[] = [];
 
   isBox: boolean = false;
   gstPercentages: number[] = [0, 5, 12, 18, 28];
@@ -44,10 +44,13 @@ export class StockComponent {
 
   storeProductData: any[] = [];
   noResults: boolean = false;
+  noVendor: boolean = false;
+  noCustomer: boolean = false;
+  selectedCustomerId: any;
 
   productView: boolean = false;
 
-  vendorList: any;
+  vendorList: any[] = [];
 
   header: any;
 
@@ -57,6 +60,14 @@ export class StockComponent {
 
   idToPass: string | null = null;
   today: string = '';
+
+  selectedProductId: any;
+  isProductSelected: boolean = false;
+  selectedVendorId: any;
+
+  isVendorSelected: boolean = false;
+  isCustomerSelected: boolean = false;
+  valueChangesSubscription: Subscription | undefined;
 
   isSuccess: boolean = false;
   transactionID: object = {};
@@ -95,8 +106,8 @@ export class StockComponent {
   }
   ngOnInit() {
     this.fetchAllBranch();
-    this.fetchVendorList();
-    this.fetchCustomerList();
+    // this.fetchVendorList();
+    // this.fetchCustomerList();
 
     const now = new Date();
     this.today = now.toISOString().split('T')[0];
@@ -106,6 +117,10 @@ export class StockComponent {
         debounceTime(300),
         switchMap((productName) =>{
           console.log("productName logging:", productName);
+          if(this.isProductSelected){
+            console.log("product already selected. Skipping API call.");
+            return of([]);
+          }
           this.noResults = false;
           this.storeProductData = [];
           if(!productName?.trim()){
@@ -127,8 +142,8 @@ export class StockComponent {
         (response : any) => {
           this.storeProductData = response.products || [];
           console.log("fetching product details:", this.storeProductData);
-          // console.log("fetching product details:",this.storeProductData);
           // this.noResults = this.storeProductData.length === 0;
+          this.isProductSelected = false;
         },
         // (error)=>{
         //   if(error.status == 404){
@@ -140,7 +155,121 @@ export class StockComponent {
         //   this.storeProductData = [];
         // } 
       )
+
+      this.inwardForm.get('inwardFromCode')?.valueChanges.subscribe((inwardFromCode) => {
+        console.log("inwardFromCode:", inwardFromCode);
+        if (this.valueChangesSubscription) {
+          console.log("this.valueChangesSubscription:",this.valueChangesSubscription);
+          this.valueChangesSubscription.unsubscribe();
+          console.log("after unsubscribe this.valueChangesSubscription:",this.valueChangesSubscription);
+        }
+
+        if(inwardFromCode == 268){
+          this.handleInwardApiCall();
+          console.log("handleInwardApiCall:", this.handleInwardApiCall());
+        }else if(inwardFromCode == 269){
+          this.handleOutwardApiCall();
+        }
+      
+      });
+      
   }
+
+
+  handleInwardApiCall(){
+    if (this.valueChangesSubscription) {
+      console.log("this.valueChangesSubscription in handleInwardApiCall:",this.valueChangesSubscription);
+      this.valueChangesSubscription.unsubscribe();
+      console.log("after unsubscribe this.valueChangesSubscription in handleInwardApiCall:",this.valueChangesSubscription);
+    }
+
+    this.valueChangesSubscription = this.inwardForm.get('CustomerOrVendor')?.valueChanges
+    .pipe(
+      debounceTime(300),
+      switchMap((vendorName) =>{
+        console.log("vendorName in transaction:",vendorName);
+        if(this.isVendorSelected){
+          console.log("Vendor already selected. Skipping API call.");
+          return of([]);
+        }
+
+        console.log("VendorName logging:", vendorName);
+        this.noVendor = false;
+        
+        if(!vendorName?.trim()){
+          console.log("Empty input, clearing results.");
+          this.vendorList = [];
+          return of([]);
+        }
+        // const params = {VendorName : VendorName};
+        return this.transactionService.fetchInwardVendor({vendorName}).pipe(
+          catchError((error) =>{
+            console.log("Vendor API Error:", error);
+            if (error.status === 404) {
+              this.noVendor = true;
+            }
+            return of([]);
+          })
+        );
+      })
+    )
+    .subscribe(
+      (response : any) => {
+        if(response?.vendor?.length){
+          this.vendorList = response.vendor;
+          console.log("fetching vendor details:", this.vendorList);
+        }else{
+          this.vendorList = [];
+        }
+        
+        // this.noResults = this.storeProductData.length === 0;
+        this.isVendorSelected = false;
+      },
+    )
+  }
+
+
+  handleOutwardApiCall(){
+    this.valueChangesSubscription = this.inwardForm.get('CustomerOrVendor')?.valueChanges
+    .pipe(
+      debounceTime(300),
+      switchMap((customerName) =>{
+        console.log("customerName in transaction:",customerName);
+        if(this.isCustomerSelected){
+          console.log("customerName already selected. Skipping API call.");
+          return of([]);
+        }
+
+        console.log("CustomerName logging:", customerName);
+        this.noCustomer = false;
+        // this.vendorList = [];
+        if(!customerName?.trim()){
+          console.log("Empty input, clearing results.");
+          this.customerList = [];
+          return of([]);
+        }
+        // const params = {VendorName : VendorName};
+        return this.transactionService.fetchOutwardCustomer({customerName}).pipe(
+          catchError((error) =>{
+            console.log("Customer API Error:", error);
+            if (error.status === 404) {
+              this.noCustomer = true;
+            }
+            return of([]);
+          })
+        );
+      })
+    )
+    .subscribe(
+      (response : any) => {
+        this.customerList = response.customer;
+        console.log("fetching customer details:", this.customerList);        
+        // this.noResults = this.storeProductData.length === 0;
+        this.isCustomerSelected = false;
+      },
+    )
+  }
+
   fetchAllBranch() {
     // this.branchService.getBranch().subscribe((res) => {
     //   console.log(res);
@@ -166,10 +295,29 @@ export class StockComponent {
     this.productDetails.push(this.showBankData());
   }
 
+  onSelectVendor(vendor: any){
+    this.inwardForm.get('CustomerOrVendor')?.setValue(vendor.vendorName);
+    this.selectedVendorId = vendor.vendorId;
+    this.isVendorSelected = true;
+    this.vendorList = [];
+    console.log("checking vendorList:", this.vendorList);
+  }
+
+  onSelectCustomer(customer: any){
+    this.inwardForm.get('CustomerOrVendor')?.setValue(customer.customerName);
+    this.selectedCustomerId = customer.customerId;
+    this.isCustomerSelected = true;
+    this.customerList = [];
+    console.log("checking vendorList:", this.customerList);
+  }
+
   onSelectProduct(product: any){
     // const combinedValue = `${product.productName} - ${product.productDescription} - ${product.productModel}`
     // this.inwardForm.get('searchInput')?.setValue('');
     console.log("product:",product);
+    console.log("product with productId:",product.productId);
+    this.isProductSelected = true;
+    this.selectedProductId = product.productId;
     this.productData = [product];
     this.storeProductData = [];
   }
@@ -243,36 +391,36 @@ export class StockComponent {
   //   return /^[a-zA-Z\s]+$/.test(input); 
   // }
   
-  fetchVendorList() {
-    this.vendorService.getAllVendor().subscribe((res) => {
-      console.log("vendor data from backend",res);
-      this.vendorList = res;
-      console.log("fetching vendor list:", this.vendorList.vendorId);
-      // let id = this.inwardForm.get('vendorId')?.value;
-      // console.log("checking id...:",id);
-      const gettingVendorId = this.vendorList.map((vendor: any)=>{
-        return vendor.vendorId;
-      })
-      console.log("checking id...:", gettingVendorId);
-    });
-  }
+  // fetchVendorList() {
+  //   this.vendorService.getAllVendor().subscribe((res) => {
+  //     console.log("vendor data from backend",res);
+  //     this.vendorList = res;
+  //     console.log("fetching vendor list:", this.vendorList.vendorId);
+  //     // let id = this.inwardForm.get('vendorId')?.value;
+  //     // console.log("checking id...:",id);
+  //     const gettingVendorId = this.vendorList.map((vendor: any)=>{
+  //       return vendor.vendorId;
+  //     })
+  //     console.log("checking id...:", gettingVendorId);
+  //   });
+  // }
 
-  fetchCustomerList() {
-    this.customerService.getAllCustomer().subscribe((res) => {
-      console.log("customer data from backend",res);
-      this.customerList = res;
-      console.log("fetching customer list:",this.customerList.customerId);
+  // fetchCustomerList() {
+  //   this.customerService.getAllCustomer().subscribe((res) => {
+  //     console.log("customer data from backend",res);
+  //     this.customerList = res;
+  //     console.log("fetching customer list:",this.customerList.customerId);
 
-      const customerIds = this.customerList.map((cus: any)=>{
-        return cus.customerId;
-      })
+  //     const customerIds = this.customerList.map((cus: any)=>{
+  //       return cus.customerId;
+  //     })
   
-      console.log("All customer Ids:", customerIds);
+  //     console.log("All customer Ids:", customerIds);
 
-    },(error) => {
-      console.log("error while getting customer details:",error);
-    });
-  }
+  //   },(error) => {
+  //     console.log("error while getting customer details:",error);
+  //   });
+  // }
 
   ifBox(data: any) {
     console.log(data);
@@ -299,12 +447,18 @@ export class StockComponent {
     this.inwardForm.patchValue({ totalPieces: this.totalItem });
   }
 
-  addProductList(data: any) {
+  addProductList(data: any, productId: any) {
     console.log("Adding item to the product list:", data);
+
+    console.log("consoling productId:", productId);
+
+
+    data.product_details[0].product = productId;
+
 
     // this.productView = true;
 
-    const getProductDetail = data.product_details?.[0];
+    const getProductDetail = {...data.product_details?.[0], product: productId};
     console.log("getProductDetail:",getProductDetail);
 
     // if (!getProductDetail || !getProductDetail.product) {
@@ -333,6 +487,7 @@ export class StockComponent {
     if (existingProductIndex !== -1) {
       // Product exists, update the quantity and total
       let existingProduct = this.productList[existingProductIndex];
+      console.log("existingProduct:",existingProduct);
       existingProduct.quantity += getProductDetail.quantity; // Update quantity
       // existingProduct.total = this.shared.gstCalculation(
       //   existingProduct.prdQty,
@@ -357,9 +512,10 @@ export class StockComponent {
         productCode: matchingProduct.productCode,
         productName: matchingProduct.productName,
         productModel: matchingProduct.productModel,
-        productQuantity: matchingProduct.productQuantity,
-        productGstRate: matchingProduct.productGstRate,
-        productPrice: matchingProduct.productPrice
+        productQuantity: getProductDetail.quantity,
+        gstAmount: (getProductDetail.gst / 100) * getProductDetail.price * getProductDetail.quantity,
+        productPrice: getProductDetail.price * getProductDetail.quantity,
+        productPriceWithGst: (getProductDetail.gst / 100 * getProductDetail.price * getProductDetail.quantity) + (getProductDetail.price * getProductDetail.quantity),
       });
       // console.log(total);
     }
@@ -369,6 +525,27 @@ export class StockComponent {
     // this.inwardForm.reset();
     this.productData = '';
     this.isBox = false;
+  }
+
+  get totalAmount(): number{
+    return this.productList.reduce(
+      (total, product) => total + product.productPrice,
+      0
+    )
+  }
+
+  get totalGst(){
+    return this.productList.reduce(
+      (total, product) => total + product.gstAmount,
+      0
+    )
+  }
+
+  get grandTotal(){
+    return this.productList.reduce(
+      (total, product) => total + product.productPriceWithGst,
+      0
+    )
   }
 
   // inwardHeader(data: any) {
@@ -446,8 +623,11 @@ export class StockComponent {
     // );
   }
 
-  saveInwardOrOutward(data: any){
+  saveInwardOrOutward(data: any, customerId: any, vendorId: any){
+    // const CustomerOrVendor = this.selectedCustomerId;
     console.log("transaction data: ",data);
+    data.CustomerOrVendor = customerId;
+    data.CustomerOrVendor = vendorId;
 
     const txnType = this.inwardForm.get('inwardFromCode')?.value;
     console.log("transaction type:", txnType);
@@ -495,7 +675,7 @@ export class StockComponent {
 
     // Fetch initial data if necessary
     this.fetchAllBranch();
-    this.fetchVendorList();
+    // this.fetchVendorList();
   }
 }
 

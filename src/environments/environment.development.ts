@@ -31,4 +31,6 @@ export const environment = {
     addOutwardTransaction: Url + 'TransactionOutDetail',
 
     pagination: Url + 'Product',
+    fetchInwardVendor: Url + 'VendorSearch',
+    fetchOutwardCustomer: Url + 'CustomerSearch'
 };

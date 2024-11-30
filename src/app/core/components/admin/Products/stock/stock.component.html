@@ -100,7 +100,7 @@
                 
                   <div
                     *ngIf="inwardForm.get('inwardFromCode')?.value"
-                    class="col-span-6"
+                    class="col-span-6 mt-4"
                   >
                     <div class="flex items-center gap-2">
                       <label
@@ -111,7 +111,37 @@
                     </div>
     
                     <div class="flex gap-2">
-                      <select
+                      <input
+                          type="text"
+                          formControlName="CustomerOrVendor"
+                          class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                          placeholder=""
+                          required
+                        />
+                        <div *ngIf="noCustomer" class="absolute mt-11 text-sm text-red-600">
+                          <small>No Customer found.</small>
+                        </div>
+                        <ul 
+                          *ngIf="customerList && 
+                          customerList.length > 0 &&
+                          inwardForm.get('inwardFromCode')?.value == 268 || 
+                          inwardForm.get('inwardFromCode')?.value == 269" 
+                          class="absolute border-none z-10 w-full mt-10 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                          <li 
+                            *ngFor="let cus of customerList"
+                            (click)="onSelectCustomer(cus)"
+                            class="px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600"
+                            >
+                              <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 269">
+                                {{cus.customerName}}
+                              </ng-container>
+                              <!-- <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 269">
+                                {{ven.productName}} - Qty:{{ven.productQuantity}}
+                              </ng-container> -->
+                          </li>
+                        </ul>
+                      <!-- <select
                         #id
                         formControlName="CustomerOrVendor"
                         class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
@@ -124,7 +154,7 @@
                         >
                           {{ cus.customerName }}
                         </option>
-                      </select>
+                      </select> -->
                     </div>
                   </div>
                 </div>
@@ -142,7 +172,37 @@
                     >
                   </div>
                   <div class="flex gap-2">
-                    <select
+                    <input
+                          type="text"
+                          formControlName="CustomerOrVendor"
+                          class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                          placeholder=""
+                          required
+                        />
+                        <div *ngIf="noVendor" class="absolute mt-11 text-sm text-red-600">
+                          <small>No Vendor found.</small>
+                        </div>
+                        <ul 
+                          *ngIf="vendorList && 
+                          vendorList.length > 0 &&
+                          inwardForm.get('inwardFromCode')?.value == 268 || 
+                          inwardForm.get('inwardFromCode')?.value == 269" 
+                          class="absolute z-10 w-full mt-10 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                          <li 
+                            *ngFor="let ven of vendorList"
+                            (click)="onSelectVendor(ven)"
+                            class="px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600"
+                            >
+                              <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 268">
+                                {{ven.vendorName}}
+                              </ng-container>
+                              <!-- <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 269">
+                                {{ven.productName}} - Qty:{{ven.productQuantity}}
+                              </ng-container> -->
+                          </li>
+                        </ul>
+                    <!-- <select
                       #id
                       formControlName="CustomerOrVendor"
                       class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
@@ -155,12 +215,12 @@
                       >
                         {{ vendor.vendorName }}
                       </option>
-                    </select>
+                    </select> -->
                   </div>
                 
                   <div
                     *ngIf="inwardForm.get('inwardFromCode')?.value"
-                    class="col-span-6"
+                    class="col-span-6 mt-4"
                   >
                     <div class="flex items-center gap-2">
                       <label
@@ -309,7 +369,7 @@
                           storeProductData.length > 0 &&
                           inwardForm.get('inwardFromCode')?.value == 268 || 
                           inwardForm.get('inwardFromCode')?.value == 269" 
-                          class="absolute z-10 w-full mt-1 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
+                          class="absolute border-none z-10 w-full mt-1 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
                           >
                           <li 
                             *ngFor="let prod of storeProductData"
@@ -320,7 +380,7 @@
                                 {{prod.productName}} - {{prod.productDescription}} - {{prod.productModel}}
                               </ng-container>
                               <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 269">
-                                {{prod.productName}} - Qty:{{prod.productQuantity}}
+                                {{prod.productName}} - {{prod.productDescription}} - {{prod.productModel}}
                               </ng-container>
                           </li>
                         </ul>
@@ -338,7 +398,7 @@
                     </div>
                   </div>
                 </div>
-                <div *ngIf="productData" class="col-span-full flex flex-col">
+                <div *ngIf="productData && !noResults && isProductSelected" class="col-span-full flex flex-col">
                   <div class="-m-1.5 overflow-x-auto">
                     <div class="inline-block min-w-full p-1.5 align-middle">
                       <div class="overflow-hidden rounded-lg border">
@@ -407,6 +467,18 @@
                               >
                                 {{ productData?.prdGstPct }}
                               </td> -->
+                            </tr>
+                            <tr>
+                              <td
+                                class="px-6 py-3 text-start text-xs font-semibold uppercase text-purple-800"
+                              >
+                                Current Quantity
+                              </td>
+                              <td
+                                class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
+                              >
+                                {{ pro.productQuantity }}
+                              </td>
                             </tr>
                           </tbody>
                         </table>
@@ -477,7 +549,7 @@
               </div>
               <div class="flex items-center justify-end gap-2">
                 <button
-                  (click)="addProductList(inwardForm.value)"
+                  (click)="addProductList(inwardForm.value, selectedProductId)"
                   type="submit"
                   class="hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
                 >
@@ -543,8 +615,9 @@
                     <th scope="col" class="px-4 py-3">Product</th>
                     <th scope="col" class="px-4 py-3">Model Number</th>
                     <th scope="col" class="px-4 py-3">Quantity</th>
-                    <th scope="col" class="px-4 py-3">Gst Percentage</th>
-                    <th scope="col" class="px-4 py-3">Price</th>
+                    <th scope="col" class="px-4 py-3">Gst Amount</th>
+                    <th scope="col" class="px-4 py-3">Total Price Without GST</th>
+                    <th scope="col" class="px-4 py-3">Total Price With GST</th>
                     <th scope="col" class="px-4 py-3">
                       <span class="sr-only">Actions</span>
                     </th>
@@ -563,10 +636,16 @@
                     </th>
                     <td class="px-4 py-3">{{ p.productName }}</td>
                     <td class="px-4 py-3">{{ p.productModel }}</td>
-                    <td class="px-4 py-3">{{ p.productQuantity }}</td>
-                    <td class="px-4 py-3">{{ p.productGstRate }}</td>
+                    <td class="px-4 py-3">{{ p.productQuantity }}
+                    </td>
+                    <td class="px-4 py-3">{{ p.gstAmount }}
+                      <small class="py-3">({{p.gst}}% GST)</small>
+                    </td>
                     <td class="px-4 py-3">
                       {{ p.productPrice }}
+                    </td>
+                    <td class="px-4 py-3">
+                      {{ p.productPriceWithGst }}
                     </td>
                     <td class="flex items-center justify-end px-2 py-3">
                       <button
@@ -600,13 +679,31 @@
             </div>
           </div>
         </div>
+        <div *ngIf="productList && productList.length > 0"
+          class="w-52 mt-5 ml-64">
+            <div class="rounded-lg border border-gray-300 shadow-sm bg-white -mr-32">
+              <div class="p-5 ml-52">
+                <p class="text-md font-semibold text-gray-700 -ml-40"
+                >Total Amount: <span class="text-blue-600">{{ totalAmount | currency:'INR' }}</span>
+                </p>
+                <p 
+                class="text-md font-semibold text-gray-700 -ml-40"
+                >Total GST: <span class="text-blue-600">{{totalGst | currency:'INR'}}</span></p>
+                <p class="text-md font-semibold text-gray-700 -ml-40"
+                >Total: <span class="text-blue-600">{{grandTotal | currency:'INR'}}</span></p>
+            
+            </div>
+            </div>
+            
+          
+        </div>
         <div
           *ngIf="productList.length > 0"
           class="mt-8 flex items-center justify-end"
         >
         <button
             type="submit"
-            (click)="saveInwardOrOutward(inwardForm.value)"
+            (click)="saveInwardOrOutward(inwardForm.value, selectedCustomerId, selectedVendorId)"
             class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
           >
             <svg

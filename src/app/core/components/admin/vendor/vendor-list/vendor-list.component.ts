@@ -19,13 +19,13 @@ export class VendorListComponent {
 
   fetchallvendor() {
     this.vendorService.getAllVendor().subscribe(
-      (res) => {
+      (res: any) => {
         this._vendor = res;
         this.Spinner = false;
         console.log("Gettting all vendor details:",res);
       },
       (error) => {
-        console.log(error);
+        console.log("error in getting vendor details:",error);
       },
     );
   }

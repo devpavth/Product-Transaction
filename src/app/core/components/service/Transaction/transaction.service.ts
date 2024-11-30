@@ -29,4 +29,31 @@ export class TransactionService {
     // userId = userId.append('username', Id);
     return this.transHttp.get(environment.searchTransaction, {params: httpParams});
   }
+
+  fetchInwardVendor(params: { [key: string]: string }){
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      httpParams = httpParams.append(key, params[key]);
+    });
+    console.log("httpParams:", httpParams.toString());
+//     productName
+// productModel
+// productDescription
+    // userId = userId.append('username', Id);
+    return this.transHttp.get(environment.fetchInwardVendor, {params: httpParams});
+  }
+
+
+  fetchOutwardCustomer(params: { [key: string]: string }){
+    let httpParams = new HttpParams();
+    Object.keys(params).forEach((key) => {
+      httpParams = httpParams.append(key, params[key]);
+    });
+    console.log("httpParams:", httpParams.toString());
+//     productName
+// productModel
+// productDescription
+    // userId = userId.append('username', Id);
+    return this.transHttp.get(environment.fetchOutwardCustomer, {params: httpParams});
+  }
 }
