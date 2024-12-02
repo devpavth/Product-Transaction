@@ -9,7 +9,7 @@
               <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
                 <!-- Inward Header -->
               </h3>
-              <button
+              <!-- <button
                 type="button"
                 routerLink="/home/productList"
                 class="an ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-red-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
@@ -29,7 +29,7 @@
                   ></path>
                 </svg>
                 <span class="sr-only">Close modal</span>
-              </button>
+              </button> -->
             </div>
   
             <form *ngIf="!header" [formGroup]="inwardForm">
@@ -126,7 +126,7 @@
                           customerList.length > 0 &&
                           inwardForm.get('inwardFromCode')?.value == 268 || 
                           inwardForm.get('inwardFromCode')?.value == 269" 
-                          class="absolute border-none z-10 w-full mt-10 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
+                          class="absolute border-none z-10 w-3/4 mt-10 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
                           >
                           <li 
                             *ngFor="let cus of customerList"
@@ -187,7 +187,7 @@
                           vendorList.length > 0 &&
                           inwardForm.get('inwardFromCode')?.value == 268 || 
                           inwardForm.get('inwardFromCode')?.value == 269" 
-                          class="absolute z-10 w-full mt-10 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
+                          class="absolute z-10 w-3/4 mt-10 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
                           >
                           <li 
                             *ngFor="let ven of vendorList"
@@ -491,7 +491,7 @@
                   class="gap-4 col-span-full flex flex-col"
                   >
                   <div
-                    *ngFor="let bank of productDetails.controls; let i = index"
+                    *ngFor="let product of productDetails.controls; let i = index"
                     [formGroupName]="i"
                     class="flex flex-auto gap-4 w-full"
                   >
@@ -501,15 +501,30 @@
                           class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                           >GST percentage</label
                         >
-                        <div class="flex">
+                        <div class="flex flex-col">
           
                           <select
                             formControlName="gst"
                             class="block rounded-lg w-full border border-gray-300 border-gray-100 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                            [ngClass]="{
+                              error:
+                                product.get('gst')?.invalid &&
+                                product.get('gst')?.touched
+                            }"
+                            required
                           >
                             <option *ngFor="let g of gstPercentages" [ngValue]="g">{{ g }}</option>
-        
+
+                            
                           </select>
+                          <small 
+                            *ngIf="
+                              product?.get('gst')?.invalid &&
+                              product?.get('gst')?.touched
+                            "
+                            class="text-danger mt-1 text-red-600">
+                            Select GST!
+                          </small>
                         </div>
                       </div>
                       
@@ -522,13 +537,26 @@
                         >
                         <input
                           type="number"
+                          (change)="compareQuantity(product.get('quantity')?.value)"
                           formControlName="quantity"
                           class="w-full focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                          placeholder="qty"
+                          placeholder=""
+                          [ngClass]="{
+                            error:
+                              product.get('quantity')?.invalid &&
+                              product.get('quantity')?.touched
+                          }"
                           required
                         />
         
-                        <small class="text-danger text-red-600"> </small>
+                        <small 
+                          *ngIf="
+                            product?.get('quantity')?.invalid &&
+                            product?.get('quantity')?.touched
+                          "
+                        class="text-danger text-red-600">
+                          Quantity required! 
+                        </small>
                       </div>
                       <div class="flex-1">
                         <label
@@ -541,16 +569,36 @@
                           formControlName="price"
                           class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                           placeholder=""
+                          [ngClass]="{
+                            error:
+                              product.get('price')?.invalid &&
+                              product.get('price')?.touched
+                          }"
                           required
                         />
+                        <small
+                          *ngIf="
+                            product?.get('price')?.invalid &&
+                            product?.get('price')?.touched
+                          " 
+                         class="text-danger text-red-600">
+                          Price required! 
+                        </small>
                       </div>
                     </div>
                 </div>
               </div>
               <div class="flex items-center justify-end gap-2">
                 <button
+                  [disabled]="inwardForm.invalid"
                   (click)="addProductList(inwardForm.value, selectedProductId)"
                   type="submit"
+                  [ngClass]="{
+                    'bg-gray-400':
+                      inwardForm.invalid,
+                    'hover:bg-gray-400':
+                      inwardForm.invalid
+                  }"
                   class="hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
                 >
                   <svg
@@ -638,7 +686,7 @@
                     <td class="px-4 py-3">{{ p.productModel }}</td>
                     <td class="px-4 py-3">{{ p.productQuantity }}
                     </td>
-                    <td class="px-4 py-3">{{ p.gstAmount }}
+                    <td class="px-4 py-3">{{ p.gstAmount | number}}
                       <small class="py-3">({{p.gst}}% GST)</small>
                     </td>
                     <td class="px-4 py-3">
@@ -680,7 +728,7 @@
           </div>
         </div>
         <div *ngIf="productList && productList.length > 0"
-          class="w-52 mt-5 ml-64">
+          class="w-52 mt-5 absolute bottom-25 right-64 mb-52">
             <div class="rounded-lg border border-gray-300 shadow-sm bg-white -mr-32">
               <div class="p-5 ml-52">
                 <p class="text-md font-semibold text-gray-700 -ml-40"
@@ -695,14 +743,20 @@
             </div>
             </div>
             
-          
         </div>
         <div
           *ngIf="productList.length > 0"
-          class="mt-8 flex items-center justify-end"
+          class="mt-40 flex items-center justify-end"
         >
         <button
             type="submit"
+            [ngClass]="{
+              'bg-gray-400':
+                inwardForm.invalid,
+              'hover:bg-gray-400':
+                inwardForm.invalid
+            }"
+            [disabled]="inwardForm.invalid || noCustomer == true || noVendor == true || noResults == true"
             (click)="saveInwardOrOutward(inwardForm.value, selectedCustomerId, selectedVendorId)"
             class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
           >

@@ -8,6 +8,7 @@ import { AddProductComponent } from './Products/add-product/add-product.componen
 import { StockComponent } from './Products/stock/stock.component';
 import { CustomerListComponent } from './Customer/customer-list/customer-list.component';
 import { AddCustomerComponent } from './Customer/add-customer/add-customer.component';
+import { ReportComponent } from './Report/report/report.component';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -44,6 +45,10 @@ const routes: Routes = [
     component: AddCustomerComponent, 
     path: 'addCustomer' 
   },
+  {
+    component: ReportComponent,
+    path: 'report'
+  }
 ];
 
 @NgModule({

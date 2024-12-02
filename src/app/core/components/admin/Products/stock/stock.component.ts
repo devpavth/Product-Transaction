@@ -4,7 +4,7 @@ import { VendorService } from '../../../service/vendor/vendor.service';
 import { CustomerService } from '../../../service/Customer/customer.service';
 import { TransactionService } from '../../../service/Transaction/transaction.service';
 import { catchError, debounceTime, distinctUntilChanged, of, Subscription, switchMap } from 'rxjs';
-import { error } from 'console';
+
 
 @Component({
   selector: 'app-stock',
@@ -62,6 +62,7 @@ export class StockComponent {
   today: string = '';
 
   selectedProductId: any;
+  selectedProductQuantity: any;
   isProductSelected: boolean = false;
   selectedVendorId: any;
 
@@ -284,7 +285,7 @@ export class StockComponent {
 
   showBankData() {
     return this.fb.group({
-      product: [],
+      product: [''],
       quantity: ['', Validators.required],
       price: ['', Validators.required],
       gst: ['', Validators.required],
@@ -318,74 +319,86 @@ export class StockComponent {
     console.log("product with productId:",product.productId);
     this.isProductSelected = true;
     this.selectedProductId = product.productId;
+    this.selectedProductQuantity = product.productQuantity;
     this.productData = [product];
     this.storeProductData = [];
   }
 
-  fetchProductData() {
+  compareQuantity(qty: any){
+    console.log("qty", qty);
+    // const currentQuantity = this.storeProductData.filter(
+    //   (pro: any) => pro.productQuantity
+    // )
+    // console.log("currentQuantity:", currentQuantity);
+    if(qty > this.selectedProductQuantity){
+      console.log("user typed quantity is greater than available quantity");
+    }
+  }
 
-    const searchInputValue = this.inwardForm.get('searchInput')?.value || '';
+  // fetchProductData() {
 
-    console.log("search Input:", searchInputValue);
-    const searchCriteria: { [key: string]: string } = {};
+  //   const searchInputValue = this.inwardForm.get('searchInput')?.value || '';
 
-    if (this.isProductName(searchInputValue)) {
-      searchCriteria['productName'] = searchInputValue;
-    } 
-    // else if (this.isProductModel(searchInputValue)) {
-    //   searchCriteria['productModel'] = searchInputValue;
-    // }  else {
-    //   searchCriteria['productDescription'] = searchInputValue;
-    // }
+  //   console.log("search Input:", searchInputValue);
+  //   const searchCriteria: { [key: string]: string } = {};
+
+  //   if (this.isProductName(searchInputValue)) {
+  //     searchCriteria['productName'] = searchInputValue;
+  //   } 
+  //   // else if (this.isProductModel(searchInputValue)) {
+  //   //   searchCriteria['productModel'] = searchInputValue;
+  //   // }  else {
+  //   //   searchCriteria['productDescription'] = searchInputValue;
+  //   // }
   
-    console.log("Search criteria being sent:", searchCriteria);
+  //   console.log("Search criteria being sent:", searchCriteria);
     
     
-    this.transactionService.searchTransaction(searchCriteria).subscribe((res: any) => {
-      console.log("fetching product data from search",res.products);
-      this.productData = Array.isArray(res.products) ? res.products : [];
-      console.log("to fetch product data for productId:", this.productData);
-      console.log("for productId:",this.productData.products);
+  //   this.transactionService.searchTransaction(searchCriteria).subscribe((res: any) => {
+  //     console.log("fetching product data from search",res.products);
+  //     this.productData = Array.isArray(res.products) ? res.products : [];
+  //     console.log("to fetch product data for productId:", this.productData);
+  //     console.log("for productId:",this.productData.products);
 
-      while (this.productDetails.length > 0){
-        this.productDetails.removeAt(0);
-      }
+  //     while (this.productDetails.length > 0){
+  //       this.productDetails.removeAt(0);
+  //     }
 
-      this.productData.forEach((product: any)=>{
-      console.log("Processing product data:", product);
-        const productGroup = this.showBankData();
-        productGroup.patchValue({
-          product: product.productId,
-        })
-        this.productDetails.push(productGroup);
-      })
+  //     this.productData.forEach((product: any)=>{
+  //     console.log("Processing product data:", product);
+  //       const productGroup = this.showBankData();
+  //       productGroup.patchValue({
+  //         product: product.productId,
+  //       })
+  //       this.productDetails.push(productGroup);
+  //     })
 
-      // this.inwardForm.patchValue({
-      //   productId: this.productData.productId,
-      //   prdUnit: this.productData.prdUnit,
+  //     // this.inwardForm.patchValue({
+  //     //   productId: this.productData.productId,
+  //     //   prdUnit: this.productData.prdUnit,
 
-      //   prdQty: this.productData.prouctId,
-      //   purchasedPrice: this.productData.prdPurchasedPrice,
-      //   gstPercentage: this.productData.prdGstPct,
-      // });
+  //     //   prdQty: this.productData.prouctId,
+  //     //   purchasedPrice: this.productData.prdPurchasedPrice,
+  //     //   gstPercentage: this.productData.prdGstPct,
+  //     // });
       
-      // if (this.inwardForm.get('prdUnit')?.value == 200) {
-      //   this.isBox = true;
-      //   this.updateForm();
-      // }
-    },
-    (error) => {
-      console.error("Error in search field:", error);
-    });
-  }
+  //     // if (this.inwardForm.get('prdUnit')?.value == 200) {
+  //     //   this.isBox = true;
+  //     //   this.updateForm();
+  //     // }
+  //   },
+  //   (error) => {
+  //     console.error("Error in search field:", error);
+  //   });
+  // }
 
-  isProductName(input: string): boolean {
-    return /^[a-zA-Z\s]+$/.test(input); 
-  }
+  // isProductName(input: string): boolean {
+  //   return /^[a-zA-Z\s]+$/.test(input); 
+  // }
 
-  isProductModel(input: string): boolean {
-    return /^[A-Z0-9]+$/.test(input); 
-  }
+  // isProductModel(input: string): boolean {
+  //   return /^[A-Z0-9]+$/.test(input); 
+  // }
 
   // isProductDescription(input: string){
   //   return /^[a-zA-Z\s]+$/.test(input); 
@@ -450,10 +463,26 @@ export class StockComponent {
   addProductList(data: any, productId: any) {
     console.log("Adding item to the product list:", data);
 
-    console.log("consoling productId:", productId);
+    console.log("selected productId:", productId);
+
+    if (!productId) {
+      console.log("Invalid productId. Cannot add product.");
+      return;
+    }
 
 
-    data.product_details[0].product = productId;
+    if (!data.product_details || !Array.isArray(data.product_details)) {
+      data.product_details = [];
+    }
+
+    // data.product_details = data.product_details.filter((product: any) => product.product !== null);
+
+    console.log("Initial product_details:", data.product_details)
+
+    
+
+
+    // data.product_details[0].product = productId;
 
 
     // this.productView = true;
@@ -466,15 +495,108 @@ export class StockComponent {
     //   return;
     // }
 
-    const existingProductIndex = this.productList.findIndex(
-      (product) => product.productId === getProductDetail.product,
+    const newProductDetail = {
+      product: productId,
+      quantity: data.product_details?.[0]?.quantity || 1,
+      gst: data.product_details?.[0]?.gst || 0,
+      price: data.product_details?.[0]?.price || 0
+    };
+
+    console.log("newProductDetail:",newProductDetail);
+
+    console.log("console data:", data);
+
+   
+
+    
+
+    // setTimeout(() => {
+    //   console.log("product_details after potential async updates:", data.product_details);
+    
+    //   const existingProductIndex = data.product_details.findIndex(
+    //     (product: any) =>
+    //       product &&
+    //       product.product !== null &&
+    //       +product.product === +newProductDetail.product
+    //   );
+    
+    //   console.log("Existing Product Index:", existingProductIndex);
+    // }, 100);
+
+
+    // const existingProductIndex = this.productDetails.controls.findIndex(
+    //   (control) => +control.value.product === +productId
+    // );
+    
+    
+
+  // Check for uninitialized entries
+  const existingEmptyIndex = data.product_details.findIndex(
+    (product: any) => !product.product || product.product === ""
+  );
+
+  console.log("existingEmptyIndex:", existingEmptyIndex);
+
+
+  const existingProductIndex = data.product_details.findIndex(
+    (product: any) => product.product === productId
+  );
+
+  console.log("existingProductIndex:", existingProductIndex);
+
+  
+
+    
+
+  if (existingProductIndex !== -1) {
+    // Update the existing product details
+    data.product_details[existingProductIndex] = {
+      ...data.product_details[existingProductIndex],
+      ...newProductDetail,
+    };
+    console.log(`Updated existing product at index ${existingProductIndex}:`, data.product_details[existingProductIndex]);
+  }else if (existingEmptyIndex !== -1) {
+    // Replace the uninitialized entry
+    data.product_details[existingEmptyIndex] = newProductDetail;
+    console.log(`Replaced empty entry at index ${existingEmptyIndex}:`, newProductDetail);
+
+  } else {
+    // Add the new product to the array
+    data.product_details.push(newProductDetail);
+    console.log("Added new product:", newProductDetail);
+  }
+
+
+  console.log("Updated product_details:", data.product_details);
+
+
+    console.log("newProductDetail.product:", newProductDetail.product);
+
+  
+
+    data.product_details.forEach((product: any) =>
+      console.log("Comparing product in array:", product.product, "with newProductDetail:", newProductDetail.product)
     );
+
+
+    data.product_details.forEach((product: any) => Object.freeze(product));
+
+
+
+    data.product_details.forEach((product: any, index: number) => {
+      console.log(`Object at index ${index}:`, product);
+      console.log("product.product value:", product.product);
+    });
+    
+    
 
     const matchingProduct = this.productData.find(
       (product: any) => product.productId === getProductDetail.product,
     )
 
-    console.log("existing Product Index:", existingProductIndex);
+    console.log("matchingProduct:", matchingProduct);
+
+    // console.log("existing Product Index:", existingProductIndex);
 
     const isduplicateEntry = this.productList.some(
       (product) => product.product === data.product_details[0].product,
@@ -482,50 +604,97 @@ export class StockComponent {
 
     if(isduplicateEntry){
       console.log("Duplicate entry detected. Product already exists:", data.product_details[0].product);
+      alert("This product is already added to the list!");
+      // this.inwardForm.reset();
+      // this.resetFields();
+      return;
     }
 
-    if (existingProductIndex !== -1) {
-      // Product exists, update the quantity and total
-      let existingProduct = this.productList[existingProductIndex];
-      console.log("existingProduct:",existingProduct);
-      existingProduct.quantity += getProductDetail.quantity; // Update quantity
-      // existingProduct.total = this.shared.gstCalculation(
-      //   existingProduct.prdQty,
-      //   existingProduct.purchasedPrice,
-      //   existingProduct.gstPercentage,
-      // ); // Recalculate total
+    // if (existingProductIndex !== -1) {
+    //   this.productDetails.at(existingProductIndex).patchValue(newProductDetail);
+    //   // console.log("Product not found, adding new product to array.");
+    //   // data.product_details.push(newProductDetail);
+    //   // Product exists, update the quantity and total
+    //   // console.log("Updating existing product in product_details array...");
+    //   // const existingProduct = data.product_details[existingProductIndex];
+    //   // console.log("existingProduct:",existingProduct);
+    //   // existingProduct.quantity += newProductDetail.quantity; // Update quantity
+    //   // existingProduct.gst = newProductDetail.gst;
+    //   // existingProduct.price += newProductDetail.price;
+    //   // data.product_details[existingProductIndex] = existingProduct;
+    //   // existingProduct.total = this.shared.gstCalculation(
+    //   //   existingProduct.prdQty,
+    //   //   existingProduct.purchasedPrice,
+    //   //   existingProduct.gstPercentage,
+    //   // ); // Recalculate total
 
-      // Update the product in the productList array
-      this.productList[existingProductIndex] = existingProduct;
-    } else {
-      // let total = this.shared.gstCalculation(
-      //   data.prdQty,
-      //   data.purchasedPrice,
-      //   data.gstPercentage,
-      // );
-      this.productList.push({
-        ...data,
-        product: getProductDetail.product,
-        gst: getProductDetail.gst,
-        quantity: getProductDetail.quantity,
-        price: getProductDetail.price,
-        productCode: matchingProduct.productCode,
-        productName: matchingProduct.productName,
-        productModel: matchingProduct.productModel,
-        productQuantity: getProductDetail.quantity,
-        gstAmount: (getProductDetail.gst / 100) * getProductDetail.price * getProductDetail.quantity,
-        productPrice: getProductDetail.price * getProductDetail.quantity,
-        productPriceWithGst: (getProductDetail.gst / 100 * getProductDetail.price * getProductDetail.quantity) + (getProductDetail.price * getProductDetail.quantity),
-      });
-      // console.log(total);
-    }
+    //   // Update the product in the productList array
+      
+    // } else {
+    //   this.productDetails.push(this.fb.group(newProductDetail));
+    //   // console.log("Product found, updating existing product.");
+    //   // data.product_details[existingProductIndex] = { ...data.product_details[existingProductIndex], ...newProductDetail };
+    //   // console.log("Adding new product to product_details array...");
+    //   // data.product_details.push(newProductDetail);
+    //   // let total = this.shared.gstCalculation(
+    //   //   data.prdQty,
+    //   //   data.purchasedPrice,
+    //   //   data.gstPercentage,
+    //   // );
+    //   this.productList.push({
+    //     ...data,
+    //     product: getProductDetail.product,
+    //     gst: getProductDetail.gst,
+    //     quantity: getProductDetail.quantity,
+    //     price: getProductDetail.price,
+    //     productCode: matchingProduct.productCode,
+    //     productName: matchingProduct.productName,
+    //     productModel: matchingProduct.productModel,
+    //     productQuantity: getProductDetail.quantity,
+    //     gstAmount: (getProductDetail.gst / 100) * getProductDetail.price * getProductDetail.quantity,
+    //     productPrice: getProductDetail.price * getProductDetail.quantity,
+    //     productPriceWithGst: (getProductDetail.gst / 100 * getProductDetail.price * getProductDetail.quantity) + (getProductDetail.price * getProductDetail.quantity),
+    //   });
+    //   // console.log(total);
+    // }
 
-    console.log("Updated Product List:", this.productList);
 
-    // this.inwardForm.reset();
+    data.product_details = data.product_details.filter(
+      (product: any) => product.product !== null && product.product !== undefined
+    );
+
+    console.log("Updated product_details:", this.productDetails.value);
+
+
+    console.log("Updated product_details array:", data.product_details);
+
+    console.log("Updated Form Data:", data);
+
+    // this.resetFields();
+
+
     this.productData = '';
     this.isBox = false;
   }
+
+
+
+  
+
+// resetFields() {
+//   this.inwardForm.get('searchInput')?.reset();
+//   const productDetailsArray = this.inwardForm.get('product_details') as FormArray;
+
+//   // Reset the first product in the FormArray
+//   if (productDetailsArray.length > 0) {
+//     const firstProduct = productDetailsArray.at(0) as FormGroup;
+
+//     firstProduct.get('gst')?.reset();
+//     firstProduct.get('price')?.reset();
+//     firstProduct.get('quantity')?.reset();
+//   }
+// }
+
 
   get totalAmount(): number{
     return this.productList.reduce(
@@ -625,12 +794,22 @@ export class StockComponent {
 
   saveInwardOrOutward(data: any, customerId: any, vendorId: any){
     // const CustomerOrVendor = this.selectedCustomerId;
+    console.log("customerId in while saving outward:",customerId)
     console.log("transaction data: ",data);
     data.CustomerOrVendor = customerId;
     data.CustomerOrVendor = vendorId;
+    console.log("data.CustomerOrVendor :",data.CustomerOrVendor)
 
     const txnType = this.inwardForm.get('inwardFromCode')?.value;
     console.log("transaction type:", txnType);
+
+    if(txnType === '268'){
+      data.CustomerOrVendor = vendorId;
+    }
+
+    if(txnType === '269'){
+      data.CustomerOrVendor = customerId;
+    }
 
 
     if (txnType === '268') {

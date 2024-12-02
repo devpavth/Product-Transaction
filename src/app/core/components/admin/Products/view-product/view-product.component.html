@@ -332,7 +332,7 @@
             </div>
             <div class="col-span-2">
               <label
-                for="category"
+                for="productGstRate"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
                 >GST Percentage</label
               >
@@ -341,7 +341,7 @@
                 class="focus:ring-primary-500 pointer-events-none focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
               >
                 <option *ngFor="let g of gst" value="{{ g }}">{{ g }}</option>
-                <small
+                <!-- <small
                   *ngIf="
                     UpdateProductForm?.get('productGstRate')?.invalid &&
                     UpdateProductForm?.get('productGstRate')?.touched
@@ -349,7 +349,7 @@
                   class="text-danger text-red-600"
                 >
                   Select GST Percentage!
-                </small>
+                </small> -->
               </select>
               <small class="text-danger text-red-600"> </small>
             </div>
@@ -483,6 +483,7 @@
             </div>
             <div *ngIf="isSave">
               <button
+                [disabled]="UpdateProductForm.invalid"
                 (click)="onUpdateProduct(UpdateProductForm.value)"
                 type="submit"
                 class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"

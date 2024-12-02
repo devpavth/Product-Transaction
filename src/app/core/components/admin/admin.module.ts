@@ -17,6 +17,8 @@ import { CustomerListComponent } from './Customer/customer-list/customer-list.co
 import { AddCustomerComponent } from './Customer/add-customer/add-customer.component';
 import { ViewCustomerComponent } from './Customer/view-customer/view-customer.component';
 import { ViewAddressComponent } from './Customer/view-address/view-address.component';
+import { ReportComponent } from './Report/report/report.component';
+
 
 
 @NgModule({
@@ -32,6 +34,7 @@ import { ViewAddressComponent } from './Customer/view-address/view-address.compo
     AddCustomerComponent,
     ViewCustomerComponent,
     ViewAddressComponent,
+    ReportComponent,
   ],
   imports: [
     CommonModule,

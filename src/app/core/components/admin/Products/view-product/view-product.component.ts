@@ -34,7 +34,7 @@ export class ViewProductComponent {
   groupList: any;
   catList: any;
   brandList: any;
-  gst: any = [0, 5, 12, 18];
+  gst: string[] = ['5.00', '12.00', '18.00', '28.00'];
   units: { id: number; name: string }[] = [
     { id: 1, name: 'Kg' },
     { id: 2, name: 'L' },
@@ -66,6 +66,7 @@ export class ViewProductComponent {
   }
   ngOnInit(): void {
     this.UpdateProductForm.patchValue(this.productData);
+    console.log("this.productData:",this.productData);
     Object.keys(this.UpdateProductForm.controls).forEach((form) => {
       this.UpdateProductForm.get(form)?.disable();
     });
@@ -105,6 +106,7 @@ export class ViewProductComponent {
     console.log("testing...:", this.productData);
     console.log("testing price...:", price);
     this.totalPrice = this.productData.productQuantity * price;
+    console.log("this.productData.productGstRate:", this.productData.productGstRate);
     this.totalPriceWithGst = this.totalPrice * this.productData.productGstRate;
     console.log("totalPriceWithGst:", this.totalPriceWithGst);
   }

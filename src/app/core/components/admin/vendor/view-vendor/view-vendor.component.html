@@ -927,6 +927,11 @@
             </div>
             <div *ngIf="isSave">
               <button
+                [ngClass]="{
+                  'bg-gray-400': UpdateVendorForm.invalid,
+                  'hover:bg-gray-400': UpdateVendorForm.invalid
+                }"
+                [disabled]="UpdateVendorForm.invalid"
                 (click)="updateVendorDetails(UpdateVendorForm.value)"
                 type="submit"
                 class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"

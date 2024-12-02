@@ -222,6 +222,7 @@
                 </div>
                 <div *ngIf="isSave">
                   <button
+                    [disabled]="UpdateVendorForm.invalid"
                     (click)="updateCustomerDetails(UpdateVendorForm.value)"
                     type="submit"
                     class="me-2 rounded-lg text-nowrap bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
@@ -676,6 +677,7 @@
                   </div>
                   <div *ngIf="isSaveAddress">
                     <button
+                      [disabled]="UpdateVendorForm.invalid"
                       (click)="updateCustomerAddressDetails(addresses.value)"
                       type="submit"
                       class="me-2 rounded-lg text-nowrap bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"

@@ -34,6 +34,7 @@ export class ProductListComponent {
     this.productService.getAllProduct(queryParams).subscribe((res: any) => {
       console.log("product list:", res);
       this.list = res.results || [];
+      console.log("res.results.productGstRate:",res.results.productGstRate)
       this.listLength = res.count;
       console.log("product list length to find:", this.listLength);
       // this.otherPrdLen = list.filter((m) => m.prdStatus == 303).length;
