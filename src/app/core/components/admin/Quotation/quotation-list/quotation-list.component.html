@@ -1,0 +1,162 @@
+<div class="p-4 sm:ml-64">
+    <section class="dark:bg-gray-900">
+      <div class="mx-auto">
+        <div
+          class="relative overflow-hidden bg-white shadow-md shadow-purple-300 dark:bg-gray-800 sm:rounded-lg"
+        >
+          <div
+            class="flex flex-col items-center justify-between space-y-3 p-4 md:flex-row md:space-x-4 md:space-y-0"
+          >
+            <div class="w-full md:w-1/2">
+              <div class="flex items-center">
+                <label for="simple-search" class="sr-only">Search</label>
+                <div class="relative w-full">
+                  <div
+                    class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3"
+                  >
+                    <svg
+                      aria-hidden="true"
+                      class="h-5 w-5 text-gray-500 dark:text-gray-400"
+                      fill="currentColor"
+                      viewbox="0 0 20 20"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fill-rule="evenodd"
+                        d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                        clip-rule="evenodd"
+                      />
+                    </svg>
+                  </div>
+                  <input
+                    type="text"
+                    class="focus:ring-primary-500 focus:border-primary-500 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    placeholder="Search"
+                  />
+                </div>
+              </div>
+            </div>
+            <div
+              class="flex w-full flex-shrink-0 flex-col items-stretch justify-end space-y-2 md:w-auto md:flex-row md:items-center md:space-x-3 md:space-y-0"
+            >
+              
+              <button
+                type="button"
+                routerLink="/home/addProduct"
+                class="an flex items-center justify-center rounded-lg bg-purple-700 px-4 py-2 text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+              >
+                <svg
+                  class="mr-2 h-4 w-4"
+                  fill="currentColor"
+                  aria-hidden="true"
+                  xmlns="http://www.w3.org/2000/svg"
+                  width="24"
+                  height="24"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                >
+                  <path
+                    stroke="currentColor"
+                    stroke-linecap="round"
+                    stroke-linejoin="round"
+                    stroke-width="3"
+                    d="M5 12h14m-7 7V5"
+                  />
+                </svg>
+  
+                Create Quotation
+              </button>
+            </div>
+          </div>
+
+  
+          <div class="overflow-x-auto" #test>
+            <table
+              class="w-full text-left text-sm text-gray-500 dark:text-gray-400"
+            >
+              <thead
+                class="bg-purple-50 text-xs uppercase text-purple-900 dark:bg-gray-700 dark:text-gray-400"
+              >
+                <tr>
+                  <th scope="col" class="px-4 py-3">S.No</th>
+                  <!-- <th scope="col" class="px-4 py-3">
+                    <div class="flex items-center justify-between">
+                      <div>CODE</div>
+                      <button
+                        class="an rounded-full hover:bg-gray-600 hover:text-white"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke-width="1.5"
+                          stroke="currentColor"
+                          class="h-4 w-4"
+                        >
+                          <path
+                            stroke-linecap="round"
+                            stroke-linejoin="round"
+                            d="M8.25 15 12 18.75 15.75 15m-7.5-6L12 5.25 15.75 9"
+                          />
+                        </svg>
+                      </button>
+                    </div>
+                  </th> -->
+  
+                  <th scope="col" class="px-4 py-3">Quotation Code</th>
+                  <th scope="col" class="px-4 py-3">Customer Name</th>
+                  <th scope="col" class="px-4 py-3">Phone</th>
+                  <th scope="col" class="px-4 py-3">Total</th>
+                  <!-- <th scope="col" class="px-4 py-3">GST %</th>
+                                <th scope="col" class="px-4 py-3">Price</th> -->
+                  <th scope="col" class="px-4 py-3">
+                    <span class="sr-only">Actions</span>
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr
+                  *ngFor="let p of list; let i = index"
+                  class="border-b transition-all duration-300 hover:bg-gray-50 hover:text-gray-900 dark:border-gray-700"
+                >
+                  <td class="px-4 py-3">{{ getSerialNumber(i) }}</td>
+                  <td class="px-4 py-3">{{ p.productCode }}</td>
+                  <td class="px-4 py-3">{{ p.productName }}</td>
+                  <td class="px-4 py-3">{{ p.productDescription }}</td>
+                  <td class="px-4 py-3">{{ p.productQuantity }}</td>
+  
+                  <!-- <td class="px-4 py-3"></td>
+                                <td class="px-4 py-3"></td> -->
+                  <td class="flex items-center justify-end px-4 py-3">
+                    <button
+                      (click)="toggleView(true, 1, p)"
+                      class="inline-flex items-center rounded-lg p-0.5 text-center text-sm font-medium text-gray-500 hover:text-gray-800 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
+                      type="button"
+                    >
+                      <svg
+                        class="h-5 w-5"
+                        aria-hidden="true"
+                        fill="currentColor"
+                        viewbox="0 0 20 20"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path
+                          d="M6 10a2 2 0 11-4 0 2 2 0 014 0zM12 10a2 2 0 11-4 0 2 2 0 014 0zM16 12a2 2 0 100-4 2 2 0 000 4z"
+                        />
+                      </svg>
+                    </button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+    </div>
+  </section>
+</div>
+<section *ngIf="isProductList" class="fixed left-0 right-0 top-0 z-40">
+    <app-view-quotation
+      (closeProduct)="toggleView($event, 0, '')"
+      [productData]="productData"
+    ></app-view-quotation>
+</section>

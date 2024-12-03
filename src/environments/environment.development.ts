@@ -32,5 +32,8 @@ export const environment = {
 
     pagination: Url + 'Product',
     fetchInwardVendor: Url + 'VendorSearch',
-    fetchOutwardCustomer: Url + 'CustomerSearch'
+    fetchOutwardCustomer: Url + 'CustomerSearch',
+
+
+    quotationAll: Url + 'QuotationAll'
 };

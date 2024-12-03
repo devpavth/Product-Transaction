@@ -9,6 +9,7 @@ import { StockComponent } from './Products/stock/stock.component';
 import { CustomerListComponent } from './Customer/customer-list/customer-list.component';
 import { AddCustomerComponent } from './Customer/add-customer/add-customer.component';
 import { ReportComponent } from './Report/report/report.component';
+import { QuotationListComponent } from './Quotation/quotation-list/quotation-list.component';
 
 import { SharedModule } from '../../../shared/shared.module';
 
@@ -44,6 +45,10 @@ const routes: Routes = [
   { 
     component: AddCustomerComponent, 
     path: 'addCustomer' 
+  },
+  { 
+    component: QuotationListComponent, 
+    path: 'quotationList' 
   },
   {
     component: ReportComponent,

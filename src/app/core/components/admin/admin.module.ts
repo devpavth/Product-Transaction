@@ -18,6 +18,8 @@ import { AddCustomerComponent } from './Customer/add-customer/add-customer.compo
 import { ViewCustomerComponent } from './Customer/view-customer/view-customer.component';
 import { ViewAddressComponent } from './Customer/view-address/view-address.component';
 import { ReportComponent } from './Report/report/report.component';
+import { QuotationListComponent } from './Quotation/quotation-list/quotation-list.component';
+import { ViewQuotationComponent } from './Quotation/view-quotation/view-quotation.component';
 
 
 
@@ -35,6 +37,8 @@ import { ReportComponent } from './Report/report/report.component';
     ViewCustomerComponent,
     ViewAddressComponent,
     ReportComponent,
+    QuotationListComponent,
+    ViewQuotationComponent,
   ],
   imports: [
     CommonModule,
