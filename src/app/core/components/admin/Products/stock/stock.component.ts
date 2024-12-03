@@ -94,9 +94,10 @@ export class StockComponent {
       createdDate: [],
       CustomerOrVendor: [],
       searchInput: [],
-      
-      product_details: this.fb.array([this.showBankData()]),
-    });
+      product_details:[],
+    product_form : this.fb.array([this.showBankData()])
+    })
+    
     if (this.isBox) {
       this.inwardForm.addControl(
         'totalPieces',
@@ -109,7 +110,7 @@ export class StockComponent {
     this.fetchAllBranch();
     // this.fetchVendorList();
     // this.fetchCustomerList();
-
+console.log(this.inwardForm.value)
     const now = new Date();
     this.today = now.toISOString().split('T')[0];
     
@@ -117,20 +118,20 @@ export class StockComponent {
       .pipe(
         debounceTime(300),
         switchMap((productName) =>{
-          console.log("productName logging:", productName);
+      //     //console.log("productName logging:", productName);
           if(this.isProductSelected){
-            console.log("product already selected. Skipping API call.");
+        //     //console.log("product already selected. Skipping API call.");
             return of([]);
           }
           this.noResults = false;
           this.storeProductData = [];
           if(!productName?.trim()){
-            console.log("Empty input, clearing results.");
+           //  //console.log("Empty input, clearing results.");
             return of([]);
           }
           return this.transactionService.searchTransaction({productName}).pipe(
             catchError((error) =>{
-              console.log("API Error:", error);
+            //   //console.log("API Error:", error);
               if (error.status === 404) {
                 this.noResults = true;
               }
@@ -142,32 +143,32 @@ export class StockComponent {
       .subscribe(
         (response : any) => {
           this.storeProductData = response.products || [];
-          console.log("fetching product details:", this.storeProductData);
+        //   //console.log("fetching product details:", this.storeProductData);
           // this.noResults = this.storeProductData.length === 0;
           this.isProductSelected = false;
         },
         // (error)=>{
         //   if(error.status == 404){
-        //     console.log("Error while fetching products:", error);
+        //      //console.log("Error while fetching products:", error);
         //     this.noResults = true;
         //   } else{
-        //     console.log("Unexpected error:", error);
+        //      //console.log("Unexpected error:", error);
         //   }
         //   this.storeProductData = [];
         // } 
       )
 
       this.inwardForm.get('inwardFromCode')?.valueChanges.subscribe((inwardFromCode) => {
-        console.log("inwardFromCode:", inwardFromCode);
+       //  //console.log("inwardFromCode:", inwardFromCode);
         if (this.valueChangesSubscription) {
-          console.log("this.valueChangesSubscription:",this.valueChangesSubscription);
+         //  //console.log("this.valueChangesSubscription:",this.valueChangesSubscription);
           this.valueChangesSubscription.unsubscribe();
-          console.log("after unsubscribe this.valueChangesSubscription:",this.valueChangesSubscription);
+         //  //console.log("after unsubscribe this.valueChangesSubscription:",this.valueChangesSubscription);
         }
 
         if(inwardFromCode == 268){
           this.handleInwardApiCall();
-          console.log("handleInwardApiCall:", this.handleInwardApiCall());
+        //   //console.log("handleInwardApiCall:", this.handleInwardApiCall());
         }else if(inwardFromCode == 269){
           this.handleOutwardApiCall();
         }
@@ -179,33 +180,33 @@ export class StockComponent {
 
   handleInwardApiCall(){
     if (this.valueChangesSubscription) {
-      console.log("this.valueChangesSubscription in handleInwardApiCall:",this.valueChangesSubscription);
+     //  //console.log("this.valueChangesSubscription in handleInwardApiCall:",this.valueChangesSubscription);
       this.valueChangesSubscription.unsubscribe();
-      console.log("after unsubscribe this.valueChangesSubscription in handleInwardApiCall:",this.valueChangesSubscription);
+     //  //console.log("after unsubscribe this.valueChangesSubscription in handleInwardApiCall:",this.valueChangesSubscription);
     }
 
     this.valueChangesSubscription = this.inwardForm.get('CustomerOrVendor')?.valueChanges
     .pipe(
       debounceTime(300),
       switchMap((vendorName) =>{
-        console.log("vendorName in transaction:",vendorName);
+       //  //console.log("vendorName in transaction:",vendorName);
         if(this.isVendorSelected){
-          console.log("Vendor already selected. Skipping API call.");
+         //  //console.log("Vendor already selected. Skipping API call.");
           return of([]);
         }
 
-        console.log("VendorName logging:", vendorName);
+       //  //console.log("VendorName logging:", vendorName);
         this.noVendor = false;
         
         if(!vendorName?.trim()){
-          console.log("Empty input, clearing results.");
+         //  //console.log("Empty input, clearing results.");
           this.vendorList = [];
           return of([]);
         }
         // const params = {VendorName : VendorName};
         return this.transactionService.fetchInwardVendor({vendorName}).pipe(
           catchError((error) =>{
-            console.log("Vendor API Error:", error);
+          //   //console.log("Vendor API Error:", error);
             if (error.status === 404) {
               this.noVendor = true;
             }
@@ -218,7 +219,7 @@ export class StockComponent {
       (response : any) => {
         if(response?.vendor?.length){
           this.vendorList = response.vendor;
-          console.log("fetching vendor details:", this.vendorList);
+        //   //console.log("fetching vendor details:", this.vendorList);
         }else{
           this.vendorList = [];
         }
@@ -235,24 +236,24 @@ export class StockComponent {
     .pipe(
       debounceTime(300),
       switchMap((customerName) =>{
-        console.log("customerName in transaction:",customerName);
+      //   //console.log("customerName in transaction:",customerName);
         if(this.isCustomerSelected){
-          console.log("customerName already selected. Skipping API call.");
+         //  //console.log("customerName already selected. Skipping API call.");
           return of([]);
         }
 
-        console.log("CustomerName logging:", customerName);
+         //  //console.log("CustomerName logging:", customerName);
         this.noCustomer = false;
         // this.vendorList = [];
         if(!customerName?.trim()){
-          console.log("Empty input, clearing results.");
+        //   //console.log("Empty input, clearing results.");
           this.customerList = [];
           return of([]);
         }
         // const params = {VendorName : VendorName};
         return this.transactionService.fetchOutwardCustomer({customerName}).pipe(
           catchError((error) =>{
-            console.log("Customer API Error:", error);
+          //   //console.log("Customer API Error:", error);
             if (error.status === 404) {
               this.noCustomer = true;
             }
@@ -264,7 +265,7 @@ export class StockComponent {
     .subscribe(
       (response : any) => {
         this.customerList = response.customer;
-        console.log("fetching customer details:", this.customerList);        
+         //console.log("fetching customer details:", this.customerList);        
         // this.noResults = this.storeProductData.length === 0;
         this.isCustomerSelected = false;
       },
@@ -273,19 +274,20 @@ export class StockComponent {
 
   fetchAllBranch() {
     // this.branchService.getBranch().subscribe((res) => {
-    //   console.log(res);
+    //    //console.log(res);
 
     //   this._branch = res;
     // });
   }
 
   get productDetails() {
-    return this.inwardForm.get('product_details') as FormArray;
+    return this.inwardForm.get('product_form') as FormArray;
   }
 
   showBankData() {
+    console.log("called  by inti method")
     return this.fb.group({
-      product: [''],
+      product: [],
       quantity: ['', Validators.required],
       price: ['', Validators.required],
       gst: ['', Validators.required],
@@ -301,7 +303,7 @@ export class StockComponent {
     this.selectedVendorId = vendor.vendorId;
     this.isVendorSelected = true;
     this.vendorList = [];
-    console.log("checking vendorList:", this.vendorList);
+     //console.log("checking vendorList:", this.vendorList);
   }
 
   onSelectCustomer(customer: any){
@@ -309,14 +311,14 @@ export class StockComponent {
     this.selectedCustomerId = customer.customerId;
     this.isCustomerSelected = true;
     this.customerList = [];
-    console.log("checking vendorList:", this.customerList);
+     //console.log("checking vendorList:", this.customerList);
   }
 
   onSelectProduct(product: any){
     // const combinedValue = `${product.productName} - ${product.productDescription} - ${product.productModel}`
     // this.inwardForm.get('searchInput')?.setValue('');
-    console.log("product:",product);
-    console.log("product with productId:",product.productId);
+     //console.log("product:",product);
+     //console.log("product with productId:",product.productId);
     this.isProductSelected = true;
     this.selectedProductId = product.productId;
     this.selectedProductQuantity = product.productQuantity;
@@ -324,22 +326,34 @@ export class StockComponent {
     this.storeProductData = [];
   }
 
-  compareQuantity(qty: any){
-    console.log("qty", qty);
+  compareQuantity(index: number,qty: any){
+
+    const txnType = this.inwardForm.get('inwardFromCode')?.value
+
+    console.log("txntype:", txnType);
+
+    if (txnType === '269'){
+      if(qty > this.selectedProductQuantity){
+        //console.log("user typed quantity is greater than current available quantity");
+       this.productDetails.at(index).get('quantity')?.setErrors({quantityExceed: true});
+      } else{
+        //console.log("Quantity is valid.");
+       this.productDetails.at(index).get('quantity')?.setErrors(null);
+      }
+    }
+     //console.log("qty", qty);
     // const currentQuantity = this.storeProductData.filter(
     //   (pro: any) => pro.productQuantity
     // )
-    // console.log("currentQuantity:", currentQuantity);
-    if(qty > this.selectedProductQuantity){
-      console.log("user typed quantity is greater than available quantity");
-    }
+    //  //console.log("currentQuantity:", currentQuantity);
+    
   }
 
   // fetchProductData() {
 
   //   const searchInputValue = this.inwardForm.get('searchInput')?.value || '';
 
-  //   console.log("search Input:", searchInputValue);
+  //    //console.log("search Input:", searchInputValue);
   //   const searchCriteria: { [key: string]: string } = {};
 
   //   if (this.isProductName(searchInputValue)) {
@@ -351,21 +365,21 @@ export class StockComponent {
   //   //   searchCriteria['productDescription'] = searchInputValue;
   //   // }
   
-  //   console.log("Search criteria being sent:", searchCriteria);
+  //    //console.log("Search criteria being sent:", searchCriteria);
     
     
   //   this.transactionService.searchTransaction(searchCriteria).subscribe((res: any) => {
-  //     console.log("fetching product data from search",res.products);
+  //      //console.log("fetching product data from search",res.products);
   //     this.productData = Array.isArray(res.products) ? res.products : [];
-  //     console.log("to fetch product data for productId:", this.productData);
-  //     console.log("for productId:",this.productData.products);
+  //      //console.log("to fetch product data for productId:", this.productData);
+  //      //console.log("for productId:",this.productData.products);
 
   //     while (this.productDetails.length > 0){
   //       this.productDetails.removeAt(0);
   //     }
 
   //     this.productData.forEach((product: any)=>{
-  //     console.log("Processing product data:", product);
+  //      //console.log("Processing product data:", product);
   //       const productGroup = this.showBankData();
   //       productGroup.patchValue({
   //         product: product.productId,
@@ -388,7 +402,7 @@ export class StockComponent {
   //     // }
   //   },
   //   (error) => {
-  //     console.error("Error in search field:", error);
+  //      //console.error("Error in search field:", error);
   //   });
   // }
 
@@ -406,37 +420,37 @@ export class StockComponent {
   
   // fetchVendorList() {
   //   this.vendorService.getAllVendor().subscribe((res) => {
-  //     console.log("vendor data from backend",res);
+  //      //console.log("vendor data from backend",res);
   //     this.vendorList = res;
-  //     console.log("fetching vendor list:", this.vendorList.vendorId);
+  //      //console.log("fetching vendor list:", this.vendorList.vendorId);
   //     // let id = this.inwardForm.get('vendorId')?.value;
-  //     // console.log("checking id...:",id);
+  //     //  //console.log("checking id...:",id);
   //     const gettingVendorId = this.vendorList.map((vendor: any)=>{
   //       return vendor.vendorId;
   //     })
-  //     console.log("checking id...:", gettingVendorId);
+  //      //console.log("checking id...:", gettingVendorId);
   //   });
   // }
 
   // fetchCustomerList() {
   //   this.customerService.getAllCustomer().subscribe((res) => {
-  //     console.log("customer data from backend",res);
+  //      //console.log("customer data from backend",res);
   //     this.customerList = res;
-  //     console.log("fetching customer list:",this.customerList.customerId);
+  //      //console.log("fetching customer list:",this.customerList.customerId);
 
   //     const customerIds = this.customerList.map((cus: any)=>{
   //       return cus.customerId;
   //     })
   
-  //     console.log("All customer Ids:", customerIds);
+  //      //console.log("All customer Ids:", customerIds);
 
   //   },(error) => {
-  //     console.log("error while getting customer details:",error);
+  //      //console.log("error while getting customer details:",error);
   //   });
   // }
 
   ifBox(data: any) {
-    console.log(data);
+     //console.log(data);
     this.isBox = data == 200;
 
     this.updateForm();
@@ -456,17 +470,20 @@ export class StockComponent {
     this.totalItem =
       this.inwardForm.get('prdQty')?.value *
       this.inwardForm.get('itemprebox')?.value;
-    console.log(this.totalItem);
+     //console.log(this.totalItem);
     this.inwardForm.patchValue({ totalPieces: this.totalItem });
   }
 
   addProductList(data: any, productId: any) {
-    console.log("Adding item to the product list:", data);
+     //console.log("Adding item to the product list:", data);
 
-    console.log("selected productId:", productId);
+     //console.log("selected productId:", productId);
+    console.log(data);
+    console.log(productId);
+     //console.log("Initial before product_details:", data.product_details);
 
     if (!productId) {
-      console.log("Invalid productId. Cannot add product.");
+       //console.log("Invalid productId. Cannot add product.");
       return;
     }
 
@@ -477,75 +494,66 @@ export class StockComponent {
 
     // data.product_details = data.product_details.filter((product: any) => product.product !== null);
 
-    console.log("Initial product_details:", data.product_details)
+     //console.log("Initial product_details:", data.product_details)
 
     
+     // Remove any blank or invalid entries
+    // data.product_details = data.product_details.filter(
+    //   (product: any) => product.product && product.quantity !== null && product.price !== null
+    // );
 
+    //  //console.log("Cleaned product_details:", data.product_details);
 
     // data.product_details[0].product = productId;
 
 
     // this.productView = true;
 
-    const getProductDetail = {...data.product_details?.[0], product: productId};
+    const getProductDetail = {...data.product_form?.[0], product: productId};
     console.log("getProductDetail:",getProductDetail);
 
     // if (!getProductDetail || !getProductDetail.product) {
-    //   console.error("No valid product details found in data.");
+    //    //console.error("No valid product details found in data.");
     //   return;
     // }
 
     const newProductDetail = {
       product: productId,
-      quantity: data.product_details?.[0]?.quantity || 1,
-      gst: data.product_details?.[0]?.gst || 0,
-      price: data.product_details?.[0]?.price || 0
+      quantity: data.product_form?.[0]?.quantity,
+      gst: data.product_form?.[0]?.gst,
+      price: data.product_form?.[0]?.price
     };
 
-    console.log("newProductDetail:",newProductDetail);
+     //console.log("newProductDetail:",newProductDetail);
 
-    console.log("console data:", data);
-
-   
-
-    
-
-    // setTimeout(() => {
-    //   console.log("product_details after potential async updates:", data.product_details);
-    
-    //   const existingProductIndex = data.product_details.findIndex(
-    //     (product: any) =>
-    //       product &&
-    //       product.product !== null &&
-    //       +product.product === +newProductDetail.product
-    //   );
-    
-    //   console.log("Existing Product Index:", existingProductIndex);
-    // }, 100);
-
-
-    // const existingProductIndex = this.productDetails.controls.findIndex(
-    //   (control) => +control.value.product === +productId
-    // );
-    
-    
-
-  // Check for uninitialized entries
-  const existingEmptyIndex = data.product_details.findIndex(
-    (product: any) => !product.product || product.product === ""
-  );
-
-  console.log("existingEmptyIndex:", existingEmptyIndex);
-
-
+     //console.log(" //console data:", data);
+  
   const existingProductIndex = data.product_details.findIndex(
     (product: any) => product.product === productId
   );
 
-  console.log("existingProductIndex:", existingProductIndex);
+   //console.log("existingProductIndex:", existingProductIndex);
 
   
+  const matchingProduct = this.productData.find(
+    (product: any) => product.productId === getProductDetail.product,
+  )
 
+
+  const isduplicateEntry = this.productList.some(
+    (product) => product.product === getProductDetail.product,
+    console.log("Duplicate entry detected. Product already exists:", getProductDetail.product)
+  )
+
+  if(isduplicateEntry){
+    console.log("Duplicate entry detected. Product already exists:", getProductDetail.product);
+    alert("This product is already added to the list!");
+    // this.inwardForm.reset();
+    // this.resetFields();
+    return;
+  }
+
+   //console.log("matchingProduct:", matchingProduct);
     
 
   if (existingProductIndex !== -1) {
@@ -554,70 +562,63 @@ export class StockComponent {
       ...data.product_details[existingProductIndex],
       ...newProductDetail,
     };
-    console.log(`Updated existing product at index ${existingProductIndex}:`, data.product_details[existingProductIndex]);
-  }else if (existingEmptyIndex !== -1) {
-    // Replace the uninitialized entry
-    data.product_details[existingEmptyIndex] = newProductDetail;
-    console.log(`Replaced empty entry at index ${existingEmptyIndex}:`, newProductDetail);
-
+     //console.log(`Updated existing product at index ${existingProductIndex}:`, data.product_details[existingProductIndex]);
   } else {
     // Add the new product to the array
-    data.product_details.push(newProductDetail);
-    console.log("Added new product:", newProductDetail);
+    console.log("reach at end")
+    const oldProductData = [...data.product_details]
+    data.product_details = [...oldProductData,newProductDetail];
+    
+    console.log(data)
+     //console.log("Added new product:", newProductDetail);
+    this.productList.push({
+          ...data,
+          product: getProductDetail.product,
+          gst: getProductDetail.gst,
+          quantity: getProductDetail.quantity,
+          price: getProductDetail.price,
+          productCode: matchingProduct.productCode,
+          productName: matchingProduct.productName,
+          productModel: matchingProduct.productModel,
+          productQuantity: getProductDetail.quantity,
+          gstAmount: (getProductDetail.gst / 100) * getProductDetail.price * getProductDetail.quantity,
+          productPrice: getProductDetail.price * getProductDetail.quantity,
+          productPriceWithGst: (getProductDetail.gst / 100 * getProductDetail.price * getProductDetail.quantity) + (getProductDetail.price * getProductDetail.quantity),
+        });
   }
 
 
-  console.log("Updated product_details:", data.product_details);
+   //console.log("Updated product_details:", data.product_details);
 
 
-    console.log("newProductDetail.product:", newProductDetail.product);
+     //console.log("newProductDetail.product:", newProductDetail.product);
 
   
 
     data.product_details.forEach((product: any) =>
-      console.log("Comparing product in array:", product.product, "with newProductDetail:", newProductDetail.product)
+       console.log("Comparing product in array:", product.product, "with newProductDetail:", newProductDetail.product)
     );
 
 
-    data.product_details.forEach((product: any) => Object.freeze(product));
-
-
-
-    data.product_details.forEach((product: any, index: number) => {
-      console.log(`Object at index ${index}:`, product);
-      console.log("product.product value:", product.product);
+    data.product_form.forEach((product: any, index: number) => {
+       console.log(`Object at index ${index}:`, product);
+       console.log("product.product value:", product.product);
     });
+     
+
+   
+
+
     
-    
-
-    const matchingProduct = this.productData.find(
-      (product: any) => product.productId === getProductDetail.product,
-    )
-
-    console.log("matchingProduct:", matchingProduct);
-
-    // console.log("existing Product Index:", existingProductIndex);
-
-    const isduplicateEntry = this.productList.some(
-      (product) => product.product === data.product_details[0].product,
-    )
-
-    if(isduplicateEntry){
-      console.log("Duplicate entry detected. Product already exists:", data.product_details[0].product);
-      alert("This product is already added to the list!");
-      // this.inwardForm.reset();
-      // this.resetFields();
-      return;
-    }
 
     // if (existingProductIndex !== -1) {
     //   this.productDetails.at(existingProductIndex).patchValue(newProductDetail);
-    //   // console.log("Product not found, adding new product to array.");
+    //   //  //console.log("Product not found, adding new product to array.");
     //   // data.product_details.push(newProductDetail);
     //   // Product exists, update the quantity and total
-    //   // console.log("Updating existing product in product_details array...");
+    //   //  //console.log("Updating existing product in product_details array...");
     //   // const existingProduct = data.product_details[existingProductIndex];
-    //   // console.log("existingProduct:",existingProduct);
+    //   //  //console.log("existingProduct:",existingProduct);
     //   // existingProduct.quantity += newProductDetail.quantity; // Update quantity
     //   // existingProduct.gst = newProductDetail.gst;
     //   // existingProduct.price += newProductDetail.price;
@@ -632,9 +633,9 @@ export class StockComponent {
       
     // } else {
     //   this.productDetails.push(this.fb.group(newProductDetail));
-    //   // console.log("Product found, updating existing product.");
+    //   //  //console.log("Product found, updating existing product.");
     //   // data.product_details[existingProductIndex] = { ...data.product_details[existingProductIndex], ...newProductDetail };
-    //   // console.log("Adding new product to product_details array...");
+    //   //  //console.log("Adding new product to product_details array...");
     //   // data.product_details.push(newProductDetail);
     //   // let total = this.shared.gstCalculation(
     //   //   data.prdQty,
@@ -655,20 +656,20 @@ export class StockComponent {
     //     productPrice: getProductDetail.price * getProductDetail.quantity,
     //     productPriceWithGst: (getProductDetail.gst / 100 * getProductDetail.price * getProductDetail.quantity) + (getProductDetail.price * getProductDetail.quantity),
     //   });
-    //   // console.log(total);
+    //   //  //console.log(total);
     // }
 
 
-    data.product_details = data.product_details.filter(
-      (product: any) => product.product !== null && product.product !== undefined
-    );
+    // data.product_details = data.product_details.filter(
+    //   (product: any) => product.product !== null && product.product !== undefined
+    // );
 
-    console.log("Updated product_details:", this.productDetails.value);
+     //console.log("Updated product_details:", this.productDetails.value);
 
 
-    console.log("Updated product_details array:", data.product_details);
+     //console.log("Updated product_details array:", data.product_details);
 
-    console.log("Updated Form Data:", data);
+     //console.log("Updated Form Data:", data);
 
     // this.resetFields();
 
@@ -718,7 +719,7 @@ export class StockComponent {
   }
 
   // inwardHeader(data: any) {
-  //   // console.log(data);
+  //   //  //console.log(data);
 
   //   this.header = data;
   //   let branch: any[] = this._branch;
@@ -735,10 +736,10 @@ export class StockComponent {
   //     let vendorDetails = branch.find((v) => v.branchId == data.vendorId);
   //     this.header.vendorName = vendorDetails.branchName;
   //   }
-  //   console.log(this.header);
+  //    //console.log(this.header);
   // }
   inwardHeader(data: any) {
-    // console.log(data);
+    //  //console.log(data);
 
     this.header = data;
     let branch: any[] = this._branch;
@@ -760,7 +761,7 @@ export class StockComponent {
       }
     }
 
-    console.log(this.header);
+     //console.log(this.header);
   }
 
   deleteHeader() {
@@ -774,34 +775,40 @@ export class StockComponent {
 
   onSubmit() {
     let finalList = { ...this.header, transPrdDetails: this.productList };
-    console.log(finalList);
+     //console.log(finalList);
     // this.productService.addInward(finalList).subscribe(
     //   (res) => {
-    //     console.log(res);
+    //      //console.log(res);
     //   },
     //   (error) => {
     //     if (error.status == 200) {
-    //       console.log(error);
+    //        //console.log(error);
 
     //       this.isSuccess = true;
     //       let successData = { show: 2, text: error.error.text };
     //       this.transactionID = successData;
     //     }
-    //     console.log(error.error.text);
+    //      //console.log(error.error.text);
     //   },
     // );
   }
 
   saveInwardOrOutward(data: any, customerId: any, vendorId: any){
     // const CustomerOrVendor = this.selectedCustomerId;
-    console.log("customerId in while saving outward:",customerId)
-    console.log("transaction data: ",data);
-    data.CustomerOrVendor = customerId;
+     //console.log("customerId in while saving outward:",customerId)
+     data.product_details = this.productList.map(item =>{
+      return {product: item.product,
+      quantity: item.productQuantity,
+      price: item.price,
+      gst: item.gst
+     }})
+    delete data.product_form
+     data.CustomerOrVendor = customerId;
     data.CustomerOrVendor = vendorId;
-    console.log("data.CustomerOrVendor :",data.CustomerOrVendor)
+     //console.log("data.CustomerOrVendor :",data.CustomerOrVendor)
 
     const txnType = this.inwardForm.get('inwardFromCode')?.value;
-    console.log("transaction type:", txnType);
+     //console.log("transaction type:", txnType);
 
     if(txnType === '268'){
       data.CustomerOrVendor = vendorId;
@@ -811,14 +818,14 @@ export class StockComponent {
       data.CustomerOrVendor = customerId;
     }
 
-
+console.log(data)
     if (txnType === '268') {
       this.transactionService.addTransaction(data).subscribe((res)=>{
-        console.log("saving transaction to the database:", res);
+         //console.log("saving transaction to the database:", res);
         this.inwardForm.reset();
         this.productList = [];
       },(error) => {
-        console.log("error while saving data to the database:", error);
+         //console.log("error while saving data to the database:", error);
         this.productList = [];
       })
     }
@@ -826,11 +833,11 @@ export class StockComponent {
 
     if (txnType === '269') {
       this.transactionService.addOutwardTransaction(data).subscribe((res)=>{
-        console.log("saving outward transaction to the database:", res);
+         //console.log("saving outward transaction to the database:", res);
         this.inwardForm.reset();
         this.productList = [];
       }, (error) => {
-        console.log("error while fetching outward data:", error);
+         //console.log("error while fetching outward data:", error);
         this.productList = [];
       })
     }  
@@ -839,7 +846,7 @@ export class StockComponent {
   deleteItem(product: any){
     this.productList = this.productList.filter(p => p.product !== product.product);
     // this.inwardForm.reset();
-    console.log("Deleting product item:", this.productList);
+     //console.log("Deleting product item:", this.productList);
   }
 
   resetComponent() {
