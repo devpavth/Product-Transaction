@@ -1,0 +1,277 @@
+
+<section class="">
+<div class="p-4 sm:ml-64">
+    <div class="flex items-center justify-center">
+    <div class="relative h-full w-4/5 md:h-auto">
+        <!-- Modal content -->
+        <div class="relative rounded-lg p-4 dark:bg-gray-800 sm:p-5">
+        <!-- Modal header -->
+        <div class="mb-4 flex items-center justify-between rounded-t sm:mb-5">
+            <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+            Create Quotation
+            </h3>
+            <button
+            type="button"
+            routerLink="/home/quotationList"
+            class="an ml-auto inline-flex items-center rounded-lg bg-transparent p-1.5 text-sm text-gray-400 hover:bg-red-600 hover:text-white dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-toggle="defaultModal"
+            >
+            <svg
+                aria-hidden="true"
+                class="h-5 w-5"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+            >
+                <path
+                fill-rule="evenodd"
+                d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
+                clip-rule="evenodd"
+                ></path>
+            </svg>
+            <span class="sr-only">Close modal</span>
+            </button>
+        </div>
+        <!-- Modal body -->
+        <form [formGroup]="QuotationForm">
+            <div class="mb-4 grid gap-4 sm:grid-cols-8">
+            
+            <div class="col-span-4">
+                <label
+                for="brand"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Quotation Code</label
+                >
+                <input
+                type="text"
+                formControlName="quotationCode"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                [ngClass]="{
+                    error:
+                    QuotationForm.get('quotationCode')?.invalid &&
+                    QuotationForm.get('quotationCode')?.touched
+                }"
+                required
+                />
+                <small
+                *ngIf="
+                    QuotationForm?.get('quotationCode')?.invalid &&
+                    QuotationForm?.get('quotationCode')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Quotation Code Required!
+                </small>
+            </div>
+            <div class="col-span-2">
+                <label
+                for="brand"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Quotation Date</label
+                >
+                <input
+                type="text"
+                formControlName="quotationDate"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                [ngClass]="{
+                    error:
+                    QuotationForm.get('quotationDate')?.invalid &&
+                    QuotationForm.get('quotationDate')?.touched
+                }"
+                required
+                />
+                <small
+                *ngIf="
+                    QuotationForm?.get('quotationDate')?.invalid &&
+                    QuotationForm?.get('quotationDate')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Quotation Date Required!
+                </small>
+            </div>
+            
+            <div class="col-span-2">
+                <label
+                for="price"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Quotation Reference</label
+                >
+                <input
+                type="number"
+                formControlName="quotationReference"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                [ngClass]="{
+                    error:
+                    QuotationForm.get('quotationReference')?.invalid &&
+                    QuotationForm.get('quotationReference')?.touched
+                }"
+                required
+                />
+                <!-- <button
+                type="button"
+                (click)="openHsnLink()"
+                class="mt-2 w-full rounded-lg border border-gray-300 bg-purple-600 p-2.5 text-sm text-white hover:bg-purple-700 focus:outline-none focus:ring-2 focus:ring-purple-600">
+                    Get HSN Code
+                </button> -->
+                <!-- <a 
+                href="https://services.gst.gov.in/services/searchhsnsac" 
+                target="_blank" 
+                rel="noopener noreferrer"
+                class="text-sm ml-2 mr-4 text-blue-500 font-medium hover:underline">
+                    Get HSN Code 
+                </a> -->
+                <small
+                *ngIf="
+                    QuotationForm?.get('quotationReference')?.invalid &&
+                    QuotationForm?.get('quotationReference')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Quotation Reference Required!
+                </small>
+            </div>
+            <div class="col-span-2">
+                <label
+                for="price"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Customer Name</label
+                >
+                <input
+                type="number"
+                formControlName="customerId"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                [ngClass]="{
+                    error:
+                    QuotationForm.get('customerId')?.invalid &&
+                    QuotationForm.get('customerId')?.touched
+                }"
+                required
+                />
+                <small
+                *ngIf="
+                    QuotationForm?.get('customerId')?.invalid &&
+                    QuotationForm?.get('customerId')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Customer Required!
+                </small>
+            </div>
+            <!-- <div class="col-span-2">
+                <label
+                for="category"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >GST Percentage</label
+                >
+                <select
+                formControlName="productGstRate"
+                class="select-option1 block w-full rounded-lg border"
+                [ngClass]="{
+                    error:
+                    QuotationForm.get('productGstRate')?.invalid &&
+                    QuotationForm.get('productGstRate')?.touched
+                }"
+                required
+                >
+                <option *ngFor="let g of gst" value="{{ g }}">{{ g }}</option>
+                <small
+                    *ngIf="
+                    QuotationForm?.get('productGstRate')?.invalid &&
+                    QuotationForm?.get('productGstRate')?.touched
+                    "
+                    class="text-danger text-red-600"
+                >
+                    Select GST Percentage!
+                </small>
+                </select>
+                <small class="text-danger text-red-600"> </small>
+            </div>
+            <div class="col-span-2">
+                <label
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Quantity</label
+                >
+                <input
+                type="text"
+                formControlName="productQuantity"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                [ngClass]="{
+                    error:
+                    QuotationForm.get('productQuantity')?.invalid &&
+                    QuotationForm.get('productQuantity')?.touched
+                }"
+                required
+                />
+                <small
+                *ngIf="
+                    QuotationForm?.get('productQuantity')?.invalid &&
+                    QuotationForm?.get('productQuantity')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Quantity Required!
+                </small>
+            </div> -->
+            <!-- <div class="sm:col-span-full">
+                <label
+                for="description"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Description</label
+                >
+                <textarea
+                formControlName="productDescription"
+                rows="4"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder="Write product description here"
+                appFirstCapLetter
+                [ngClass]="{
+                    error:
+                    QuotationForm.get('productDescription')?.invalid &&
+                    QuotationForm.get('productDescription')?.touched
+                }"
+                required
+                ></textarea>
+                <small
+                *ngIf="
+                    QuotationForm?.get('productDescription')?.invalid &&
+                    QuotationForm?.get('productDescription')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Description Required!
+                </small>
+            </div> -->
+            </div>
+            <div class="flex items-center justify-end">
+            <button
+                (click)="onSubmit(QuotationForm.value)"
+                type="submit"
+                class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-purple-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+            >
+                <svg
+                class="-ml-1 mr-1 h-6 w-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
+                >
+                <path
+                    fill-rule="evenodd"
+                    d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                    clip-rule="evenodd"
+                ></path>
+                </svg>
+                Save
+            </button>
+            </div>
+        </form>
+        </div>
+    </div>
+    </div>
+</div>
+</section>

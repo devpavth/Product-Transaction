@@ -20,6 +20,7 @@ import { ViewAddressComponent } from './Customer/view-address/view-address.compo
 import { ReportComponent } from './Report/report/report.component';
 import { QuotationListComponent } from './Quotation/quotation-list/quotation-list.component';
 import { ViewQuotationComponent } from './Quotation/view-quotation/view-quotation.component';
+import { CreateQuotationComponent } from './Quotation/create-quotation/create-quotation.component';
 
 
 
@@ -39,6 +40,7 @@ import { ViewQuotationComponent } from './Quotation/view-quotation/view-quotatio
     ReportComponent,
     QuotationListComponent,
     ViewQuotationComponent,
+    CreateQuotationComponent,
   ],
   imports: [
     CommonModule,

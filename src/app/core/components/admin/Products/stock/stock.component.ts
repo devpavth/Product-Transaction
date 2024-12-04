@@ -95,7 +95,7 @@ export class StockComponent {
       CustomerOrVendor: [],
       searchInput: [],
       product_details:[],
-    product_form : this.fb.array([this.showBankData()])
+      product_form : this.fb.array([this.showBankData()])
     })
     
     if (this.isBox) {
@@ -110,7 +110,7 @@ export class StockComponent {
     this.fetchAllBranch();
     // this.fetchVendorList();
     // this.fetchCustomerList();
-console.log(this.inwardForm.value)
+    console.log(this.inwardForm.value)
     const now = new Date();
     this.today = now.toISOString().split('T')[0];
     
