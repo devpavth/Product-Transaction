@@ -1,5 +1,5 @@
 
-let Url = 'http://192.168.1.12:8000/';
+let Url = 'http://192.168.1.5:8000/';
 
 // let baseProductApi = 'Product';
 
@@ -35,5 +35,8 @@ export const environment = {
     fetchOutwardCustomer: Url + 'CustomerSearch',
 
 
-    quotationAll: Url + 'QuotationAll'
+    quotationAll: Url + 'QuotationAll',
+    fetchCustomerQuotation: Url + 'CustomerSearch',
+    fetchProductQuotation: Url + 'Search',
+    fetchQuotationCode: Url + 'code',
 };

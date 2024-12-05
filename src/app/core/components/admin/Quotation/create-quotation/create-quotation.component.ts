@@ -1,6 +1,8 @@
 import { Component, inject } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, debounceTime, of, switchMap } from 'rxjs';
+import { QuotationService } from '../../../service/Quotation/quotation.service';
 
 @Component({
   selector: 'app-create-quotation',
@@ -15,9 +17,24 @@ export class CreateQuotationComponent {
   catList: any;
   brandList: any;
   gst: any = [0, 5, 12, 18];
+
+  isCustomerSelected: boolean = false;
+  noCustomer: boolean = false;
+  customerList: any[] = [];
+  storeProductData: any[] = [];
+  selectedCustomerId: any;
+
+  isProductSelected: boolean = false;
+  noResults: boolean = false;
+  productData: any;
+  selectedProductId: any;
+  productList: any[] = [];
+
+  isChargeView: boolean = false;
   
 
   private route = inject(Router);
+  private quotationService = inject(QuotationService);
 
   QuotationForm: FormGroup;
 
@@ -36,6 +53,7 @@ export class CreateQuotationComponent {
       cGstTotal: [],
       sGstTotal: [],
       iGstTotal: [],
+      searchInput: [],
       product: this.fb.array([this.showProductQuotationData()]),
       terms: this.fb.array([this.showQuotationTerms()]),
       Charge: this.fb.array([this.showAdditionalCharge()]),
@@ -100,7 +118,108 @@ export class CreateQuotationComponent {
 
 
   ngOnInit(): void {
-    this.fetchGroupList();
+
+    this.quotationService.fetchQuotationCode().subscribe(
+      (res: any)=>{
+        console.log("fetching quotation code:", res);
+        this.QuotationForm.get('quotationCode')?.setValue(res);
+      },
+      (error) =>{
+        console.log("error while fetching quotation code", error);
+      }
+    )
+
+
+    this.QuotationForm.get('customerId')?.valueChanges
+    .pipe(
+      debounceTime(300),
+      switchMap((customerName) =>{
+        if(this.isCustomerSelected){
+          return of([]);
+        }
+        this.noCustomer = false;
+        if(!customerName?.trim()){
+          this.customerList = [];
+          return of([]);
+        }
+        return this.quotationService.fetchCustomerQuotation({customerName}).pipe(
+          catchError((error)=>{
+            if(error.status === 404){
+              console.log("Customer API Error:", error);
+              this.noCustomer = true;
+            }
+            return of([]);
+          })
+        )
+      })
+    )
+    .subscribe(
+      (response: any) =>{
+        this.customerList = response.customer;
+        this.isCustomerSelected = false;
+      },
+ 
+    );
+
+    (this.QuotationForm.get('product') as FormArray).controls.forEach((group: AbstractControl, index: number) => {
+      group.get('product')?.valueChanges
+      .pipe(
+        debounceTime(300),
+        switchMap((productName)=>{
+          console.log(`Product Name Changed for Index ${index}:`, productName);
+          if(this.isProductSelected){
+            return of([]);
+          }
+          this.noResults = false;
+          this.storeProductData = [];
+          if(!productName?.trim()){
+            return of([]);
+          }
+          return this.quotationService.fetchProductQuotation({productName}).pipe(
+            catchError((error)=>{
+              if(error.status === 404){
+                this.noResults = true;
+              }
+              return of([]);
+            })
+          );
+        })
+      ).subscribe(
+        (response: any) => {
+          this.storeProductData = response.products || [];
+          console.log("fteching product data from backend:", response);
+          this.isProductSelected = false;
+        },
+      )
+    })
+  }
+
+  onSelectCustomer(customer: any){
+    console.log("customer:", customer);
+    this.QuotationForm.get('customerId')?.setValue(customer.customerName);
+    this.selectedCustomerId = customer.customerId;
+    this.isCustomerSelected = true;
+    this.customerList = [];
+  }
+
+  onSelectProduct(product: any){
+    // (this.QuotationForm.get('product') as FormArray).controls.forEach((group: AbstractControl, index: number) => {
+    //   group.get('product')?.setValue(product.productName);
+    // })
+
+    this.selectedProductId = product.productId
+    this.isProductSelected = true;
+    this.productData = [product];
+    this.storeProductData = [];
+  }
+
+  isProductFormValid(): boolean{
+    const productArray = this.QuotationForm.get('product') as FormArray;
+    return productArray.controls.every((group) => group.valid);
+  }
+
+  toggleAdditionalCharges(){
+    this.isChargeView = !this.isChargeView;
   }
 
   addingAction(check: number) {
@@ -119,27 +238,78 @@ export class CreateQuotationComponent {
     }
   }
 
-  fetchGroupList() {
-    // this.productService.groupList().subscribe((res) => {
-    //   this.groupList = res;
-    //   console.log(res);
-    // });
-  }
-  fetchCatList(Id: any) {
-    // this.productService.catagoriesList(Id).subscribe((res) => {
-    //   this.catList = res;
-    //   console.log(res);
-    // });
-  }
-  fetchBrandList(catId: any) {
-    // this.productService.brandList(catId).subscribe((res) => {
-    //   this.brandList = res;
-    //   console.log(res);
-    // });
+
+  addToBill(data: any, productId: any){
+    console.log("addtoBill data from QuotationFormValue:", data);
+    console.log("productId from product live search", productId);
+
+    const getProductDetail = {...data.product?.[0], product: productId};
+    console.log("getProductDetail", getProductDetail);
+
+    const existingProductIndex = data.product.findIndex(
+      (product: any) => product.product === productId
+    )
+
+    const matchingProduct = this.productData.find(
+      (product: any) => product.productId === getProductDetail.product,
+    )
+
+    console.log("matchingProduct:", matchingProduct);
+
+    const isduplicateEntry = this.productList.some(
+      (product) => product.product === getProductDetail.product,
+      console.log("Duplicate entry detected. Product already exists:", getProductDetail.product)
+    )
+
+    if(isduplicateEntry){
+      console.log("Duplicate entry detected. Product already exists:", getProductDetail.product);
+      alert("This product is already added to the list!");
+      // this.inwardForm.reset();
+      // this.resetFields();
+      return;
+    }
+
+
+    if (existingProductIndex !== -1) {
+      // Update the existing product details
+      data.product[existingProductIndex] = {
+        ...data.product[existingProductIndex],
+        
+      };
+       //console.log(`Updated existing product at index ${existingProductIndex}:`, data.product_details[existingProductIndex]);
+    } else {
+      // Add the new product to the array
+      console.log("reach at end")
+      const oldProductData = [...data.product]
+      data.product = [...oldProductData];
+      
+      console.log(data)
+       //console.log("Added new product:", newProductDetail);
+      this.productList.push({
+            ...data,
+            product: getProductDetail.product,
+            gstRate: getProductDetail.gstRate,
+            quantity: getProductDetail.productQuantity,
+            price: getProductDetail.price,
+            // productCode: matchingProduct.productCode,
+            productName: matchingProduct.productName,
+            productDescription: matchingProduct.productDescription,
+            productModel: matchingProduct.productModel,
+            productQuantity: getProductDetail.productQuantity,
+            gstAmount: (getProductDetail.gstRate / 100) * getProductDetail.price * getProductDetail.productQuantity,
+            productPrice: getProductDetail.price * getProductDetail.productQuantity,
+            productPriceWithGst: (getProductDetail.gstRate / 100 * getProductDetail.price * getProductDetail.productQuantity) + (getProductDetail.price * getProductDetail.productQuantity),
+          });
+    }
+
+
+    this.productData = '';
+
   }
 
-  openHsnLink(){
-    window.open('https://cleartax.in/s/gst-hsn-lookup', '_blank')
+
+  deleteItem(product: any){
+    this.productList = this.productList.filter((p) => p.product !== product.product);
   }
 
   onSubmit(data: any) {
@@ -162,7 +332,6 @@ export class CreateQuotationComponent {
   }
   closeAdding(action: boolean) {
     this.isCloseAdding = action;
-    this.fetchGroupList();
     this.QuotationForm.reset();
   }
 }
