@@ -28,9 +28,11 @@ export class CreateQuotationComponent {
   noResults: boolean = false;
   productData: any;
   selectedProductId: any;
+  selectedProductQuantity: any;
   productList: any[] = [];
 
   isChargeView: boolean = false;
+  isTermsView: boolean = true;
   
 
   private route = inject(Router);
@@ -208,6 +210,7 @@ export class CreateQuotationComponent {
     // })
 
     this.selectedProductId = product.productId
+    this.selectedProductQuantity = product.productQuantity
     this.isProductSelected = true;
     this.productData = [product];
     this.storeProductData = [];
@@ -220,6 +223,18 @@ export class CreateQuotationComponent {
 
   toggleAdditionalCharges(){
     this.isChargeView = !this.isChargeView;
+  }
+
+  toggleTermsAndCondition(){
+    this.isTermsView = !this.isTermsView;
+  }
+
+  compareQuantity(index: number, qty: any){
+    if(qty > this.selectedProductQuantity){
+      this.productDetails.at(index).get('productQuantity')?.setErrors({quantityExceed: true});
+    }else{
+      this.productDetails.at(index).get('productQuantity')?.setErrors(null);
+    }
   }
 
   addingAction(check: number) {
