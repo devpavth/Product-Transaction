@@ -47,6 +47,7 @@ export class HeaderComponent implements OnInit{
   ngOnInit(): void {
     this.loginTime = this.authService.getLoginTime();
     const storedUser = sessionStorage.getItem('userData');
+    console.log("storedUser:", storedUser);
     if(storedUser){
       this.userData = JSON.parse(storedUser);
       console.log("user data for header:", this.userData);

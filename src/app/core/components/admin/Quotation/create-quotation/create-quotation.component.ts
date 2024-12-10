@@ -33,6 +33,14 @@ export class CreateQuotationComponent {
 
   isChargeView: boolean = false;
   isTermsView: boolean = true;
+  isSave: boolean = true;
+  isEdit: boolean = false;
+
+  additionalCharges: {label: string, value: number}[] = [];
+
+  taxableAmount: number = 0;
+  userData: any;
+  bankList: any[] = [];
   
 
   private route = inject(Router);
@@ -103,7 +111,7 @@ export class CreateQuotationComponent {
 
 
   get additionalCharge() {
-    return this.QuotationForm.get('terms') as FormArray;
+    return this.QuotationForm.get('Charge') as FormArray;
   }
 
   showAdditionalCharge(){
@@ -120,6 +128,8 @@ export class CreateQuotationComponent {
 
 
   ngOnInit(): void {
+
+    
 
     this.quotationService.fetchQuotationCode().subscribe(
       (res: any)=>{
@@ -194,6 +204,16 @@ export class CreateQuotationComponent {
         },
       )
     })
+
+    const storedUser = sessionStorage.getItem('userData');
+    console.log("storedUser:", storedUser);
+
+    if(storedUser){
+      this.userData = JSON.parse(storedUser);
+      console.log("getting user bank data for quotation:", this.userData);
+    }
+
+    this.fetchBankInfo();
   }
 
   onSelectCustomer(customer: any){
@@ -235,6 +255,81 @@ export class CreateQuotationComponent {
     }else{
       this.productDetails.at(index).get('productQuantity')?.setErrors(null);
     }
+  }
+
+  addCharges(chargeGroup: AbstractControl){
+    console.log("deliveryCharge:", chargeGroup);
+
+    const deliveryCharge = chargeGroup.get('deliveryCharge')?.value;
+    const installCharge = chargeGroup.get('installCharge')?.value;
+
+
+    console.log("Delivery Charge:", deliveryCharge);
+    console.log("Installation Charge:", installCharge);
+
+    this.additionalCharges = [
+      {
+        label: 'Delivery Charges',
+        value: deliveryCharge
+      },
+      {
+        label: 'Installation Charges',
+        value: installCharge
+      }
+    ].filter((charge)=> charge.value !== null && charge.value !== '')
+
+    chargeGroup.get('deliveryCharge')?.reset();
+    chargeGroup.get('installCharge')?.reset();
+
+  }
+
+  saveTermsAndConditions(termsControl: AbstractControl){
+    console.log("termsControl in saving:", termsControl);
+
+    const termsCondition = termsControl.get('termCondition')?.value;
+
+    console.log("termsCondition:", termsCondition);
+    termsControl.get('termCondition')?.disable();
+
+    this.isSave = false;
+    this.isEdit = true;
+    
+  }
+
+  editTermsAndConditions(termsControl: AbstractControl){
+    console.log("termsControl in editing:", termsControl);
+    termsControl.get('termCondition')?.enable();
+
+    this.isSave = true;
+    this.isEdit = false;
+  }
+
+  clearTermsAndConditions(termsControl: AbstractControl){
+    console.log("termsData:", termsControl);
+
+    termsControl.reset();
+
+    // termsData = null;
+
+    console.log("termsData:", termsControl);
+
+    termsControl.get('termCondition')?.enable();
+
+    this.isSave = true;
+    this.isEdit = false;
+  }
+
+  fetchBankInfo(){
+    const companyId = this.userData.companyId;
+    console.log("companyId:", companyId);
+
+    this.quotationService.fetchBankDetails(companyId).subscribe(
+      (res: any) => {
+        console.log("fetching bank details:", res);
+        console.log("fetching bank name details:", res.bankName);
+        this.bankList = res;
+      }
+    )
   }
 
   addingAction(check: number) {
@@ -320,6 +415,30 @@ export class CreateQuotationComponent {
 
     this.productData = '';
 
+    console.log("after productList:", this.productList);
+
+    // const tax = this.productList.map(
+    //   (pro) => {
+    //     console.log("pro", pro);
+    //     pro.productPrice * pro.productPrice,
+    //     console.log("after pro:", pro);
+    //   }
+    // )
+
+    // console.log("tax:", tax);
+
+    // this.taxableAmount = getProductDetail.price * getProductDetail.productQuantity;
+    // console.log("this.taxableAmount:", this.taxableAmount);
+
+    this.taxableAmount = this.productList.reduce(
+      (total, product) => {
+        const taxable = product.price * product.productQuantity;
+        console.log("taxable:", taxable);
+
+        return total + taxable;
+      }, 0);
+
+      console.log("Total Taxable Amount:", this.taxableAmount);
   }
 
 

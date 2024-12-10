@@ -41,4 +41,8 @@ export class QuotationService {
   fetchQuotationCode(){
     return this.quotehttp.get(environment.fetchQuotationCode);
   }
+
+  fetchBankDetails(id: any){
+    return this.quotehttp.get(environment.fetchBankDetails + id);
+  }
 }
