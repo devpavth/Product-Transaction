@@ -4,6 +4,7 @@ import { VendorService } from '../../../service/vendor/vendor.service';
 import { CustomerService } from '../../../service/Customer/customer.service';
 import { TransactionService } from '../../../service/Transaction/transaction.service';
 import { catchError, debounceTime, distinctUntilChanged, of, Subscription, switchMap } from 'rxjs';
+import { log } from 'node:console';
 
 
 @Component({
@@ -106,6 +107,27 @@ export class StockComponent {
     }
     this.inwardForm.get('prdUnit')?.disable();
   }
+
+
+
+  get productDetails() {
+    return this.inwardForm.get('product_form') as FormArray;
+  }
+
+  showBankData() {
+    console.log("called  by inti method")
+    return this.fb.group({
+      product: [],
+      quantity: ['', Validators.required],
+      price: ['', Validators.required],
+      gst: ['', Validators.required],
+    });
+  }
+
+  addbank() {
+    this.productDetails.push(this.showBankData());
+  }
+  
   ngOnInit() {
     this.fetchAllBranch();
     // this.fetchVendorList();
@@ -280,23 +302,7 @@ export class StockComponent {
     // });
   }
 
-  get productDetails() {
-    return this.inwardForm.get('product_form') as FormArray;
-  }
-
-  showBankData() {
-    console.log("called  by inti method")
-    return this.fb.group({
-      product: [],
-      quantity: ['', Validators.required],
-      price: ['', Validators.required],
-      gst: ['', Validators.required],
-    });
-  }
-
-  addbank() {
-    this.productDetails.push(this.showBankData());
-  }
+  
 
   onSelectVendor(vendor: any){
     this.inwardForm.get('CustomerOrVendor')?.setValue(vendor.vendorName);
@@ -475,6 +481,9 @@ export class StockComponent {
   }
 
   addProductList(data: any, productId: any) {
+
+
+   
      //console.log("Adding item to the product list:", data);
 
      //console.log("selected productId:", productId);
@@ -516,6 +525,12 @@ export class StockComponent {
     //    //console.error("No valid product details found in data.");
     //   return;
     // }
+
+    var collectionItem:any = [];
+    var temp = getProductDetail
+    collectionItem.push(temp);
+    console.log(collectionItem)
+  
 
     const newProductDetail = {
       product: productId,
@@ -796,15 +811,19 @@ export class StockComponent {
   saveInwardOrOutward(data: any, customerId: any, vendorId: any){
     // const CustomerOrVendor = this.selectedCustomerId;
      //console.log("customerId in while saving outward:",customerId)
-     data.product_details = this.productList.map(item =>{
+    /*  data.product_details = this.productList.map(item =>{
       return {product: item.product,
       quantity: item.productQuantity,
       price: item.price,
       gst: item.gst
-     }})
-    delete data.product_form
-     data.CustomerOrVendor = customerId;
-    data.CustomerOrVendor = vendorId;
+     }}) */
+   
+    
+
+     
+      delete data.product_form
+      data.CustomerOrVendor = customerId;
+      data.CustomerOrVendor = vendorId;
      //console.log("data.CustomerOrVendor :",data.CustomerOrVendor)
 
     const txnType = this.inwardForm.get('inwardFromCode')?.value;
@@ -841,6 +860,12 @@ console.log(data)
         this.productList = [];
       })
     }  
+  }
+
+  saveInwardOrOutward1(data: any, customerId: any, vendorId: any){
+   console.log(this.productList);
+   console.log(this.productList);
+   console.log(this.productList);
   }
 
   deleteItem(product: any){

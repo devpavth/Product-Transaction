@@ -171,6 +171,21 @@
                 </li>
               </ul>
             </div>
+
+            <div class="col-span-4">
+              <label
+                  for="price"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >GST Number</label
+              >
+              <input
+                type="text"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                value="{{selectedCustomerGst}}"
+              />    
+              
+            </div>
           
           
           </div>
@@ -350,7 +365,7 @@
                       required
                     >
                       <!-- <option *ngFor="let g of gstPercentages" [ngValue]="g">{{ g }}</option> -->
-                      <option *ngFor="let g of gst" value="{{ g }}">{{ g }}</option>
+                      <option *ngFor="let g of gst"  [ngValue]="g">{{ g }}</option>
 
                       
                     </select>
@@ -722,7 +737,7 @@
               <!-- <option *ngFor="let g of gstPercentages" [ngValue]="g">{{ g }}</option> -->
                <option 
                 *ngFor="let bank of bankList"
-                value="bankName">{{bank.bankName}}</option>
+                [ngValue]="bank.bankId">{{bank.bankName}}</option>
   
             </select>
           </div>
@@ -735,24 +750,60 @@
       <div class="w-2/4 -mt-14">
         <div class="border border-green-400 rounded-lg p-4">
           <p class="text-sm font-medium text-black">
-            Taxable Amount: {{taxableAmount}}
+            Taxable Amount: {{taxableAmount | currency: 'INR'}}
           </p>
-          <p class="text-sm font-medium text-black">
-            IGST Amount:
-          </p>
-          <p class="text-sm font-medium text-black">
-            CGST Amount:
-          </p>
-          <p class="text-sm font-medium text-black">
-            SGST Amount:
-          </p>
+          <div *ngIf="isView18IGst">
+            <p class="text-sm font-medium text-black">
+              IGST Amount {{only18IGst}}%: {{total18IGstAmount | currency: 'INR'}}
+            </p>
+          </div>
+
+          <div *ngIf="isView12IGst">
+            <p class="text-sm font-medium text-black">
+              IGST Amount {{only12IGst}}%: {{total12IGstAmount | currency: 'INR'}}
+            </p>
+          </div>
+
+          <div *ngIf="isView5IGst">
+            <p class="text-sm font-medium text-black">
+              IGST Amount {{only5IGst}}%: {{total5IGstAmount | currency: 'INR'}}
+            </p>
+          </div>
+          
+          <div *ngIf="isView18Gst">
+            <p class="text-sm font-medium text-black">
+              CGST Amount {{only18Gst}}%: {{total18GstAmount | currency: 'INR'}}
+            </p>
+            <p class="text-sm font-medium text-black">
+              SGST Amount {{only18Gst}}%: {{total18GstAmount | currency: 'INR'}}
+            </p>
+          </div>
+          
+          <div *ngIf="isView12Gst">
+            <p class="text-sm font-medium text-black">
+              CGST Amount {{only12Gst}}%: {{total12GstAmount | currency: 'INR'}}
+            </p>
+            <p class="text-sm font-medium text-black">
+              SGST Amount {{only12Gst}}%: {{total12GstAmount | currency: 'INR'}}
+            </p>
+          </div>
+
+          <div *ngIf="isView5Gst">
+            <p class="text-sm font-medium text-black">
+              CGST Amount {{only5Gst}}%: {{total5GstAmount | currency: 'INR'}}
+            </p>
+            <p class="text-sm font-medium text-black">
+              SGST Amount {{only5Gst}}%: {{total5GstAmount | currency: 'INR'}}
+            </p>
+          </div>
+          
           <div *ngFor="let charge of additionalCharges">
             <p class="text-sm font-medium text-black">
               {{charge.label}}: GST (18%): {{charge.value * (18/100) + charge.value | currency: 'INR'}}
             </p>
           </div>
           <p class="text-sm font-medium text-black">
-            Total Amount:
+            Total Amount: {{totalAmount | currency: 'INR'}}
           </p>
         </div>
       </div>
@@ -785,7 +836,7 @@
         </button>
 
         <button
-          (click)="onSubmit(QuotationForm.value)"
+          (click)="onSubmit(QuotationForm.value, selectedCompanyId)"
           type="submit"
           class="mt-4 ml-4 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
           >

@@ -23,6 +23,8 @@ export class CreateQuotationComponent {
   customerList: any[] = [];
   storeProductData: any[] = [];
   selectedCustomerId: any;
+  selectedCompanyId: any;
+  selectedCustomerGst: any;
 
   isProductSelected: boolean = false;
   noResults: boolean = false;
@@ -39,8 +41,32 @@ export class CreateQuotationComponent {
   additionalCharges: {label: string, value: number}[] = [];
 
   taxableAmount: number = 0;
+  total18GstAmount: number = 0;
+  total12GstAmount: number = 0;
+  total5GstAmount: number = 0;
+  only18Gst: number = 0;
+  only12Gst: number = 0;
+  only5Gst: number = 0;
+  isView18Gst: boolean = false;
+  isView12Gst: boolean = false;
+  isView5Gst: boolean = false;
   userData: any;
   bankList: any[] = [];
+
+  total18IGstAmount: number = 0;
+  total12IGstAmount: number = 0;
+  total5IGstAmount: number = 0;
+  only18IGst: number = 0;
+  only12IGst: number = 0;
+  only5IGst: number = 0;
+  isView18IGst: boolean = false;
+  isView12IGst: boolean = false;
+  isView5IGst: boolean = false;
+
+  totalAmount: number = 0;
+  totalIGstAmount: number = 0;
+  totalcGstAmount: number = 0;
+  totalsGstAmount: number = 0;
   
 
   private route = inject(Router);
@@ -54,7 +80,7 @@ export class CreateQuotationComponent {
     this.QuotationForm = this.fb.group({
       companyId: [], // i need to pass to backend(no need for UI)
       customerId: ['', Validators.required],
-      bankId: ['', Validators.required],
+      bankId: [Validators.required],
       quotationDate: ['', Validators.required],
       quotationCode: ['', Validators.required],
       quotationReference: ['', Validators.required],
@@ -75,7 +101,7 @@ export class CreateQuotationComponent {
   }
 
   showProductQuotationData() {
-    console.log("called  by inti method")
+    console.log("called  by init method")
     return this.fb.group({
       product: [],
       productQuantity: ['', Validators.required],
@@ -214,12 +240,14 @@ export class CreateQuotationComponent {
     }
 
     this.fetchBankInfo();
+    // this.calculateIGstTotal();
   }
 
   onSelectCustomer(customer: any){
     console.log("customer:", customer);
     this.QuotationForm.get('customerId')?.setValue(customer.customerName);
     this.selectedCustomerId = customer.customerId;
+    this.selectedCustomerGst = customer.customerGst;
     this.isCustomerSelected = true;
     this.customerList = [];
   }
@@ -276,10 +304,13 @@ export class CreateQuotationComponent {
         label: 'Installation Charges',
         value: installCharge
       }
-    ].filter((charge)=> charge.value !== null && charge.value !== '')
+    ].filter((charge)=> charge.value !== null && charge.value !== '');
 
-    chargeGroup.get('deliveryCharge')?.reset();
-    chargeGroup.get('installCharge')?.reset();
+    this.totalAmount = deliveryCharge + installCharge
+
+
+    // chargeGroup.get('deliveryCharge')?.reset();
+    // chargeGroup.get('installCharge')?.reset();
 
   }
 
@@ -289,7 +320,7 @@ export class CreateQuotationComponent {
     const termsCondition = termsControl.get('termCondition')?.value;
 
     console.log("termsCondition:", termsCondition);
-    termsControl.get('termCondition')?.disable();
+    // termsControl.get('termCondition')?.disable();
 
     this.isSave = false;
     this.isEdit = true;
@@ -322,6 +353,10 @@ export class CreateQuotationComponent {
   fetchBankInfo(){
     const companyId = this.userData.companyId;
     console.log("companyId:", companyId);
+
+    this.selectedCompanyId = this.userData.companyId;
+
+    console.log("selectedCompanyId:", this.selectedCompanyId);
 
     this.quotationService.fetchBankDetails(companyId).subscribe(
       (res: any) => {
@@ -412,6 +447,125 @@ export class CreateQuotationComponent {
           });
     }
 
+    this.taxableAmount = this.productList.reduce(
+      (total, product) => {
+        const taxable = product.price * product.productQuantity;
+        console.log("taxable:", taxable);
+
+        return total + taxable;
+      }, 0);
+
+      console.log("Total Taxable Amount:", this.taxableAmount);
+
+    this.total18GstAmount = 0;
+    this.total12GstAmount = 0;
+    this.total5GstAmount = 0;
+
+    this.total18IGstAmount = 0;
+    this.total12IGstAmount = 0;
+    this.total5IGstAmount = 0;
+
+    this.totalAmount = 0;
+
+    this.productList.forEach((product) => {
+      if((this.selectedCustomerGst.slice(0,2)) === '29'){
+        if(product.gstRate === 18){
+          this.only18Gst = product.gstRate / 2;
+          this.isView18Gst = true;
+          const gst18Amount = product.productPriceWithGst;
+          this.total18GstAmount += gst18Amount;
+        }else if(product.gstRate === 12){
+          this.only12Gst = product.gstRate / 2;
+          this.isView12Gst = true;
+          const gst12Amount = product.productPriceWithGst;
+          this.total12GstAmount += gst12Amount;
+        }else if(product.gstRate === 5){
+          this.only5Gst = product.gstRate / 2;
+          this.isView5Gst = true;
+          const gst5Amount = product.productPriceWithGst;
+          this.total5GstAmount += gst5Amount;
+        }
+      }else{
+        if(product.gstRate === 18){
+          this.only18IGst = product.gstRate;
+          this.isView18IGst = true;
+          const gst18IAmount = product.productPriceWithGst;
+          this.total18IGstAmount += gst18IAmount;
+        }
+        else if(product.gstRate === 12){
+          this.only12IGst = product.gstRate;
+          this.isView12IGst = true;
+          const gst12IAmount = product.productPriceWithGst;
+          this.total12IGstAmount += gst12IAmount;
+        }else if(product.gstRate === 5){
+          this.only5IGst = product.gstRate;
+          this.isView5IGst = true;
+          const gst5IAmount = product.productPriceWithGst;
+          this.total5IGstAmount += gst5IAmount;
+        }
+      }
+      
+    })
+
+    if((this.selectedCustomerGst.slice(0,2)) === '29'){
+      console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
+      this.total18GstAmount = this.total18GstAmount / 2;
+      this.total12GstAmount = this.total12GstAmount / 2;
+      this.total5GstAmount = this.total5GstAmount / 2;
+
+      this.totalAmount = this.taxableAmount + this.total18GstAmount + 
+                          this.total12GstAmount + this.total5GstAmount;
+
+
+      
+
+    }else{
+      console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
+      this.total18IGstAmount = this.total18IGstAmount;
+      this.total12IGstAmount = this.total12IGstAmount;
+      this.total5IGstAmount = this.total5IGstAmount;
+
+      // this.calculateIGstTotal();
+
+      this.totalAmount = this.taxableAmount + this.total18IGstAmount + 
+                          this.total12IGstAmount + this.total5IGstAmount;
+    }
+
+
+
+    // if(getProductDetail.gstRate === 18){
+    //   this.only18Gst = (getProductDetail.gstRate) / 2;
+    //   this.total18GstAmount = this.productList.reduce(
+    //     (total, p) => {
+    //       return total + p.productPriceWithGst;
+    //     }, 0
+    //   )
+
+    //   console.log("total18GstAmount:", this.total18GstAmount);
+
+    //   this.total18GstAmount = this.total18GstAmount / 2;
+
+    //   console.log("total18GstAmount:", this.total18GstAmount);
+    // }
+
+
+    // if(getProductDetail.gstRate === 12){
+    //   this.only12Gst = (getProductDetail.gstRate) / 2;
+    //   this.total12GstAmount = this.productList.reduce(
+    //     (total, p) => {
+    //       return total + p.productPriceWithGst;
+    //     }, 0
+    //   )
+
+    //   console.log("total12GstAmount:", this.total12GstAmount);
+
+    //   this.total12GstAmount = this.total12GstAmount / 2;
+
+    //   console.log("total12GstAmount:", this.total12GstAmount);
+    // }
+
+    // this.calculateIGstTotal();
+    this.calculateTaxableAmount();
 
     this.productData = '';
 
@@ -430,15 +584,62 @@ export class CreateQuotationComponent {
     // this.taxableAmount = getProductDetail.price * getProductDetail.productQuantity;
     // console.log("this.taxableAmount:", this.taxableAmount);
 
-    this.taxableAmount = this.productList.reduce(
-      (total, product) => {
-        const taxable = product.price * product.productQuantity;
-        console.log("taxable:", taxable);
+  }
 
-        return total + taxable;
-      }, 0);
+  // get totalIGstAmount(){
+  //   return (
+  //     this.total18IGstAmount + this.total12IGstAmount + this.total5IGstAmount
+  //   )
+  // }
 
-      console.log("Total Taxable Amount:", this.taxableAmount);
+  // updateIGstTotal(){
+  //   this.QuotationForm.patchValue({
+  //     iGstTotal: this.totalIGstAmount,
+  //   })
+  // }
+
+  // calculateIGstTotal(){
+  //   this.totalIGstAmount = this.total18IGstAmount + this.total12IGstAmount + this.total5IGstAmount;
+
+  //   console.log("totalIGstAmount:", this.totalIGstAmount);
+
+  //   console.log("QuotationForm (before patch):", this.QuotationForm.value);
+
+  //   this.QuotationForm.patchValue({
+  //     iGstTotal: this.totalIGstAmount
+  //   })
+
+
+  //   console.log("QuotationForm (after patch):", this.QuotationForm.value);
+  // }
+
+  calculateTaxableAmount(){
+
+    this.totalIGstAmount = this.total18IGstAmount + this.total12IGstAmount + this.total5IGstAmount;
+
+    console.log("totalIGstAmount:", this.totalIGstAmount);
+
+    this.totalcGstAmount = this.total18GstAmount + 
+                            this.total12GstAmount + this.total5GstAmount;
+
+    console.log("this.totalcGstAmount:", this.totalcGstAmount);
+
+    this.totalsGstAmount = this.total18GstAmount + 
+                            this.total12GstAmount + this.total5GstAmount;
+
+    console.log("this.totalsGstAmount:", this.totalsGstAmount);
+
+    console.log("QuotationForm (before patch):", this.QuotationForm.value);
+
+    this.QuotationForm.patchValue({
+      iGstTotal: this.totalIGstAmount,
+      taxTotal: this.taxableAmount,
+      totalAmount: this.totalAmount,
+      cGstTotal: this.totalcGstAmount,
+      sGstTotal: this.totalsGstAmount
+    })
+
+    console.log("QuotationForm (after patch):", this.QuotationForm.value);
   }
 
 
@@ -446,7 +647,8 @@ export class CreateQuotationComponent {
     this.productList = this.productList.filter((p) => p.product !== product.product);
   }
 
-  onSubmit(data: any) {
+  onSubmit(data: any, companyId: any) {
+    data.companyId = companyId;
     console.log("add product data:",data);
 
     // this.productService.postProduct(data).subscribe(
