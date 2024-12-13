@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { HttpClient, HttpParams } from '@angular/common/http';
 import { environment } from '../../../../../environments/environment.development';
+import { AnyCatcher } from 'rxjs/internal/AnyCatcher';
 
 @Injectable({
   providedIn: 'root'
@@ -44,5 +45,9 @@ export class QuotationService {
 
   fetchBankDetails(id: any){
     return this.quotehttp.get(environment.fetchBankDetails + id);
+  }
+
+  saveQuotation(data: any){
+    return this.quotehttp.post(environment.quotation, data);
   }
 }

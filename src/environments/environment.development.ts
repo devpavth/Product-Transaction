@@ -39,5 +39,6 @@ export const environment = {
     fetchCustomerQuotation: Url + 'CustomerSearch',
     fetchProductQuotation: Url + 'Search',
     fetchQuotationCode: Url + 'code',
-    fetchBankDetails: Url + 'BankUpdate/'
+    fetchBankDetails: Url + 'BankUpdate/',
+    quotation: Url + 'Quotation',
 };

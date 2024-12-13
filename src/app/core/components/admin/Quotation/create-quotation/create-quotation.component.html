@@ -577,12 +577,10 @@
     
     <form [formGroup]="QuotationForm" *ngIf="isChargeView">
       <div 
-        formArrayName="Charge"
         class="mb-4 grid gap-4">
 
         <div
-          *ngFor="let charge of additionalCharge.controls; let i = index"
-          [formGroupName]="i"
+          formGroupName="Charge"
           class="flex items-center w-full"
         >
           <div class="flex-1 mr-4">
@@ -616,7 +614,7 @@
           </div>
           <div class="ml-4 mt-7">
             <button
-              (click)="addCharges(charge)"
+              (click)="addCharges(this.QuotationForm.get('Charge')?.value)"
               type="button"
               class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 dark:bg-purple-500 dark:hover:bg-purple-600 dark:focus:ring-purple-800"
             

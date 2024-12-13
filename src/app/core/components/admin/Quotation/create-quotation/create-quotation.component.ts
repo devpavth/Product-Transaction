@@ -25,6 +25,7 @@ export class CreateQuotationComponent {
   selectedCustomerId: any;
   selectedCompanyId: any;
   selectedCustomerGst: any;
+  selectedCompanyGst: any;
 
   isProductSelected: boolean = false;
   noResults: boolean = false;
@@ -74,50 +75,53 @@ export class CreateQuotationComponent {
 
   QuotationForm: FormGroup;
 
-  constructor(
-    private fb: FormBuilder,
-  ) {
-    this.QuotationForm = this.fb.group({
-      companyId: [], // i need to pass to backend(no need for UI)
-      customerId: ['', Validators.required],
-      bankId: [Validators.required],
-      quotationDate: ['', Validators.required],
-      quotationCode: ['', Validators.required],
-      quotationReference: ['', Validators.required],
-      totalAmount: [],
-      taxTotal: [],
-      cGstTotal: [],
-      sGstTotal: [],
-      iGstTotal: [],
-      searchInput: [],
-      product: this.fb.array([this.showProductQuotationData()]),
-      terms: this.fb.array([this.showQuotationTerms()]),
-      Charge: this.fb.array([this.showAdditionalCharge()]),
-    });
-  }
+    constructor(
+      private fb: FormBuilder,
+    ) {
+      this.QuotationForm = this.fb.group({
+        companyId: [], // i need to pass to backend(no need for UI)
+        customerId: ['', Validators.required],
+        bankId: [Validators.required],
+        quotationDate: ['', Validators.required],
+        quotationCode: ['', Validators.required],
+        quotationReference: ['', Validators.required],
+        totalAmount: [],
+        taxTotal: [],
+        cGstTotal: [],
+        sGstTotal: [],
+        iGstTotal: [],
+        searchInput: [],
+        product: this.fb.array([this.showProductQuotationData()]),
+        terms: this.fb.array([this.showQuotationTerms()]),
+        Charge: this.fb.group({
+          deliveryCharge: [],
+          installCharge: []
+        }),
+      });
+    }
 
-  get productDetails() {
-    return this.QuotationForm.get('product') as FormArray;
-  }
+    get productDetails() {
+      return this.QuotationForm.get('product') as FormArray;
+    }
 
-  showProductQuotationData() {
-    console.log("called  by init method")
-    return this.fb.group({
-      product: [],
-      productQuantity: ['', Validators.required],
-      price: ['', Validators.required],
-      gstRate: ['', Validators.required],
-      totalAmount: [],
-      taxAmount: [],
-      cGstAmount: [],
-      sGstAmount: [],
-      iGstAmount: []
-    });
-  }
+    showProductQuotationData() {
+      console.log("called  by init method")
+      return this.fb.group({
+        product: [],
+        productQuantity: ['', Validators.required],
+        price: ['', Validators.required],
+        gstRate: ['', Validators.required],
+        totalAmount: [],
+        taxAmount: [],
+        cGstAmount: [],
+        sGstAmount: [],
+        iGstAmount: []
+      });
+    }
 
-  addProductQuotation() {
-    this.productDetails.push(this.showProductQuotationData());
-  }
+    // addProductQuotation() {
+    //   this.productDetails.push(this.showProductQuotationData());
+    // }
 
 
   get quotationTerms() {
@@ -131,26 +135,26 @@ export class CreateQuotationComponent {
     });
   }
 
-  addQuotationTerms() {
-    this.quotationTerms.push(this.showQuotationTerms());
-  }
+  // addQuotationTerms() {
+  //   this.quotationTerms.push(this.showQuotationTerms());
+  // }
 
 
-  get additionalCharge() {
-    return this.QuotationForm.get('Charge') as FormArray;
-  }
+  // get additionalCharge() {
+  //   return this.QuotationForm.get('Charge') as FormArray;
+  // }
 
-  showAdditionalCharge(){
-    console.log("called  by init terms method")
-    return this.fb.group({
-      deliveryCharge: [],
-      installCharge: []
-    });
-  }
+  // showAdditionalCharge(){
+  //   console.log("called  by init terms method")
+  //   return this.fb.group({
+  //     deliveryCharge: [],
+  //     installCharge: []
+  //   });
+  // }
 
-  addAdditionalCharge() {
-    this.additionalCharge.push(this.showAdditionalCharge());
-  }
+  // addAdditionalCharge() {
+  //   this.additionalCharge.push(this.showAdditionalCharge());
+  // }
 
 
   ngOnInit(): void {
@@ -285,11 +289,11 @@ export class CreateQuotationComponent {
     }
   }
 
-  addCharges(chargeGroup: AbstractControl){
+  addCharges(chargeGroup: any){
     console.log("deliveryCharge:", chargeGroup);
 
-    const deliveryCharge = chargeGroup.get('deliveryCharge')?.value;
-    const installCharge = chargeGroup.get('installCharge')?.value;
+    const deliveryCharge = chargeGroup.deliveryCharge;
+    const installCharge = chargeGroup.installCharge;
 
 
     console.log("Delivery Charge:", deliveryCharge);
@@ -306,7 +310,16 @@ export class CreateQuotationComponent {
       }
     ].filter((charge)=> charge.value !== null && charge.value !== '');
 
-    this.totalAmount = deliveryCharge + installCharge
+    this.totalAmount = this.totalAmount + (deliveryCharge * (18/100) + deliveryCharge) + 
+                        (installCharge * (18/100) + installCharge)
+
+    console.log("QuotationForm (before charge):", this.QuotationForm.value);
+
+    this.QuotationForm.patchValue({
+      totalAmount: Number(this.totalAmount.toFixed(2))
+    })
+
+    console.log("QuotationForm (after charge):", this.QuotationForm.value);
 
 
     // chargeGroup.get('deliveryCharge')?.reset();
@@ -385,6 +398,7 @@ export class CreateQuotationComponent {
 
 
   addToBill(data: any, productId: any){
+    this.selectedCompanyGst = this.userData.companyGst;
     console.log("addtoBill data from QuotationFormValue:", data);
     console.log("productId from product live search", productId);
 
@@ -428,7 +442,7 @@ export class CreateQuotationComponent {
       const oldProductData = [...data.product]
       data.product = [...oldProductData];
       
-      console.log(data)
+      console.log(data);
        //console.log("Added new product:", newProductDetail);
       this.productList.push({
             ...data,
@@ -468,7 +482,7 @@ export class CreateQuotationComponent {
     this.totalAmount = 0;
 
     this.productList.forEach((product) => {
-      if((this.selectedCustomerGst.slice(0,2)) === '29'){
+      if(this.selectedCustomerGst.slice(0,2) === this.selectedCompanyGst.slice(0,2)){
         if(product.gstRate === 18){
           this.only18Gst = product.gstRate / 2;
           this.isView18Gst = true;
@@ -507,17 +521,16 @@ export class CreateQuotationComponent {
       
     })
 
-    if((this.selectedCustomerGst.slice(0,2)) === '29'){
+    if(this.selectedCustomerGst.slice(0,2) === this.selectedCompanyGst.slice(0,2)){
       console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
       this.total18GstAmount = this.total18GstAmount / 2;
       this.total12GstAmount = this.total12GstAmount / 2;
       this.total5GstAmount = this.total5GstAmount / 2;
 
+
       this.totalAmount = this.taxableAmount + this.total18GstAmount + 
                           this.total12GstAmount + this.total5GstAmount;
 
-
-      
 
     }else{
       console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
@@ -526,6 +539,7 @@ export class CreateQuotationComponent {
       this.total5IGstAmount = this.total5IGstAmount;
 
       // this.calculateIGstTotal();
+
 
       this.totalAmount = this.taxableAmount + this.total18IGstAmount + 
                           this.total12IGstAmount + this.total5IGstAmount;
@@ -566,6 +580,7 @@ export class CreateQuotationComponent {
 
     // this.calculateIGstTotal();
     this.calculateTaxableAmount();
+    this.patchProductFormArray();
 
     this.productData = '';
 
@@ -632,14 +647,64 @@ export class CreateQuotationComponent {
     console.log("QuotationForm (before patch):", this.QuotationForm.value);
 
     this.QuotationForm.patchValue({
-      iGstTotal: this.totalIGstAmount,
-      taxTotal: this.taxableAmount,
-      totalAmount: this.totalAmount,
-      cGstTotal: this.totalcGstAmount,
-      sGstTotal: this.totalsGstAmount
+      iGstTotal: Number(this.totalIGstAmount.toFixed(2)),
+      taxTotal: Number(this.taxableAmount.toFixed(2)),
+      totalAmount: Number(this.totalAmount.toFixed(2)),
+      cGstTotal: Number(this.totalcGstAmount.toFixed(2)),
+      sGstTotal: Number(this.totalsGstAmount.toFixed(2))
     })
 
     console.log("QuotationForm (after patch):", this.QuotationForm.value);
+  }
+
+  patchProductFormArray(){
+  
+    if(this.productList && this.productList.length){
+
+      // while (productArray.length < this.productList.length) {
+      //   productArray.push(this.showProductQuotationData());
+      // }
+
+      this.productList.forEach(
+        (product, index) => {
+
+          const productArray = this.QuotationForm.get('product') as FormArray;
+
+          console.log("productArray:", productArray);
+
+          while(index >= productArray.length){
+            productArray.push(this.showProductQuotationData());
+          }
+        
+          const productGroup = productArray.at(index) as FormGroup;
+          if(this.selectedCustomerGst.slice(0,2) === this.selectedCompanyGst.slice(0,2)){
+            productGroup.patchValue({
+              product: product.product,
+              productQuantity: product.quantity,
+              price: product.price,
+              gstRate: product.gstRate,
+              totalAmount: Number(product.productPriceWithGst.toFixed(2)),
+              taxAmount: Number(product.gstAmount.toFixed(2)),
+              cGstAmount: Number((product.gstAmount / 2).toFixed(2)),
+              sGstAmount: Number((product.gstAmount / 2).toFixed(2))
+            }, { emitEvent: false })
+          }else{
+            productGroup.patchValue({
+              product: product.product,
+              productQuantity: product.quantity,
+              price: product.price,
+              gstRate: product.gstRate,
+              totalAmount: Number(product.productPriceWithGst.toFixed(2)),
+              taxAmount: Number(product.gstAmount.toFixed(2)),
+              iGstAmount: Number(product.gstAmount.toFixed(2)),
+            }, { emitEvent: false })
+          }
+          
+        }
+      )
+    }
+
+    console.log("QuotationForm (after patchProductFormArray):", this.QuotationForm.value);
   }
 
 
@@ -648,8 +713,17 @@ export class CreateQuotationComponent {
   }
 
   onSubmit(data: any, companyId: any) {
+    data.customerId = this.selectedCustomerId
     data.companyId = companyId;
     console.log("add product data:",data);
+
+    this.quotationService.saveQuotation(data).subscribe(
+      (res) => {
+        console.log("quotation data sending to backend:", res);
+      },(error) => {
+        console.log("quotation data error sending to backend:", error);
+      }
+    )
 
     // this.productService.postProduct(data).subscribe(
     //   (res) => {

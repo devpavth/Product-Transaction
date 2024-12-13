@@ -4,7 +4,6 @@ import { VendorService } from '../../../service/vendor/vendor.service';
 import { CustomerService } from '../../../service/Customer/customer.service';
 import { TransactionService } from '../../../service/Transaction/transaction.service';
 import { catchError, debounceTime, distinctUntilChanged, of, Subscription, switchMap } from 'rxjs';
-import { log } from 'node:console';
 
 
 @Component({
@@ -811,12 +810,12 @@ export class StockComponent {
   saveInwardOrOutward(data: any, customerId: any, vendorId: any){
     // const CustomerOrVendor = this.selectedCustomerId;
      //console.log("customerId in while saving outward:",customerId)
-    /*  data.product_details = this.productList.map(item =>{
+    data.product_details = this.productList.map(item =>{
       return {product: item.product,
       quantity: item.productQuantity,
       price: item.price,
       gst: item.gst
-     }}) */
+     }}) 
    
     
 
