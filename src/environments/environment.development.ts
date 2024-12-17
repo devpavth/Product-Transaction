@@ -1,5 +1,5 @@
 
-let Url = 'http://192.168.1.2:8000/';
+let Url = 'http://192.168.1.15:8000/';
 
 // let baseProductApi = 'Product';
 

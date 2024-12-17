@@ -68,6 +68,11 @@ export class CreateQuotationComponent {
   totalIGstAmount: number = 0;
   totalcGstAmount: number = 0;
   totalsGstAmount: number = 0;
+
+  Tc:any;
+
+  previousDeliveryChargeTotal: number = 0;
+  previousInstallChargeTotal: number = 0;
   
 
   private route = inject(Router);
@@ -289,8 +294,8 @@ export class CreateQuotationComponent {
     }
   }
 
-  addCharges(chargeGroup: any){
-    console.log("deliveryCharge:", chargeGroup);
+  addDeliveryCharges(chargeGroup: any){
+    console.log("chargeGroup:", chargeGroup);
 
     const deliveryCharge = chargeGroup.deliveryCharge;
     const installCharge = chargeGroup.installCharge;
@@ -308,16 +313,58 @@ export class CreateQuotationComponent {
         label: 'Installation Charges',
         value: installCharge
       }
-    ].filter((charge)=> charge.value !== null && charge.value !== '');
+    ].filter((charge)=> charge.value !== null);
 
-    this.totalAmount = this.totalAmount + (deliveryCharge * (18/100) + deliveryCharge) + 
-                        (installCharge * (18/100) + installCharge)
+    const deliveryChargeTotal = deliveryCharge * (18 / 100) + deliveryCharge;
+    // const installChargeTotal = installCharge * (18 / 100) + installCharge;
+
+    // const chargesAmount = deliveryChargeTotal + installChargeTotal;
+
+
+    let baseAmount = this.QuotationForm.get('totalAmount')?.value;
+
+    baseAmount -= this.previousDeliveryChargeTotal
+
+    this.totalAmount = baseAmount + deliveryChargeTotal;
+
+    // let isDeliveryChargeAdded = false;
+    // let isInstallChargeProcessed = false;
+
+    // if(deliveryCharge > 0 && installCharge === null && !isDeliveryChargeAdded){
+    //   console.log("isDeliveryChargeAdded1:", isDeliveryChargeAdded);
+    //   this.totalAmount = baseAmount + deliveryChargeTotal;
+    //   isDeliveryChargeAdded = true;
+    //   console.log("isDeliveryChargeAdded1 after true:", isDeliveryChargeAdded);
+    // }
+    
+
+    // else if(installCharge > 0 && !isInstallChargeProcessed){
+    //   console.log("isDeliveryChargeAdded2:", isDeliveryChargeAdded);
+    //   this.totalAmount = baseAmount + installChargeTotal;
+    //   isInstallChargeProcessed = true;
+    //   console.log("isDeliveryChargeAdded2 after installCharge:", isDeliveryChargeAdded);
+    // }
+
+    // else if(deliveryCharge > 0 && installCharge > 0 && !isDeliveryChargeAdded && !isInstallChargeProcessed){
+    //   console.log("isDeliveryChargeAdded3:", isDeliveryChargeAdded); 
+    //   this.totalAmount = baseAmount + deliveryChargeTotal + installChargeTotal;
+    //   isDeliveryChargeAdded = true;
+    //   isInstallChargeProcessed = true;
+    //   console.log("isDeliveryChargeAdded3 after true:", isDeliveryChargeAdded);
+    // }
+
+
+    console.log("this.totalAmount:", this.totalAmount);
 
     console.log("QuotationForm (before charge):", this.QuotationForm.value);
 
     this.QuotationForm.patchValue({
       totalAmount: Number(this.totalAmount.toFixed(2))
     })
+
+    this.previousDeliveryChargeTotal = deliveryChargeTotal;
+
+    console.log("previousDeliveryChargeTotal:", this.previousDeliveryChargeTotal);
 
     console.log("QuotationForm (after charge):", this.QuotationForm.value);
 
@@ -327,25 +374,80 @@ export class CreateQuotationComponent {
 
   }
 
+  addInstallationCharges(chargeGroup: any){
+    console.log("chargeGroup:", chargeGroup);
+
+    const deliveryCharge = chargeGroup.deliveryCharge;
+    const installCharge = chargeGroup.installCharge;
+
+
+    console.log("Delivery Charge:", deliveryCharge);
+    console.log("Installation Charge:", installCharge);
+
+    this.additionalCharges = [
+      {
+        label: 'Delivery Charges',
+        value: deliveryCharge
+      },
+      {
+        label: 'Installation Charges',
+        value: installCharge
+      }
+    ].filter((charge)=> charge.value !== null);
+
+    const deliveryChargeTotal = deliveryCharge * (18 / 100) + deliveryCharge;
+    const installChargeTotal = installCharge * (18 / 100) + installCharge;
+
+    // const chargesAmount = deliveryChargeTotal + installChargeTotal;
+
+
+    let baseAmount = this.QuotationForm.get('totalAmount')?.value;
+
+    baseAmount -= this.previousInstallChargeTotal;
+
+    this.totalAmount = baseAmount + installChargeTotal;
+
+    console.log("this.totalAmount:", this.totalAmount);
+
+    console.log("QuotationForm (before charge):", this.QuotationForm.value);
+
+    this.QuotationForm.patchValue({
+      totalAmount: Number(this.totalAmount.toFixed(2))
+    })
+
+    this.previousInstallChargeTotal = installChargeTotal;
+
+    console.log("previousInstallChargeTotal:", this.previousInstallChargeTotal);
+
+    console.log("QuotationForm (after charge):", this.QuotationForm.value);
+  }
+
+  
   saveTermsAndConditions(termsControl: AbstractControl){
     console.log("termsControl in saving:", termsControl);
 
     const termsCondition = termsControl.get('termCondition')?.value;
-
+    this.Tc = termsCondition
     console.log("termsCondition:", termsCondition);
-    // termsControl.get('termCondition')?.disable();
+     termsControl.get('termCondition')?.disable();
 
     this.isSave = false;
     this.isEdit = true;
+
+    console.log("QuotationForm (after patchProductFormArray):", this.QuotationForm.value);
     
   }
 
   editTermsAndConditions(termsControl: AbstractControl){
     console.log("termsControl in editing:", termsControl);
     termsControl.get('termCondition')?.enable();
+    const termsCondition = termsControl.get('termCondition')?.value;
+    this.Tc = termsCondition
 
     this.isSave = true;
     this.isEdit = false;
+
+    console.log("QuotationForm (after patchProductFormArray):", this.QuotationForm.value);
   }
 
   clearTermsAndConditions(termsControl: AbstractControl){
@@ -355,7 +457,7 @@ export class CreateQuotationComponent {
 
     // termsData = null;
 
-    console.log("termsData:", termsControl);
+    //console.log("termsData:", termsControl);
 
     termsControl.get('termCondition')?.enable();
 
@@ -523,26 +625,28 @@ export class CreateQuotationComponent {
 
     if(this.selectedCustomerGst.slice(0,2) === this.selectedCompanyGst.slice(0,2)){
       console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
+
+      this.totalAmount = this.taxableAmount + this.total18GstAmount + 
+                          this.total12GstAmount + this.total5GstAmount;
+
       this.total18GstAmount = this.total18GstAmount / 2;
       this.total12GstAmount = this.total12GstAmount / 2;
       this.total5GstAmount = this.total5GstAmount / 2;
 
 
-      this.totalAmount = this.taxableAmount + this.total18GstAmount + 
-                          this.total12GstAmount + this.total5GstAmount;
-
-
     }else{
       console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
+
+      this.totalAmount = this.taxableAmount + this.total18IGstAmount + 
+                          this.total12IGstAmount + this.total5IGstAmount;
+
+
       this.total18IGstAmount = this.total18IGstAmount;
       this.total12IGstAmount = this.total12IGstAmount;
       this.total5IGstAmount = this.total5IGstAmount;
 
       // this.calculateIGstTotal();
 
-
-      this.totalAmount = this.taxableAmount + this.total18IGstAmount + 
-                          this.total12IGstAmount + this.total5IGstAmount;
     }
 
 
@@ -716,29 +820,24 @@ export class CreateQuotationComponent {
     data.customerId = this.selectedCustomerId
     data.companyId = companyId;
     console.log("add product data:",data);
-
+    
+    let datas:any = [{
+      "termCondition":this.Tc
+    }]
+    
+    data.terms = datas
+    
+ console.log(data)
     this.quotationService.saveQuotation(data).subscribe(
       (res) => {
         console.log("quotation data sending to backend:", res);
+        this.route.navigate(['/home/quotationList']);
       },(error) => {
         console.log("quotation data error sending to backend:", error);
       }
     )
 
-    // this.productService.postProduct(data).subscribe(
-    //   (res) => {
-    //     console.log("Product User added:",res);
-    //     this.route.navigate(['/home/productList']);
-    //   },
-    //   (error) => {
-    //     console.log("Error adding product details:",error);
-
-    //     if (error.status == 200) {
-    //       this.ProductForm.reset();
-    //       this.ProductForm.get('prdStatus')?.patchValue(200);
-    //     }
-    //   },
-    // );
+  
   }
   closeAdding(action: boolean) {
     this.isCloseAdding = action;
