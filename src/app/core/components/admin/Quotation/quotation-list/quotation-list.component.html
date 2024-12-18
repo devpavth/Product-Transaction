@@ -127,11 +127,11 @@
   
                   <!-- <td class="px-4 py-3"></td>
                                 <td class="px-4 py-3"></td> -->
-                  <td class="flex items-center justify-end px-4 py-3">
+                  <td class="flex items-center justify-end px-4 py-3 relative">
                     <button
-                      (click)="toggleView(true, 1, p)"
                       class="inline-flex items-center rounded-lg p-0.5 text-center text-sm font-medium text-gray-500 hover:text-gray-800 focus:outline-none dark:text-gray-400 dark:hover:text-gray-100"
                       type="button"
+                      (click)="toggleDropdown(i)"
                     >
                       <svg
                         class="h-5 w-5"
@@ -145,6 +145,30 @@
                         />
                       </svg>
                     </button>
+                    
+                    <div
+                      *ngIf="isDropdownOpen === i"
+                      class="dropdown-container absolute right-0 mt-24 w-28 bg-white divide-y divide-gray-100 rounded-lg shadow-lg z-10"
+                    >
+                      <ul class="py-1 text-sm text-gray-700 dark:text-gray-200">
+                        <li>
+                          <button
+                            class="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left"
+                            (click)="toggleView(true, 1, p)"
+                          >
+                            Edit
+                          </button>
+                        </li>
+                        <li>
+                          <button
+                            class="block w-full px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-600 dark:hover:text-white text-left"
+                            (click)="onPreview(p)"
+                          >
+                            Preview
+                          </button>
+                        </li>
+                      </ul>
+                    </div>
                   </td>
                 </tr>
               </tbody>

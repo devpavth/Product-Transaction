@@ -356,7 +356,11 @@
                     <select
                       formControlName="gstRate"
                       class="block rounded-lg w-full border border-gray-300 border-gray-100 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
-                      
+                      [ngClass]="{
+                        error:
+                        QuotationForm.get('product')?.get('gstRate')?.invalid &&
+                        QuotationForm.get('product')?.get('gstRate')?.touched
+                      }"
                       required
                     >
                       <!-- <option *ngFor="let g of gstPercentages" [ngValue]="g">{{ g }}</option> -->
@@ -364,11 +368,14 @@
 
                       
                     </select>
-                    <!-- <small 
-                      
+                    <small 
+                        *ngIf="
+                          QuotationForm?.get('product')?.get('gstRate')?.invalid &&
+                          QuotationForm?.get('product')?.get('gstRate')?.touched
+                        "
                       class="text-danger mt-1 text-red-600">
                       Select GST!
-                    </small> -->
+                    </small>
                   </div>
                 </div>
                 
@@ -384,15 +391,22 @@
                     formControlName="productQuantity"
                     class="w-full focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                     placeholder=""
-   
+                    [ngClass]="{
+                      error:
+                      QuotationForm.get('product')?.get('productQuantity')?.invalid &&
+                      QuotationForm.get('product')?.get('productQuantity')?.touched
+                    }"
                     required
                   />
   
-                  <!-- <small 
-
+                  <small 
+                      *ngIf="
+                          QuotationForm?.get('product')?.get('productQuantity')?.invalid &&
+                          QuotationForm?.get('product')?.get('productQuantity')?.touched
+                        "
                     class="text-danger text-red-600">
                     Quantity required! 
-                  </small> -->
+                  </small>
                   <!-- <small
      
                     class="text-danger text-red-600">
@@ -797,25 +811,14 @@
     <div 
       *ngIf="productList.length > 0"
       class="flex items-center justify-end">
-      <button
+      <!-- <button
         
         type="submit"
         class="mt-4 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
         >
-          <!-- <svg
-            class="-ml-1 mr-1 h-6 w-6"
-            fill="currentColor"
-            viewBox="0 0 20 20"
-            xmlns="http://www.w3.org/2000/svg"
-            >
-            <path
-                fill-rule="evenodd"
-                d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
-                clip-rule="evenodd"
-            ></path>
-          </svg> -->
+         
             Save and Print
-        </button>
+        </button> -->
 
         <button
           [disabled]="QuotationForm.invalid"

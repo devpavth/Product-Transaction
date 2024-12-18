@@ -24,6 +24,8 @@
     "animate.css": "^4.1.1",
     "express": "^4.18.2",
     "flowbite": "^2.5.2",
+    "ng2-pdf-viewer": "^10.4.0",
+    "pdfjs-dist": "^4.9.155",
     "postcss": "^8.4.49",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.8",

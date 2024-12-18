@@ -13,6 +13,7 @@ export class QuotationService {
   constructor() { }
 
   getAllQuotation(){
+    console.log("environment.quotationAll:",environment.quotationAll);
     return this.quotehttp.get(environment.quotationAll);
   }
 
@@ -49,5 +50,10 @@ export class QuotationService {
 
   saveQuotation(data: any){
     return this.quotehttp.post(environment.quotation, data);
+  }
+
+  fetchSingleQuotation(quotationId: any){
+    console.log("environment.fetchSingleQuotation + quotationId:",environment.fetchSingleQuotation + quotationId);
+    return this.quotehttp.get(environment.fetchSingleQuotation + quotationId);
   }
 }

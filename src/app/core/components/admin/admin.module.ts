@@ -22,7 +22,7 @@ import { QuotationListComponent } from './Quotation/quotation-list/quotation-lis
 import { ViewQuotationComponent } from './Quotation/view-quotation/view-quotation.component';
 import { CreateQuotationComponent } from './Quotation/create-quotation/create-quotation.component';
 
-
+import * as pdfjsLib from 'pdfjs-dist';
 
 @NgModule({
   declarations: [

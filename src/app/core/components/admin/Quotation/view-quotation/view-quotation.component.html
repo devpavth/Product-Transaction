@@ -1,8 +1,12 @@
-<section class="h-screen overflow-scroll bg-black bg-opacity-50">
-    <div class="flex">
-      <div class="w-1/2"></div>
-      <div class="animate-slide-in-right w-3/4 border bg-white shadow-xl">
-        <div class="flex items-center justify-between border bg-purple-50">
+<section class="relative z-50" aria-labelledby="modal-title" role="dialog" aria-modal="true">
+  <div class="fixed inset-0 bg-gray-600 bg-opacity-75"></div>
+    <div class="fixed inset-0 z-50 flex items-center justify-center p-4">
+      
+      <div class="relative bg-white rounded-lg shadow-xl w-full max-w-2xl max-h-[90vh] overflow-y-auto">
+        <div class="flex items-center justify-between rounded-lg border-b p-4 bg-purple-50">
+          <div class="ml-4">
+            <h1 class="text-xl font-semibold text-purple-800">View Quotation</h1>
+          </div>
           <div class="m-4">
             <button (click)="closeProduct.emit(false)">
               <svg
@@ -25,9 +29,7 @@
               </svg>
             </button>
           </div>
-          <div class="mr-4">
-            <h1 class="text-xl font-semibold text-purple-800">View Quotation</h1>
-          </div>
+          
         </div>
   
         <!-- form -->
@@ -58,6 +60,66 @@
                 Quotation Code required!
               </small>
             </div>
+
+            <div class="col-span-2">
+              <label
+                for="brand"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Quotation Date</label
+              >
+              <input
+                type="date"
+                formControlName="quotationDate"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                [ngClass]="{
+                  error:
+                  UpdateQuotationForm.get('quotationDate')?.invalid &&
+                  UpdateQuotationForm.get('quotationDate')?.touched
+                }"
+                required
+              />
+              <small
+                *ngIf="
+                    UpdateQuotationForm?.get('quotationDate')?.invalid &&
+                    UpdateQuotationForm?.get('quotationDate')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Quotation Date Required!
+              </small>
+            </div>
+
+            <div class="col-span-2">
+              <label
+                for="price"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Quotation Reference</label
+              >
+              <input
+                type="text"
+                formControlName="quotationReference"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                [ngClass]="{
+                    error:
+                    UpdateQuotationForm.get('quotationReference')?.invalid &&
+                    UpdateQuotationForm.get('quotationReference')?.touched
+                }"
+                required
+              />
+              
+              <small
+                *ngIf="
+                    UpdateQuotationForm?.get('quotationReference')?.invalid &&
+                    UpdateQuotationForm?.get('quotationReference')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Quotation Reference Required!
+              </small>
+            </div>
+          
             <div class="col-span-4">
               <label
                 for="brand"
@@ -69,230 +131,643 @@
                 formControlName="customerId"
                 class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
                 placeholder=""
+                
                 readonly
               />
             </div>
-            <div class="col-span-2">
+            <div class="col-span-4">
               <label
-                for="brand"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >Quotation Date</label
+                  for="price"
+                  class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                  >GST Number</label
               >
               <input
                 type="text"
-                formControlName="quotationDate"
-                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
                 placeholder=""
-                readonly
-              />
-              <small
-                *ngIf="
-                  UpdateQuotationForm?.get('quotationDate')?.invalid &&
-                  UpdateQuotationForm?.get('quotationDate')?.touched
-                "
-                class="text-danger text-red-600"
-              >
-                Quotation Date required!
-              </small>
+                value="{{selectedCustomerGst}}"
+              />    
+              
             </div>
-            
-            <div class="col-span-2">
-              <label
-                for="price"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >Quotation Reference</label
-              >
-              <input
-                type="number"
-                formControlName="quotationReference"
-                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                placeholder=""
-                readonly
-              />
-              <small
-                *ngIf="
-                  UpdateQuotationForm?.get('quotationReference')?.invalid &&
-                  UpdateQuotationForm?.get('quotationReference')?.touched
-                "
-                class="text-danger text-red-600"
-              >
-                Quotation Reference Required!
-              </small>
-            </div>
-            <div class="col-span-2">
-              <label
-                for="price"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >Total Amount</label
-              >
-              <input
-                type="number"
-                (change)="calculatePrice(UpdateQuotationForm.get('productPrice')?.value)"
-                formControlName="totalAmount"
-                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                placeholder=""
-                [ngClass]="{
-                  error:
-                    UpdateQuotationForm.get('totalAmount')?.invalid &&
-                    UpdateQuotationForm.get('totalAmount')?.touched
-                }"
-                required
-              />
-              <small
-                *ngIf="
-                  UpdateQuotationForm?.get('totalAmount')?.invalid &&
-                  UpdateQuotationForm?.get('totalAmount')?.touched
-                "
-                class="text-danger text-red-600"
-              >
-                Total Amount Required!
-              </small>
-            </div>
-            
-            <div class="col-span-2">
-              <label
-                for="brand"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >Tax Total</label
-              >
-              <input
-                type="text"
-                formControlName="taxTotal"
-                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                placeholder=""
-                readonly
-              />
-              <small
-                *ngIf="
-                  UpdateQuotationForm?.get('taxTotal')?.invalid &&
-                  UpdateQuotationForm?.get('taxTotal')?.touched
-                "
-                class="text-danger text-red-600"
-              >
-                Tax Total Required!
-              </small>
-            </div>
-            <div class="col-span-3">
-              <label
-                for="brand"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >cGst Total</label
-              >
-              <input
-                type="text"
-                formControlName="cGstTotal"
-                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                value="{{totalPrice}}"
-                readonly
-              >
-            </div>
-            <div class="col-span-3">
-              <label
-                for="brand"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >sGst Total</label
-              >
-              <input
-                type="text"
-                formControlName="sGstTotal"
-                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                value="{{totalPriceWithGst}}"    
-                readonly
-              >
-            </div>
-            <div class="sm:col-span-full">
-              <label
-                for="description"
-                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
-                >iGst Total</label
-              >
-              <input
-                type="text"
-                formControlName="iGstTotal"
-                class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
-                value="{{totalPriceWithGst}}"   
-                appFirstCapLetter 
-                readonly
-              >
-              <small
-                *ngIf="
-                  UpdateQuotationForm?.get('iGstTotal')?.invalid &&
-                  UpdateQuotationForm?.get('iGstTotal')?.touched
-                "
-                class="text-danger text-red-600"
-              >
-                iGstTotal Required!
-              </small>
-            </div>
-            
             
           </div>
-          <div class="mt-8 flex justify-end gap-4">
-            <div *ngIf="isEdit">
-              <button
-                type="submit"
-                (click)="edit()"
-                class="inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        </form>
+
+        <h3
+          class="ml-8 mb-4 mt-12 text-lg font-semibold text-gray-900 dark:text-white"
+          >
+            Add Product Details
+        </h3>
+        <form [formGroup]="UpdateQuotationForm">
+          <div class="mb-4 grid gap-4 sm:grid-cols-8">
+            <div
+              formArrayName="product"
+              class="gap-4 col-span-full flex flex-col"
               >
-                <svg
-                  class="mr-1 h-5 w-5 text-white"
-                  fill="currentColor"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
+              <div
+                [formGroupName]="0"
+                class="flex flex-wrap gap-4 w-full"
                 >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="m14.304 4.844 2.852 2.852M7 7H4a1 1 0 0 0-1 1v10a1 1 0 0 0 1 1h11a1 1 0 0 0 1-1v-4.5m2.409-9.91a2.017 2.017 0 0 1 0 2.853l-6.844 6.844L8 14l.713-3.565 6.844-6.844a2.015 2.015 0 0 1 2.852 0Z"
-                  />
-                </svg>
+                <div class="w-full">
+                  <div class="relative bg-white dark:bg-gray-800 sm:rounded-lg">
+                    <div class="flex items-center gap-4 p-4">
+                      <div class="relative w-full ml-4">
+                        <div
+                          class="pointer-events-none absolute inset-y-0 left-0 flex w-full items-center pl-3"
+                          >
+                          <svg
+                            aria-hidden="true"
+                            class="h-5 w-5 text-gray-500 dark:text-gray-400"
+                            fill="currentColor"
+                            viewbox="0 0 20 20"
+                            xmlns="http://www.w3.org/2000/svg"
+                            > 
+                            <path
+                              fill-rule="evenodd"
+                              d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                              clip-rule="evenodd"
+                              />
+                          </svg>
+                        </div>
+                        <input
+                          type="text"
+                          formControlName="product"
+                          class="w-full rounded-lg border border-gray-300 bg-gray-50 p-2 pl-10 text-sm text-gray-900 focus:border-purple-500 focus:ring-purple-500 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                          placeholder="Search"
+                          required=""
+                        />
+                        <div *ngIf="noResults" class="absolute mt-1 text-sm text-red-600">
+                            <small>No Products found.</small>
+                        </div>
+                        <ul 
+                          *ngIf="storeProductData && 
+                          storeProductData.length > 0" 
+                          class="absolute border-none z-10 w-full mt-1 bg-white rounded-lg border border-gray-300 shadow-lg dark:bg-gray-700 dark:border-gray-600"
+                          >
+                            <li 
+                              *ngFor="let prod of storeProductData"
+                              (click)="onSelectProduct(prod)"
+                              class="px-4 py-2 text-sm text-gray-700 cursor-pointer hover:bg-gray-100 dark:text-white dark:hover:bg-gray-600"
+                              >
+                                <!-- <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 268"> -->
+                                {{prod.productName}} - {{prod.productDescription}} - {{prod.productModel}}
+                                <!-- </ng-container> -->
+                                <!-- <ng-container *ngIf="inwardForm.get('inwardFromCode')?.value == 269"> -->
+                                    
+                                <!-- </ng-container> -->
+                            </li>
+                        </ul>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="productData && !noResults && isProductSelected" class="w-full flex flex-col">
+                  <div class="-m-1.5 overflow-x-auto">
+                    <div class="inline-block min-w-full p-1.5 align-middle">
+                      <div class="overflow-hidden rounded-lg border">
+                        <table
+                          class="min-w-full divide-y divide-gray-200 bg-white"
+                          >
+                          <tbody class="divide-y divide-gray-200" *ngFor="let pro of productData">
+                            <tr>
+                              <td
+                                class="px-6 py-3 text-start text-xs font-semibold uppercase text-purple-800"
+                                >
+                                  Product Code
+                              </td>
+                              <td
+                                class="whitespace-nowrap px-6 py-4 text-sm text-gray-500"
+                                >
+                                <span class="font-semibold">{{
+                                  pro.productCode
+                                  }}
+                                </span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                class="px-6 py-3 text-start text-xs font-semibold uppercase text-purple-800"
+                                >
+                                Product Name
+                              </td>
+                              <td
+                                class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
+                                >
+                                <span class="font-semibold">{{
+                                  pro.productName
+                                  }}
+                                </span>
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                class="px-6 py-3 text-start text-xs font-semibold uppercase text-purple-800"
+                                >
+                                  Description
+                              </td>
+                              <td
+                                class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
+                                >
+                                {{ pro.productDescription }}
+                              </td>
+                            </tr>
+                            <tr>
+                              <td
+                                class="px-6 py-3 text-start text-xs font-semibold uppercase text-purple-800"
+                                >
+                                  Price
+                              </td>
+                              <td
+                                class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
+                                >
+                                {{ pro.productPrice }}
+                              </td>
+                              
+                            </tr>
+                            <tr>
+                              <td
+                                class="px-6 py-3 text-start text-xs font-semibold uppercase text-purple-800"
+                                >
+                                  Current Quantity
+                              </td>
+                              <td
+                                class="whitespace-nowrap px-6 py-4 text-sm text-gray-800"
+                                >
+                                {{ pro.productQuantity }}
+                              </td>
+                            </tr>
+                          </tbody>
+                        </table>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                      
+                <div class="flex-1 ml-8">
+                  <label
+                    for="brand"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >GST percentage</label
+                  >
+                  <div class="flex flex-col">
+    
+                    <select
+                      formControlName="gstRate"
+                      class="block rounded-lg w-full border border-gray-300 border-gray-100 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+                      [ngClass]="{
+                        error:
+                        UpdateQuotationForm.get('product')?.get('gstRate')?.invalid &&
+                        UpdateQuotationForm.get('product')?.get('gstRate')?.touched
+                      }"
+                      required
+                    >
+                      <!-- <option *ngFor="let g of gstPercentages" [ngValue]="g">{{ g }}</option> -->
+                      <option *ngFor="let g of gst"  [ngValue]="g">{{ g }}</option>
+
+                      
+                    </select>
+                    <small 
+                        *ngIf="
+                          UpdateQuotationForm?.get('product')?.get('gstRate')?.invalid &&
+                          UpdateQuotationForm?.get('product')?.get('gstRate')?.touched
+                        "
+                      class="text-danger mt-1 text-red-600">
+                      Select GST!
+                    </small>
+                  </div>
+                </div>
+                
   
-                Edit
-              </button>
+                <div class="flex-1">
+                  <label
+                    for="category"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Quantity</label
+                  >
+                  <input
+                    type="number"
+                    formControlName="productQuantity"
+                    class="w-full focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    placeholder=""
+                    [ngClass]="{
+                      error:
+                      UpdateQuotationForm.get('product')?.get('productQuantity')?.invalid &&
+                      UpdateQuotationForm.get('product')?.get('productQuantity')?.touched
+                    }"
+                    required
+                  />
+  
+                  <small 
+                      *ngIf="
+                          UpdateQuotationForm?.get('product')?.get('productQuantity')?.invalid &&
+                          UpdateQuotationForm?.get('product')?.get('productQuantity')?.touched
+                        "
+                    class="text-danger text-red-600">
+                    Quantity required! 
+                  </small>
+                  <!-- <small
+     
+                    class="text-danger text-red-600">
+                      Entered quantity is greater than available stock!
+                  </small> -->
+                </div>
+                <div class="flex-1">
+                  <label
+                    for="price"
+                    class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                    >Price</label
+                  >
+                  <input
+                    type="number"
+                    formControlName="price"
+                    class="focus:ring-primary-600 focus:border-primary-600 dark:focus:ring-primary-500 dark:focus:border-primary-500 block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400"
+                    placeholder=""
+       
+                    required
+                  />
+                  <!-- <small
+         
+                    class="text-danger text-red-600">
+                    Price required! 
+                  </small> -->
+                </div>
+              </div>
             </div>
-            <div *ngIf="isSave">
-              <button
-                [disabled]="UpdateQuotationForm.invalid"
-                (click)="onUpdateProduct(UpdateQuotationForm.value)"
-                type="submit"
-                class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
+          </div>
+          <div class="flex items-center justify-end gap-2">
+            <button
+              [disabled]="!isProductFormValid()"
+              (click)="addToBill(UpdateQuotationForm.value,selectedProductId)"
+              type="submit"
+              [ngClass]="{
+                'bg-gray-400':
+                  !isProductFormValid(),
+                'hover:bg-gray-400':
+                  !isProductFormValid()
+              }"
+              class="mt-4 hover:bg-primary-800 focus:ring-primary-300 dark:bg-primary-600 dark:hover:bg-primary-700 dark:focus:ring-primary-800 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white focus:outline-none focus:ring-4"
               >
-                <svg
-                  *ngIf="isSaveIcon"
-                  class="mr-1 inline-flex h-5 w-5 items-center justify-center text-white"
-                  aria-hidden="true"
-                  xmlns="http://www.w3.org/2000/svg"
-                  width="24"
-                  height="24"
-                  fill="none"
-                  viewBox="0 0 24 24"
+              <svg
+                class="-ml-1 mr-1 h-6 w-6"
+                fill="currentColor"
+                viewBox="0 0 20 20"
+                xmlns="http://www.w3.org/2000/svg"
                 >
-                  <path
-                    stroke="currentColor"
-                    stroke-linecap="round"
-                    stroke-linejoin="round"
-                    stroke-width="2"
-                    d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
-                  />
-                </svg>
+                <path
+                  fill-rule="evenodd"
+                  d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z"
+                  clip-rule="evenodd"
+                ></path>
+              </svg>
+              Add to Bill
+            </button>
+          </div>
+        </form>
+      </div>
+      <div *ngIf="productList.length > 0">
+        <h3 class="text-lg font-semibold text-gray-900 dark:text-white">
+          Product List
+        </h3>
+        <div
+          class="relative mt-10 overflow-hidden bg-white shadow-md dark:bg-gray-800 sm:rounded-lg"
+          >
+          <div class="overflow-x-auto">
+            <table
+              class="w-full text-left text-sm text-gray-500 dark:text-gray-400"
+              >
+              <thead
+                class="bg-gray-50 text-xs uppercase text-gray-700 dark:bg-gray-700 dark:text-gray-400"
+                >
+                <tr>
+                  <th scope="col" class="px-4 py-3">Product</th>
+                  <th scope="col" class="px-4 py-3">Description</th>
+                  <th scope="col" class="px-4 py-3">Model Number</th>
+                  <th scope="col" class="px-4 py-3">Quantity</th>
+                  <th scope="col" class="px-4 py-3">Gst Amount</th>
+                  <th scope="col" class="px-4 py-3">Total Price Without GST</th>
+                  <th scope="col" class="px-4 py-3">Total Price With GST</th>
+                  <th scope="col" class="px-4 py-3">
+                    <span class="sr-only">Actions</span>
+                  </th>
+                </tr>
+              </thead>
+            <tbody>
+            <tr
+              *ngFor="let p of productList"
+              class="border-b dark:border-gray-700"
+              >
+              <th
+                scope="row"
+                class="whitespace-nowrap px-4 py-3 font-medium text-gray-900 dark:text-white"
+                >
+                  {{ p.productName }}
+              </th>
+              <td class="px-4 py-3">{{ p.productDescription }}</td>
+              <td class="px-4 py-3">{{ p.productModel }}</td>
+              <td class="px-4 py-3">{{ p.quantity }}
+              </td>
+              <td class="px-4 py-3">{{ p.gstAmount | number}}
+                <small class="py-3">({{p.gstRate}}% GST)</small>
+              </td>
+              <td class="px-4 py-3">
+                {{ p.productPrice }}
+              </td>
+              <td class="px-4 py-3">
+                {{ p.productPriceWithGst | number}}
+              </td>
+              <td class="flex items-center justify-end px-2 py-3">
+                <button
+                  (click)="deleteItem(p)"
+                  type="submit"
+                  class="inline-flex items-center rounded-lg bg-red-600 px-2 py-2 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+                  >
+                  <svg
+                    class="mr-1 h-5 w-5 text-white"
+                    aria-hidden="true"
+                    xmlns="http://www.w3.org/2000/svg"
+                    width="24"
+                    height="24"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    >
+                    <path
+                      stroke="currentColor"
+                      stroke-linecap="round"
+                      stroke-linejoin="round"
+                      stroke-width="2"
+                      d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                    />
+                  </svg>
+      
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      
+    </div>
+
+    <div 
+      *ngIf="productList.length > 0"
+      class="flex items-center justify-end">
+      <button
+        (click)="toggleAdditionalCharges()"
+        type="submit"
+        class="mt-4 inline-flex items-center rounded-lg bg-blue-700 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-800 focus:outline-none focus:ring-4 focus:ring-purple-300 dark:bg-purple-600 dark:hover:bg-purple-700 dark:focus:ring-purple-800"
+        >
+          Additional Charges
+      </button>
+    </div>
+
+    
+    <form [formGroup]="UpdateQuotationForm" *ngIf="isChargeView">
+      <div 
+        class="mb-4 grid gap-4">
+
+        <div
+          formGroupName="Charge"
+          class="flex items-center w-full"
+        >
+          <div class="flex-1 mr-4">
+            <label
+              for="deliveryCharge"
+              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >
+              Delivery Charges
+            </label>
+            <input
+              id="deliveryCharge"
+              type="number"
+              formControlName="deliveryCharge"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+            />
+            
+          </div>
+          <div class="mt-7 mr-4">
+            <button
+              
+              type="button"
+              class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 dark:bg-purple-500 dark:hover:bg-purple-600 dark:focus:ring-purple-800"
+            
+            >
+              Add
+            </button>
+          </div>
+          <div class="flex-1">
+            <label
+              for="installCharge"
+              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+            >
+              Installation Charges
+            </label>
+            <input
+              id="installCharge"
+              type="number"
+              formControlName="installCharge"
+              class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+            />
+          </div>
+          <div class="ml-4 mt-7">
+            <button
+              
+              type="button"
+              class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 dark:bg-purple-500 dark:hover:bg-purple-600 dark:focus:ring-purple-800"
+            
+            >
+              Add
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </form>
+
+
+    <div 
+      *ngIf="productList.length > 0"
+      class="flex items-center justify-start">
+      <button
+        (click)="toggleTermsAndCondition()"
+        type="submit"
+        class="mt-4 w-full inline-flex items-center rounded-lg bg-blue-400 px-5 py-2.5 text-center text-sm font-medium text-white hover:bg-blue-500 focus:outline-none focus:ring-4 focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+        >
+          Terms & Conditions
+      </button>
+    </div>
+
+    
+    <div class="w-full" *ngIf="isTermsView">
+      <form [formGroup]="UpdateQuotationForm">
+        <div 
+          formArrayName="terms"
+          class="mb-4 grid gap-4">
   
+          <div
+            *ngFor="let term of quotationTerms.controls; let i = index"
+            [formGroupName]="i"
+            class="flex items-center w-full"
+            >
+            <div class="w-full mr-2 -mt-9">
+              <textarea
+                id="termCondition"
+                type="textarea"
+                formControlName="termCondition"
+                class="block w-full h-32 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+              ></textarea>
+              
+            </div>
+            <div class="flex items-start justify-start gap-4 mt-36 -ml-48" *ngIf="isSave">
+              <button
+
+                type="button"
+                class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 dark:bg-purple-500 dark:hover:bg-purple-600 dark:focus:ring-purple-800"
+              
+              >
                 Save
               </button>
             </div>
+            <div class="flex items-start justify-start gap-4 mt-36 -ml-48" *ngIf="isEdit">
+              <button
+                type="button"
+                class="rounded-lg bg-purple-600 px-4 py-2 text-sm font-medium text-white hover:bg-purple-700 focus:ring-4 focus:ring-purple-300 dark:bg-purple-500 dark:hover:bg-purple-600 dark:focus:ring-purple-800"
+              
+              >
+                Edit
+              </button>
+            </div>
+            <div class="flex items-start justify-start gap-4 mt-36 ml-4">
+              <button
+                type="button"
+                class="rounded-lg bg-red-600 px-4 py-2 text-sm font-medium text-white hover:bg-red-700 focus:ring-4 focus:ring-red-300 dark:bg-red-500 dark:hover:bg-red-600 dark:focus:ring-red-800"
+              
+              >
+                Clear
+              </button>
+            </div>
   
+            
+          </div>
+        </div>
+      </form>
+  
+    </div>
+
+    <h3
+      class="mb-4 mt-12 text-lg font-semibold text-gray-900 dark:text-white"
+      >
+      Add Bank Details
+    </h3>
+      
+      <form [formGroup]="UpdateQuotationForm">
+        <div class="mb-4 grid gap-4 sm:grid-cols-8">
+          <div class="col-span-4">
+            <label
+              for="brand"
+              class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+              >Bank Name</label
+            >
+
+            <select
+              formControlName="bankId"
+              class="block rounded-lg w-full border border-gray-300 border-gray-100 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500 dark:border-gray-600 dark:border-s-gray-700 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-blue-500 dark:focus:ring-blue-500"
+              [ngClass]="{
+                error:
+                  UpdateQuotationForm.get('gst')?.invalid &&
+                  UpdateQuotationForm.get('gst')?.touched
+              }"
+              required
+              >
+
+              <!-- <option value="">Select Bank Name</option> -->
+              <!-- <option *ngFor="let g of gstPercentages" [ngValue]="g">{{ g }}</option> -->
+               <option 
+                *ngFor="let bank of bankList"
+                [ngValue]="bank.bankId">{{bank.bankName}}</option>
+  
+            </select>
+          </div>
+        </div>
+      </form>
+
+      <div 
+        class="flex justify-end ml-4">
+      <div class="w-2/4 -mt-14">
+        <div class="border border-green-400 rounded-lg p-4">
+          <p class="text-sm font-medium text-black">
+            Taxable Amount: {{taxableAmount | currency: 'INR'}}
+          </p>
+          <div *ngIf="isView18IGst">
+            <p class="text-sm font-medium text-black">
+              IGST Amount {{only18IGst}}%: {{total18IGstAmount | currency: 'INR'}}
+            </p>
+          </div>
+
+          <div *ngIf="isView12IGst">
+            <p class="text-sm font-medium text-black">
+              IGST Amount {{only12IGst}}%: {{total12IGstAmount | currency: 'INR'}}
+            </p>
+          </div>
+
+          <div *ngIf="isView5IGst">
+            <p class="text-sm font-medium text-black">
+              IGST Amount {{only5IGst}}%: {{total5IGstAmount | currency: 'INR'}}
+            </p>
+          </div>
+          
+          <div *ngIf="isView18Gst">
+            <p class="text-sm font-medium text-black">
+              CGST Amount {{only18Gst}}%: {{total18GstAmount | currency: 'INR'}}
+            </p>
+            <p class="text-sm font-medium text-black">
+              SGST Amount {{only18Gst}}%: {{total18GstAmount | currency: 'INR'}}
+            </p>
+          </div>
+          
+          <div *ngIf="isView12Gst">
+            <p class="text-sm font-medium text-black">
+              CGST Amount {{only12Gst}}%: {{total12GstAmount | currency: 'INR'}}
+            </p>
+            <p class="text-sm font-medium text-black">
+              SGST Amount {{only12Gst}}%: {{total12GstAmount | currency: 'INR'}}
+            </p>
+          </div>
+
+          <div *ngIf="isView5Gst">
+            <p class="text-sm font-medium text-black">
+              CGST Amount {{only5Gst}}%: {{total5GstAmount | currency: 'INR'}}
+            </p>
+            <p class="text-sm font-medium text-black">
+              SGST Amount {{only5Gst}}%: {{total5GstAmount | currency: 'INR'}}
+            </p>
+          </div>
+          
+          <div *ngFor="let charge of additionalCharges">
+            <p class="text-sm font-medium text-black">
+              {{charge.label}}: GST (18%): {{charge.value * (18/100) + charge.value | currency: 'INR'}}
+            </p>
+          </div>
+          <p class="text-sm font-medium text-black">
+            Total Amount: {{totalAmount | currency: 'INR'}}
+          </p>
+        </div>
+      </div>
+    </div>
+
+
+        <div class="mt-8 flex justify-end gap-4">
+          
+          <div *ngIf="productList.length > 0">
             <button
-              (click)="toggledelete(1, true)"
+              [disabled]="UpdateQuotationForm.invalid"
+              (click)="onUpdateProduct(UpdateQuotationForm.value)"
               type="submit"
-              class="inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+              class="me-2 rounded-lg bg-green-600 px-5 py-2.5 text-sm font-medium text-white transition-all duration-500 hover:bg-green-800 focus:outline-none focus:ring-4 focus:ring-green-300 dark:bg-green-600 dark:hover:bg-green-600 dark:focus:ring-green-800"
             >
               <svg
-                class="mr-1 h-5 w-5 text-white"
+                *ngIf="isSaveIcon"
+                class="mr-1 inline-flex h-5 w-5 items-center justify-center text-white"
                 aria-hidden="true"
                 xmlns="http://www.w3.org/2000/svg"
                 width="24"
@@ -305,15 +780,42 @@
                   stroke-linecap="round"
                   stroke-linejoin="round"
                   stroke-width="2"
-                  d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+                  d="M8.5 11.5 11 14l4-4m6 2a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"
                 />
               </svg>
-  
-              Delete
+
+              Update
             </button>
           </div>
-        </form>
-      </div>
+
+          <button
+            (click)="toggledelete(1, true)"
+            type="submit"
+            class="inline-flex items-center rounded-lg bg-red-600 px-5 py-2.5 text-center text-sm font-medium text-white transition-all duration-500 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 dark:bg-red-600 dark:hover:bg-red-700 dark:focus:ring-red-800"
+          >
+            <svg
+              class="mr-1 h-5 w-5 text-white"
+              aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              fill="none"
+              viewBox="0 0 24 24"
+            >
+              <path
+                stroke="currentColor"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                stroke-width="2"
+                d="M5 7h14m-9 3v8m4-8v8M10 3h4a1 1 0 0 1 1 1v3H9V4a1 1 0 0 1 1-1ZM6 7h12v13a1 1 0 0 1-1 1H7a1 1 0 0 1-1-1V7Z"
+              />
+            </svg>
+
+            Delete
+          </button>
+        </div>
+        <!-- </form> -->
+    </div>
     </div>
   </section>
   

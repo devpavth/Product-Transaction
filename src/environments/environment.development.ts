@@ -41,4 +41,5 @@ export const environment = {
     fetchQuotationCode: Url + 'code',
     fetchBankDetails: Url + 'BankUpdate/',
     quotation: Url + 'Quotation',
+    fetchSingleQuotation: Url + 'Quotation/',
 };

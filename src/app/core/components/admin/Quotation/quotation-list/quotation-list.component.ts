@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, HostListener, inject } from '@angular/core';
 import { QuotationService } from '../../../service/Quotation/quotation.service';
 
 @Component({
@@ -18,6 +18,10 @@ export class QuotationListComponent {
   totalpage: number = 0;
   list: any;
   listLength: any;
+
+  isDropdownOpen: number | null = null;
+  singleQuotationDetails: any;
+
   ngOnInit() {
     this.fetchQuotationList(1);
   }
@@ -73,10 +77,52 @@ export class QuotationListComponent {
   get endPage(): number {
     return Math.min(this.currentPage * this.itemsPerPage, this.listLength || 0);
   }
+
+  toggleDropdown(index: number){
+    if(this.isDropdownOpen === index){
+      this.isDropdownOpen = null;
+    }else{
+      this.isDropdownOpen = index;
+    }
+  }
+
+  @HostListener('document:click', ['$event'])
+  onDocumentClick(event: Event){
+    const targetElement = event.target as HTMLElement;
+    if(!targetElement.closest('.dropdown-container') && !targetElement.closest('button')){
+      this.isDropdownOpen = null;
+    }
+  }
+
+  // onEdit(quotation: any){
+  //   console.log("individual quotation for edit:", quotation);
+    
+  //   this.isDropdownOpen = null;
+  // }
+
+  onPreview(quotation: any){
+    console.log("individual quotation for onPreview:", quotation);
+    this.isDropdownOpen = null;
+  }
+
+
   toggleView(action: Boolean, check: number, productData: any) {
+    this.isDropdownOpen = null;
+    console.log("quotation.quotationId:", productData.quotationId);
+    
     if (check == 1) {
-      this.isProductList = action;
-      this.productData = productData;
+      this.quotationService.fetchSingleQuotation(productData.quotationId).subscribe(
+        (res: any) => {
+          console.log("fetching single quotation from backend:", res);
+          this.productData = res;
+          this.isProductList = action;
+          console.log("fetching single quotation from backend in this.productData:", this.productData);
+          console.log("this.isProductList in quotation list:",this.isProductList);
+        },(error) => {
+          console.log("error while fetching single quotation from backend:", error);
+        }
+      )
+      console.log("this.productData in quotationlist:", this.productData);
     }
     if (check == 0) {
       this.isProductList = action;
