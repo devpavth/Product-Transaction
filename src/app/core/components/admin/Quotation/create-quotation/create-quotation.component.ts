@@ -89,6 +89,7 @@ export class CreateQuotationComponent {
         bankId: [Validators.required],
         quotationDate: ['', Validators.required],
         quotationCode: ['', Validators.required],
+        quotationDueDate: ['', Validators.required],
         quotationReference: ['', Validators.required],
         totalAmount: [],
         taxTotal: [],
@@ -136,7 +137,13 @@ export class CreateQuotationComponent {
   showQuotationTerms(){
     console.log("called  by init terms method")
     return this.fb.group({
-      termCondition: [],
+      termCondition: [`
+      1. Tax:
+      2. Warranty:
+      3. Validity:
+      4. Delivery:
+      5. Payment:`,
+      ],
     });
   }
 
@@ -585,6 +592,8 @@ export class CreateQuotationComponent {
 
     this.productList.forEach((product) => {
       if(this.selectedCustomerGst.slice(0,2) === this.selectedCompanyGst.slice(0,2)){
+        console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
+        console.log("this.selectedCompanyGst.slice(0,2):", (this.selectedCompanyGst.slice(0,2)));
         if(product.gstRate === 18){
           this.only18Gst = product.gstRate / 2;
           this.isView18Gst = true;
@@ -636,6 +645,7 @@ export class CreateQuotationComponent {
 
     }else{
       console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
+      console.log("this.selectedCompanyGst.slice(0,2):", (this.selectedCompanyGst.slice(0,2)));
 
       this.totalAmount = this.taxableAmount + this.total18IGstAmount + 
                           this.total12IGstAmount + this.total5IGstAmount;

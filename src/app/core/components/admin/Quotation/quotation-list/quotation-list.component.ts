@@ -21,6 +21,7 @@ export class QuotationListComponent {
 
   isDropdownOpen: number | null = null;
   singleQuotationDetails: any;
+  pdfUrl: string | null = null;
 
   ngOnInit() {
     this.fetchQuotationList(1);
@@ -103,6 +104,30 @@ export class QuotationListComponent {
   onPreview(quotation: any){
     console.log("individual quotation for onPreview:", quotation);
     this.isDropdownOpen = null;
+
+    console.log("individual quotation for onPreview quotationId:", quotation.quotationId);
+
+    this.quotationService.generateQuotationPdf(quotation.quotationId).subscribe(
+      (res: Blob) => {
+        console.log("generating quotation pdf:", res);
+        const blob = new Blob([res], {type: 'application/pdf'});
+        const url = window.URL.createObjectURL(blob);
+
+        window.open(url, '_blank');
+
+        setTimeout(() => {
+          window.URL.revokeObjectURL(url);
+        }, 1000);
+        // const link = document.createElement('a');
+
+        // link.href = url;
+        // link.download = `Quotation-${quotation.quotationId}.pdf`;
+        // link.click();
+        // window.URL.revokeObjectURL(url);
+      },(error) => {
+        console.log("error while generating quotation pdf:", error);
+      }
+    )
   }
 
 

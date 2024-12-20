@@ -56,4 +56,10 @@ export class QuotationService {
     console.log("environment.fetchSingleQuotation + quotationId:",environment.fetchSingleQuotation + quotationId);
     return this.quotehttp.get(environment.fetchSingleQuotation + quotationId);
   }
+
+  generateQuotationPdf(quotationId: any){
+    return this.quotehttp.get(environment.generateQuotationPdf + quotationId, {
+      responseType: 'blob'
+    });
+  }
 }

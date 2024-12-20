@@ -98,6 +98,7 @@ export class ViewQuotationComponent {
       bankId: ['', Validators.required],
       quotationDate: ['', Validators.required],
       quotationCode: ['', Validators.required],
+      quotationDueDate: ['', Validators.required],
       quotationReference: ['', Validators.required],
       totalAmount: [],
       taxTotal: [],
@@ -106,7 +107,10 @@ export class ViewQuotationComponent {
       iGstTotal: [],
       product: this.fb.array([this.showProductQuotationData()]),
       terms: this.fb.array([this.showQuotationTerms()]),
-      Charge: this.fb.array([this.showAdditionalCharge()]),
+      Charge: this.fb.group({
+        deliveryCharge: [],
+        installCharge: []
+      }),
       // totalValue: [],
       // totalPriceWithGst: [],
       // prdStatus: [200],
@@ -124,11 +128,11 @@ export class ViewQuotationComponent {
       productQuantity: ['', Validators.required],
       price: ['', Validators.required],
       gstRate: ['', Validators.required],
-      totalAmount: ['', Validators.required],
-      taxAmount: ['', Validators.required],
-      cGstAmount: ['', Validators.required],
-      sGstAmount: ['', Validators.required],
-      iGstAmount: ['', Validators.required]
+      totalAmount: [],
+      taxAmount: [],
+      cGstAmount: [],
+      sGstAmount: [],
+      iGstAmount: []
     });
   }
 
@@ -144,7 +148,7 @@ export class ViewQuotationComponent {
   showQuotationTerms(){
     console.log("called  by init terms method")
     return this.fb.group({
-      termCondition: ['', Validators.required],
+      termCondition: [],
     });
   }
 
@@ -157,17 +161,17 @@ export class ViewQuotationComponent {
     return this.UpdateQuotationForm.get('terms') as FormArray;
   }
 
-  showAdditionalCharge(){
-    console.log("called  by init terms method")
-    return this.fb.group({
-      deliveryCharge: ['', Validators.required],
-      installCharge: ['', Validators.required]
-    });
-  }
+  // showAdditionalCharge(){
+  //   console.log("called  by init terms method")
+  //   return this.fb.group({
+  //     deliveryCharge: ['', Validators.required],
+  //     installCharge: ['', Validators.required]
+  //   });
+  // }
 
-  addAdditionalCharge() {
-    this.additionalCharge.push(this.showAdditionalCharge());
-  }
+  // addAdditionalCharge() {
+  //   this.additionalCharge.push(this.showAdditionalCharge());
+  // }
 
   ngOnInit(): void {
     console.log("this.productData before patchValue:", this.productData);

@@ -35,7 +35,7 @@
         <!-- Modal body -->
         <form [formGroup]="QuotationForm">
           <div class="mb-4 grid gap-4 sm:grid-cols-8">
-            <div class="col-span-4">
+            <div class="col-span-2">
               <label
                 for="brand"
                 class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
@@ -90,6 +90,35 @@
                 class="text-danger text-red-600"
                 >
                 Quotation Date Required!
+              </small>
+            </div>
+
+            <div class="col-span-2">
+              <label
+                for="brand"
+                class="mb-2 block text-sm font-medium text-gray-900 dark:text-white"
+                >Due Date</label
+              >
+              <input
+                type="date"
+                formControlName="quotationDueDate"
+                class="block w-full rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                placeholder=""
+                [ngClass]="{
+                  error:
+                  QuotationForm.get('quotationDueDate')?.invalid &&
+                  QuotationForm.get('quotationDueDate')?.touched
+                }"
+                required
+              />
+              <small
+                *ngIf="
+                    QuotationForm?.get('quotationDueDate')?.invalid &&
+                    QuotationForm?.get('quotationDueDate')?.touched
+                "
+                class="text-danger text-red-600"
+                >
+                Quotation Due Date Required!
               </small>
             </div>
           
@@ -655,11 +684,11 @@
                 id="termCondition"
                 type="textarea"
                 formControlName="termCondition"
-                class="block w-full h-32 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
+                class="block w-full h-36 rounded-lg border border-gray-300 bg-gray-50 p-2.5 text-sm text-gray-900 focus:border-purple-600 focus:ring-purple-600 dark:border-gray-600 dark:bg-gray-700 dark:text-white dark:placeholder-gray-400 dark:focus:border-purple-500 dark:focus:ring-purple-500"
               ></textarea>
               
             </div>
-            <div class="flex items-start justify-start gap-4 mt-36 -ml-48" *ngIf="isSave">
+            <div class="flex items-start justify-start gap-4 mt-40 -ml-48" *ngIf="isSave">
               <button
                 (click)="saveTermsAndConditions(term)"
                 type="button"
@@ -669,7 +698,7 @@
                 Save
               </button>
             </div>
-            <div class="flex items-start justify-start gap-4 mt-36 -ml-48" *ngIf="isEdit">
+            <div class="flex items-start justify-start gap-4 mt-40 -ml-48" *ngIf="isEdit">
               <button
                 (click)="editTermsAndConditions(term)"
                 type="button"
@@ -679,7 +708,7 @@
                 Edit
               </button>
             </div>
-            <div class="flex items-start justify-start gap-4 mt-36 ml-4">
+            <div class="flex items-start justify-start gap-4 mt-40 ml-4">
               <button
                 (click)="clearTermsAndConditions(term)"  
                 type="button"
