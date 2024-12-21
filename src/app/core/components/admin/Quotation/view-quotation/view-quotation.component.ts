@@ -1,6 +1,8 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, FormArray } from '@angular/forms';
+import { Component, EventEmitter, inject, Input, Output } from '@angular/core';
+import { FormBuilder, FormGroup, Validators, FormArray, AbstractControl } from '@angular/forms';
 import { Router } from '@angular/router';
+import { catchError, debounceTime, of, switchMap } from 'rxjs';
+import { QuotationService } from '../../../service/Quotation/quotation.service';
 
 @Component({
   selector: 'app-view-quotation',
@@ -14,9 +16,11 @@ export class ViewQuotationComponent {
   addingData: any;
   isCloseAdding: boolean = false;
   isSave: boolean = true;
-  isEdit: boolean = true;
+  isEdit: boolean = false;
   isSaveIcon: boolean = true;
   isDelete: boolean = false;
+
+  private quotationService = inject(QuotationService);
 
   totalPrice: number = 0;
   totalPriceWithGst: number = 0;
@@ -73,6 +77,10 @@ export class ViewQuotationComponent {
   selectedCustomerName: any;
   // selectedCustomerGst: any;
 
+  allProductDetails: any[] = [];
+  selectedProductData: any;
+  Tc: any;
+
   groupList: any;
   catList: any;
   brandList: any;
@@ -94,7 +102,7 @@ export class ViewQuotationComponent {
     this.UpdateQuotationForm = this.fb.group({
       companyId: [],
       customerId: ['', Validators.required],
-      customerName: [],
+      // customerName: [],
       bankId: ['', Validators.required],
       quotationDate: ['', Validators.required],
       quotationCode: ['', Validators.required],
@@ -105,7 +113,7 @@ export class ViewQuotationComponent {
       cGstTotal: [],
       sGstTotal: [],
       iGstTotal: [],
-      product: this.fb.array([this.showProductQuotationData()]),
+      product: this.fb.array([]),
       terms: this.fb.array([this.showQuotationTerms()]),
       Charge: this.fb.group({
         deliveryCharge: [],
@@ -136,9 +144,9 @@ export class ViewQuotationComponent {
     });
   }
 
-  addProductQuotation() {
-    this.productDetails.push(this.showProductQuotationData());
-  }
+  // addProductQuotation() {
+  //   this.productDetails.push(this.showProductQuotationData());
+  // }
 
 
   get quotationTerms() {
@@ -178,6 +186,111 @@ export class ViewQuotationComponent {
     this.UpdateQuotationForm.patchValue(this.productData);
     console.log("this.productData:",this.productData);
     console.log("Form values after patchValue:", this.UpdateQuotationForm.value);
+
+    const initalCustomerIdArray = this.UpdateQuotationForm.get('customerId')?.value;
+    console.log("initalCustomerId:", initalCustomerIdArray);
+
+    if(initalCustomerIdArray){
+      console.log("this.productData.customerId:",this.productData.customerId);
+      const initalCustomerId = initalCustomerIdArray[0].customerId;
+      const selectedCustomer = this.productData.customerId.find(
+        (customer: any) => customer.customerId === initalCustomerId
+      );
+
+      console.log("selectedCustomer", selectedCustomer);
+
+      if(selectedCustomer){
+        this.selectedCustomerGst = selectedCustomer.customerGst;
+        this.UpdateQuotationForm.patchValue({
+          customerId: selectedCustomer.customerName,
+          // selectedCustomerGst: selectedCustomer.customerGst
+        })
+      }
+    }
+
+    const products = this.productData.product;
+
+    console.log("products:", products);
+
+    const productFormArray = this.UpdateQuotationForm.get('product') as FormArray;
+    // productFormArray.clear();
+
+    console.log("productFormArray:", productFormArray);
+    products.forEach(
+      (product: any) => {
+        // console.log("product.product:", product.product[0]?.productName);
+
+        const productName = product.product[0]?.productName;
+        console.log("productName:", productName);
+        
+        productFormArray.push(
+          this.fb.group({
+            product: [productName],
+            productQuantity: [product.productQuantity],
+            price: [product.price],
+            gstRate: [product.gstRate],
+            totalAmount: [product.totalAmount],
+            taxAmount: [product.taxAmount],
+            cGstAmount: [],
+            sGstAmount: [],
+            iGstAmount: [],
+            gstAmount: (product.gstRate / 100) * product.price * product.productQuantity,
+            productPrice: product.price * product.productQuantity,
+            productPriceWithGst: (product.gstRate / 100 * product.price * product.productQuantity) + (product.price * product.productQuantity),
+          })
+        );
+      }
+    )
+
+    console.log("Form values after patchValue:", this.UpdateQuotationForm.value);
+    console.log("Product Form values after patchValue:", this.UpdateQuotationForm.get('product')?.value);
+
+    this.allProductDetails = this.UpdateQuotationForm.get('product')?.value;
+
+
+    (this.UpdateQuotationForm.get('product') as FormArray).controls.forEach((group: AbstractControl, index: number) => {
+          group.get('product')?.valueChanges
+          .pipe(
+            debounceTime(300),
+            switchMap((productName)=>{
+              console.log(`Product Name Changed for Index ${index}:`, productName);
+              if(this.isProductSelected){
+                return of([]);
+              }
+              this.noResults = false;
+              this.storeProductData = [];
+              if(!productName?.trim()){
+                return of([]);
+              }
+              return this.quotationService.fetchProductQuotation({productName}).pipe(
+                catchError((error)=>{
+                  if(error.status === 404){
+                    this.noResults = true;
+                  }
+                  return of([]);
+                })
+              );
+            })
+          ).subscribe(
+            (response: any) => {
+              this.storeProductData = response.products || [];
+              console.log("fteching product data from backend:", response);
+              this.isProductSelected = false;
+            },
+          )
+        })
+
+
+
+    const storedUser = sessionStorage.getItem('userData');
+    console.log("storedUser:", storedUser);
+
+    if(storedUser){
+      this.userData = JSON.parse(storedUser);
+      console.log("getting user bank data for quotation:", this.userData);
+    }
+
+
     // Object.keys(this.UpdateQuotationForm.controls).forEach((form) => {
     //   this.UpdateQuotationForm.get(form)?.disable();
     // });
@@ -204,7 +317,7 @@ export class ViewQuotationComponent {
     this.selectedProductId = product.productId
     this.selectedProductQuantity = product.productQuantity
     this.isProductSelected = true;
-    this.productData = [product];
+    this.selectedProductData = [product];
     this.storeProductData = [];
   }
 
@@ -268,7 +381,7 @@ export class ViewQuotationComponent {
       (product: any) => product.product === productId
     )
 
-    const matchingProduct = this.productData.find(
+    const matchingProduct = this.selectedProductData.find(
       (product: any) => product.productId === getProductDetail.product,
     )
 
@@ -416,6 +529,50 @@ export class ViewQuotationComponent {
     console.log("after productList:", this.productList);
 
 
+  }
+
+  saveTermsAndConditions(termsControl: AbstractControl){
+    console.log("termsControl in saving:", termsControl);
+
+    const termsCondition = termsControl.get('termCondition')?.value;
+    this.Tc = termsCondition
+    console.log("termsCondition:", termsCondition);
+     termsControl.get('termCondition')?.disable();
+
+    this.isSave = false;
+    this.isEdit = true;
+
+    console.log("QuotationForm (after patchProductFormArray):", this.UpdateQuotationForm.value);
+    
+  }
+
+  editTermsAndConditions(termsControl: AbstractControl){
+    console.log("termsControl in editing:", termsControl);
+    termsControl.get('termCondition')?.enable();
+    const termsCondition = termsControl.get('termCondition')?.value;
+    this.Tc = termsCondition
+
+    this.isSave = true;
+    this.isEdit = false;
+
+    console.log("QuotationForm (after patchProductFormArray):", this.UpdateQuotationForm.value);
+  }
+
+
+
+  clearTermsAndConditions(termsControl: AbstractControl){
+    console.log("termsData:", termsControl);
+
+    termsControl.reset();
+
+    // termsData = null;
+
+    //console.log("termsData:", termsControl);
+
+    termsControl.get('termCondition')?.enable();
+
+    this.isSave = true;
+    this.isEdit = false;
   }
 
   deleteItem(product: any){

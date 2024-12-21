@@ -597,35 +597,35 @@ export class CreateQuotationComponent {
         if(product.gstRate === 18){
           this.only18Gst = product.gstRate / 2;
           this.isView18Gst = true;
-          const gst18Amount = product.productPriceWithGst;
+          const gst18Amount = product.gstAmount;
           this.total18GstAmount += gst18Amount;
         }else if(product.gstRate === 12){
           this.only12Gst = product.gstRate / 2;
           this.isView12Gst = true;
-          const gst12Amount = product.productPriceWithGst;
+          const gst12Amount = product.gstAmount;
           this.total12GstAmount += gst12Amount;
         }else if(product.gstRate === 5){
           this.only5Gst = product.gstRate / 2;
           this.isView5Gst = true;
-          const gst5Amount = product.productPriceWithGst;
+          const gst5Amount = product.gstAmount;
           this.total5GstAmount += gst5Amount;
         }
       }else{
         if(product.gstRate === 18){
           this.only18IGst = product.gstRate;
           this.isView18IGst = true;
-          const gst18IAmount = product.productPriceWithGst;
+          const gst18IAmount = product.gstAmount;
           this.total18IGstAmount += gst18IAmount;
         }
         else if(product.gstRate === 12){
           this.only12IGst = product.gstRate;
           this.isView12IGst = true;
-          const gst12IAmount = product.productPriceWithGst;
+          const gst12IAmount = product.gstAmount;
           this.total12IGstAmount += gst12IAmount;
         }else if(product.gstRate === 5){
           this.only5IGst = product.gstRate;
           this.isView5IGst = true;
-          const gst5IAmount = product.productPriceWithGst;
+          const gst5IAmount = product.gstAmount;
           this.total5IGstAmount += gst5IAmount;
         }
       }
@@ -823,7 +823,133 @@ export class CreateQuotationComponent {
 
 
   deleteItem(product: any){
+    console.log("deleting the product:", product);
     this.productList = this.productList.filter((p) => p.product !== product.product);
+
+    let baseTaxAmount = this.QuotationForm.get('taxTotal')?.value;
+    console.log("baseTaxAmount:", baseTaxAmount);
+
+    this.taxableAmount = baseTaxAmount - product.price * product.productQuantity;
+
+    let baseAmount = this.QuotationForm.get('totalAmount')?.value;
+
+    console.log("checking in cGST and cGST baseAmount after deleting:", baseAmount);
+
+    const productTaxableAmount = product.price * product.productQuantity;
+    const productGstAmount = product.gstAmount;
+
+    baseTaxAmount -= productTaxableAmount;
+
+    baseAmount -= productTaxableAmount + productGstAmount;
+
+    console.log("after deleting calculation:", baseAmount);
+
+    this.totalAmount = baseAmount;
+
+
+    this.QuotationForm.patchValue({
+      totalAmount: Number(this.totalAmount.toFixed(2)),
+    });
+
+
+    const productArray = this.QuotationForm.get('product') as FormArray;
+    const indexToRemove = productArray.controls.findIndex((control) => control.value.product === product.product);
+
+    if(indexToRemove !== -1){
+      productArray.removeAt(indexToRemove);
+      console.log("Removed product at index:", indexToRemove);
+    }else {
+      console.log("Product not found in FormArray for deletion!");
+    }
+
+
+    console.log('Final Total Amount (after deletion):', this.QuotationForm.get('totalAmount')?.value);
+    console.log('Remaining Products:', this.QuotationForm.get('product')?.value);
+
+
+    console.log('Remaining Products in QuotationForm:', this.QuotationForm.value);
+
+
+
+    if(this.selectedCustomerGst.slice(0,2) === this.selectedCompanyGst.slice(0,2)){
+      console.log("(this.selectedCustomerGst.slice(0,2)):", (this.selectedCustomerGst.slice(0,2)));
+      console.log("this.selectedCompanyGst.slice(0,2):", (this.selectedCompanyGst.slice(0,2)));
+      if(product.gstRate === 18){
+        // this.only18Gst = product.gstRate / 2;
+        this.isView18Gst = false;
+        // const gst18Amount = product.gstAmount;
+        // this.total18GstAmount -= gst18Amount;
+
+        // this.total18GstAmount = basecGstTotal - product.gstAmount;
+
+      }else if(product.gstRate === 12){
+        // this.only12Gst = product.gstRate / 2;
+        this.isView12Gst = false;
+        const gst12Amount = product.gstAmount;
+        // this.total12GstAmount -= gst12Amount;
+
+        // this.total12GstAmount= basecGstTotal - product.gstAmount;
+      }else if(product.gstRate === 5){
+        // this.only5Gst = product.gstRate / 2;
+        this.isView5Gst = false;
+        const gst5Amount = product.gstAmount;
+        // this.total5GstAmount -= gst5Amount;
+
+        // this.total5GstAmount = basecGstTotal - product.gstAmount;
+      }
+
+      
+
+      // console.log("product.gstAmount:", product.gstAmount);
+
+      // this.totalAmount = baseAmount - product.gstAmount;
+
+      // this.totalAmount = baseAmount - (baseTaxAmount - product.price * product.productQuantity);
+
+      // console.log("after deleting one product cgst and sgst:", this.totalAmount);
+
+
+    // console.log("basecGstTotal - product.gstAmount:", basecGstTotal - product.gstAmount);
+    // console.log("basesGstTotal - product.gstAmount:", basesGstTotal - product.gstAmount)
+
+    }else{
+      if(product.gstRate === 18){
+        // this.only18IGst = product.gstRate;
+        this.isView18IGst = false;
+        // const gst18IAmount = product.gstAmount;
+        // this.total18IGstAmount -= gst18IAmount;
+
+        // this.total18IGstAmount = baseiGstTotal - product.gstAmount;
+      }
+      else if(product.gstRate === 12){
+        // this.only12IGst = product.gstRate;
+        this.isView12IGst = false;
+        // const gst12IAmount = product.gstAmount;
+        // this.total12IGstAmount -= gst12IAmount;
+
+        // this.total12IGstAmount = baseiGstTotal - product.gstAmount;
+      }else if(product.gstRate === 5){
+        // this.only5IGst = product.gstRate;
+        this.isView5IGst = false;
+        // const gst5IAmount = product.gstAmount;
+        // this.total5IGstAmount -= gst5IAmount;
+
+        // this.total5IGstAmount = baseiGstTotal - product.gstAmount;
+      }
+
+      // let baseAmount = this.QuotationForm.get('totalAmount')?.value;
+
+      // console.log("checking in IGST baseAmount after deleting:", baseAmount);
+
+      // console.log("product.gstAmount:", product.gstAmount);
+
+      // this.totalAmount = baseAmount - (baseTaxAmount - product.price * product.productQuantity) -
+      //                     product.gstAmount;
+
+      // console.log("after deleting one product igst:", this.totalAmount);
+    }
+
+      
   }
 
   onSubmit(data: any, companyId: any) {
