@@ -76,9 +76,15 @@ export class ViewQuotationComponent {
   selectedCustomerId: any;
   selectedCustomerName: any;
   // selectedCustomerGst: any;
+  noCustomer: boolean = false;
 
   allProductDetails: any[] = [];
   selectedProductData: any;
+
+  totalIGstAmount: number = 0;
+  totalcGstAmount: number = 0;
+  totalsGstAmount: number = 0;
+
   Tc: any;
 
   groupList: any;
@@ -92,6 +98,8 @@ export class ViewQuotationComponent {
     { id: 4, name: 'Unit' },
     { id: 200, name: 'Box' },
   ];
+
+  // gstValidationMsg: string = '';
 
   UpdateQuotationForm: FormGroup;
   constructor(
@@ -154,9 +162,15 @@ export class ViewQuotationComponent {
   }
 
   showQuotationTerms(){
-    console.log("called  by init terms method")
+    console.log("called  by init terms method");
     return this.fb.group({
-      termCondition: [],
+      termCondition: [`
+      1. Tax:
+      2. Warranty:
+      3. Validity:
+      4. Delivery:
+      5. Payment:`,
+      ],
     });
   }
 
@@ -208,6 +222,28 @@ export class ViewQuotationComponent {
       }
     }
 
+    const initalBankIdArray = this.UpdateQuotationForm.get('bankId')?.value;
+    console.log("initalBankIdArray:", initalBankIdArray);
+
+    if(initalBankIdArray){
+      console.log("this.productData.bankId:",this.productData.bankId);
+      const initalBankId = initalBankIdArray[0].bankId;
+      const selectedBank = this.productData.bankId.find(
+        (bank: any) => bank.bankId === initalBankId
+      );
+
+      console.log("selectedBank", selectedBank);
+      console.log("selectedBank.bankName:", selectedBank.bankName);
+
+      if(selectedBank){
+        // this.selectedCustomerGst = selectedBank.customerGst;
+        this.UpdateQuotationForm.patchValue({
+          bankId: selectedBank.bankId,
+          // selectedCustomerGst: selectedCustomer.customerGst
+        })
+      }
+    }
+
     const products = this.productData.product;
 
     console.log("products:", products);
@@ -246,6 +282,38 @@ export class ViewQuotationComponent {
     console.log("Product Form values after patchValue:", this.UpdateQuotationForm.get('product')?.value);
 
     this.allProductDetails = this.UpdateQuotationForm.get('product')?.value;
+
+    this.UpdateQuotationForm.get('customerId')?.valueChanges
+    .pipe(
+      debounceTime(300),
+      switchMap((customerName) =>{
+        if(this.isCustomerSelected){
+          return of([]);
+        }
+        this.noCustomer = false;
+        if(!customerName?.trim()){
+          this.customerList = [];
+          return of([]);
+        }
+        return this.quotationService.fetchCustomerQuotation({customerName}).pipe(
+          catchError((error)=>{
+            if(error.status === 404){
+              console.log("Customer API Error:", error);
+              this.noCustomer = true;
+            }
+            return of([]);
+          })
+        )
+      })
+    )
+    .subscribe(
+      (response: any) =>{
+        this.customerList = response.customer;
+        this.isCustomerSelected = false;
+      },
+ 
+    );
+
 
 
     (this.UpdateQuotationForm.get('product') as FormArray).controls.forEach((group: AbstractControl, index: number) => {
@@ -290,7 +358,7 @@ export class ViewQuotationComponent {
       console.log("getting user bank data for quotation:", this.userData);
     }
 
-
+    this.fetchBankInfo();
     // Object.keys(this.UpdateQuotationForm.controls).forEach((form) => {
     //   this.UpdateQuotationForm.get(form)?.disable();
     // });
@@ -357,7 +425,7 @@ export class ViewQuotationComponent {
     if (check == 1) {
       this.isDelete = isView;
       this.deleteProduct = {
-        title: 'Product',
+        title: 'Quotation',
         action: 2,
         deleteId: this.productData.productId,
       };
@@ -521,8 +589,8 @@ export class ViewQuotationComponent {
 
 
     // this.calculateIGstTotal();
-    // this.calculateTaxableAmount();
-    // this.patchProductFormArray();
+    this.calculateTaxableAmount();
+    this.patchProductFormArray();
 
     this.productData = '';
 
@@ -575,8 +643,105 @@ export class ViewQuotationComponent {
     this.isEdit = false;
   }
 
+  calculateTaxableAmount(){
+
+    this.totalIGstAmount = this.total18IGstAmount + this.total12IGstAmount + this.total5IGstAmount;
+
+    console.log("totalIGstAmount:", this.totalIGstAmount);
+
+    this.totalcGstAmount = this.total18GstAmount + 
+                            this.total12GstAmount + this.total5GstAmount;
+
+    console.log("this.totalcGstAmount:", this.totalcGstAmount);
+
+    this.totalsGstAmount = this.total18GstAmount + 
+                            this.total12GstAmount + this.total5GstAmount;
+
+    console.log("this.totalsGstAmount:", this.totalsGstAmount);
+
+    console.log("QuotationForm (before patch):", this.UpdateQuotationForm.value);
+
+    this.UpdateQuotationForm.patchValue({
+      iGstTotal: Number(this.totalIGstAmount.toFixed(2)),
+      taxTotal: Number(this.taxableAmount.toFixed(2)),
+      totalAmount: Number(this.totalAmount.toFixed(2)),
+      cGstTotal: Number(this.totalcGstAmount.toFixed(2)),
+      sGstTotal: Number(this.totalsGstAmount.toFixed(2))
+    })
+
+    console.log("QuotationForm (after patch):", this.UpdateQuotationForm.value);
+  }
+
+  patchProductFormArray(){
+  
+    if(this.productList && this.productList.length){
+
+      // while (productArray.length < this.productList.length) {
+      //   productArray.push(this.showProductQuotationData());
+      // }
+
+      this.productList.forEach(
+        (product, index) => {
+
+          const productArray = this.UpdateQuotationForm.get('product') as FormArray;
+
+          console.log("productArray:", productArray);
+
+          while(index >= productArray.length){
+            productArray.push(this.showProductQuotationData());
+          }
+        
+          const productGroup = productArray.at(index) as FormGroup;
+          if(this.selectedCustomerGst.slice(0,2) === this.selectedCompanyGst.slice(0,2)){
+            productGroup.patchValue({
+              product: product.product,
+              productQuantity: product.quantity,
+              price: product.price,
+              gstRate: product.gstRate,
+              totalAmount: Number(product.productPriceWithGst.toFixed(2)),
+              taxAmount: Number(product.gstAmount.toFixed(2)),
+              cGstAmount: Number((product.gstAmount / 2).toFixed(2)),
+              sGstAmount: Number((product.gstAmount / 2).toFixed(2))
+            }, { emitEvent: false })
+          }else{
+            productGroup.patchValue({
+              product: product.product,
+              productQuantity: product.quantity,
+              price: product.price,
+              gstRate: product.gstRate,
+              totalAmount: Number(product.productPriceWithGst.toFixed(2)),
+              taxAmount: Number(product.gstAmount.toFixed(2)),
+              iGstAmount: Number(product.gstAmount.toFixed(2)),
+            }, { emitEvent: false })
+          }
+          
+        }
+      )
+    }
+
+    console.log("QuotationForm (after patchProductFormArray):", this.UpdateQuotationForm.value);
+  }
+
   deleteItem(product: any){
-    this.productList = this.productList.filter((p) => p.product !== product.product);
+    this.allProductDetails = this.allProductDetails.filter((p) => p.product !== product.product);
+  }
+
+
+  fetchBankInfo(){
+    const companyId = this.userData.companyId;
+    console.log("companyId:", companyId);
+
+    this.selectedCompanyId = this.userData.companyId;
+
+    console.log("selectedCompanyId:", this.selectedCompanyId);
+
+    this.quotationService.fetchBankDetails(companyId).subscribe(
+      (res: any) => {
+        console.log("fetching bank details:", res);
+        console.log("fetching bank name details:", res.bankName);
+        this.bankList = res;
+      }
+    )
   }
 
  
