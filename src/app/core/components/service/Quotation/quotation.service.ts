@@ -62,4 +62,8 @@ export class QuotationService {
       responseType: 'blob'
     });
   }
+
+  updateQuotation(id: any, data: any){
+    return this.quotehttp.post(environment.updateQuotation + id, data);
+  }
 }
