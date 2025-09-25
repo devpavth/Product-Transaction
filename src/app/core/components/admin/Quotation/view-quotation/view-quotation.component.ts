@@ -116,6 +116,7 @@ export class ViewQuotationComponent {
       quotationCode: ['', Validators.required],
       quotationDueDate: ['', Validators.required],
       quotationReference: ['', Validators.required],
+      quotationId: [],
       totalAmount: [],
       taxTotal: [],
       cGstTotal: [],
@@ -124,6 +125,7 @@ export class ViewQuotationComponent {
       product: this.fb.array([]),
       terms: this.fb.array([this.showQuotationTerms()]),
       Charge: this.fb.group({
+        chargeId: [],
         deliveryCharge: [],
         installCharge: []
       }),
@@ -140,15 +142,16 @@ export class ViewQuotationComponent {
   showProductQuotationData() {
     console.log("called  by inti method")
     return this.fb.group({
+      quotationProductId: [],
       product: [],
       productQuantity: ['', Validators.required],
       price: ['', Validators.required],
       gstRate: ['', Validators.required],
-      totalAmount: [],
-      taxAmount: [],
-      cGstAmount: [],
-      sGstAmount: [],
-      iGstAmount: []
+      totalAmount: [0],
+      taxAmount: [0],
+      cGstAmount: [0],
+      sGstAmount: [0],
+      iGstAmount: [0]
     });
   }
 
@@ -171,6 +174,7 @@ export class ViewQuotationComponent {
       4. Delivery:
       5. Payment:`,
       ],
+      termId: [],
     });
   }
 
@@ -687,11 +691,11 @@ export class ViewQuotationComponent {
 
           console.log("productArray:", productArray);
 
-          while(index >= productArray.length){
-            productArray.push(this.showProductQuotationData());
-          }
+          // while(index >= productArray.length){
+          //   productArray.push(this.showProductQuotationData());
+          // }
         
-          const productGroup = productArray.at(index) as FormGroup;
+          const productGroup = this.showProductQuotationData();
           if(this.selectedCustomerGst.slice(0,2) === this.selectedCompanyGst.slice(0,2)){
             productGroup.patchValue({
               product: product.product,
@@ -702,7 +706,7 @@ export class ViewQuotationComponent {
               taxAmount: Number(product.gstAmount.toFixed(2)),
               cGstAmount: Number((product.gstAmount / 2).toFixed(2)),
               sGstAmount: Number((product.gstAmount / 2).toFixed(2))
-            }, { emitEvent: false })
+            }, { emitEvent: false });
           }else{
             productGroup.patchValue({
               product: product.product,
@@ -712,8 +716,10 @@ export class ViewQuotationComponent {
               totalAmount: Number(product.productPriceWithGst.toFixed(2)),
               taxAmount: Number(product.gstAmount.toFixed(2)),
               iGstAmount: Number(product.gstAmount.toFixed(2)),
-            }, { emitEvent: false })
+            }, { emitEvent: false });
+           
           }
+          productArray.push(productGroup);
           
         }
       )
@@ -746,9 +752,11 @@ export class ViewQuotationComponent {
 
  
   onUpdateProduct(data: any) {
-    console.log("Update product data:",data);
-    let id = this.UpdateQuotationForm.get('productId')?.value;
+    console.log("Update quotation product data:",data);
+    let id = this.UpdateQuotationForm.get('quotationId')?.value;
     console.log("checking id...:", id);
+
+
 
     // this.productService.updateProduct(id, data).subscribe(
     //   (res) => {

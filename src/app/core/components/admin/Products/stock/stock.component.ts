@@ -114,7 +114,7 @@ export class StockComponent {
   }
 
   showBankData() {
-    console.log("called  by inti method")
+    console.log("called  by inti method");
     return this.fb.group({
       product: [],
       quantity: ['', Validators.required],
